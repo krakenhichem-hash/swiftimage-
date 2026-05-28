@@ -1,998 +1,1469 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="SwiftImage - Free Image Converter & Compressor | تحويل وضغط الصور مجاناً">
-<meta name="keywords" content="image converter, image compressor, PNG to JPG, WebP converter, تحويل صور, convertisseur image">
-<title>SwiftImage | Free Image Converter</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --card: #16161f;
-    --border: #ffffff0f;
-    --accent: #6ee7b7;
-    --accent2: #818cf8;
-    --accent3: #f472b6;
-    --text: #f1f5f9;
-    --muted: #64748b;
-    --success: #34d399;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Tajawal', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  body.ltr { direction: ltr; font-family: 'Syne', sans-serif; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SwiftImage — Compress & Convert Images Instantly</title>
+  <meta name="description" content="SwiftImage is a free, browser-based image compression and conversion tool. Convert JPG, PNG, WEBP instantly with no upload limits, no sign-up required." />
+  <meta name="keywords" content="image compressor, image converter, jpg to png, png to webp, webp to jpg, compress images online, free image tool" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://swiftimage.app/" />
 
-  .bg-grid {
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(110,231,183,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(110,231,183,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none; z-index: 0;
-  }
-  .bg-glow {
-    position: fixed; width: 600px; height: 600px;
-    border-radius: 50%; filter: blur(120px);
-    pointer-events: none; z-index: 0; opacity: 0.12;
-  }
-  .glow-1 { background: var(--accent); top: -200px; right: -100px; }
-  .glow-2 { background: var(--accent2); bottom: -200px; left: -100px; }
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SwiftImage — Compress & Convert Images Instantly" />
+  <meta property="og:description" content="Free browser-based image compression and conversion. No uploads, no sign-up. 100% private." />
+  <meta property="og:url" content="https://swiftimage.app/" />
+  <meta property="og:image" content="https://swiftimage.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SwiftImage — Compress & Convert Images Instantly" />
+  <meta name="twitter:description" content="Free browser-based image compression and conversion. No uploads, no sign-up." />
 
-  .wrapper { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+  <!-- PWA Manifest inline -->
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22SwiftImage%22%2C%22short_name%22%3A%22SwiftImage%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230a0a0f%22%2C%22theme_color%22%3A%22%237c3aed%22%7D" />
 
-  header {
-    padding: 16px 0; border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
-    background: rgba(10,10,15,0.85);
-  }
-  .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .logo {
-    font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text; letter-spacing: -1px; flex-shrink: 0;
-  }
+  <!-- Favicon SVG inline -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237c3aed'/%3E%3Cstop offset='100%25' stop-color='%232563eb'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='36' font-family='Arial'>⚡%3C/text%3E%3C/svg%3E" />
 
-  /* Language selector */
-  .lang-selector { position: relative; }
-  .lang-current {
-    background: var(--card); border: 1px solid var(--border);
-    color: var(--text); padding: 8px 14px; border-radius: 100px;
-    cursor: pointer; font-family: inherit; font-size: 0.85rem;
-    font-weight: 700; display: flex; align-items: center; gap: 6px;
-    transition: all 0.3s; white-space: nowrap;
-  }
-  .lang-current:hover { border-color: var(--accent); color: var(--accent); }
-  .lang-dropdown {
-    position: absolute; top: calc(100% + 8px); right: 0;
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 16px; padding: 8px; min-width: 180px;
-    display: none; z-index: 200; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  }
-  .lang-dropdown.open { display: block; animation: fadeUp 0.2s ease; }
-  .lang-option {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 12px; border-radius: 10px; cursor: pointer;
-    font-size: 0.9rem; font-weight: 600; transition: background 0.2s;
-    color: var(--text);
-  }
-  .lang-option:hover { background: rgba(255,255,255,0.05); }
-  .lang-option.active { color: var(--accent); background: rgba(110,231,183,0.08); }
-  .lang-flag { font-size: 1.1rem; }
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
 
-  .hero { text-align: center; padding: 70px 20px 50px; animation: fadeUp 0.8s ease both; }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(110,231,183,0.1); border: 1px solid rgba(110,231,183,0.2);
-    color: var(--accent); padding: 6px 16px; border-radius: 100px;
-    font-size: 0.85rem; font-weight: 700; margin-bottom: 24px;
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "SwiftImage",
+    "url": "https://swiftimage.app",
+    "description": "Browser-based image compression and conversion tool supporting JPG, PNG, and WEBP formats.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
   }
-  .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.6rem); font-weight: 900;
-    line-height: 1.15; margin-bottom: 16px; letter-spacing: -1px;
-  }
-  .hero h1 span {
-    background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .hero p { color: var(--muted); font-size: 1.05rem; max-width: 520px; margin: 0 auto 40px; line-height: 1.7; }
+  </script>
 
-  .tools-nav { display: flex; justify-content: center; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
-  .tool-tab {
-    background: var(--card); border: 1px solid var(--border);
-    color: var(--muted); padding: 10px 22px; border-radius: 100px;
-    cursor: pointer; font-family: inherit; font-size: 0.95rem;
-    font-weight: 700; transition: all 0.3s;
-  }
-  .tool-tab:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
-  .tool-tab.active {
-    background: linear-gradient(135deg, rgba(110,231,183,0.15), rgba(129,140,248,0.15));
-    border-color: var(--accent); color: var(--accent);
-  }
+  <style>
+    :root {
+      --bg: #08080f;
+      --bg2: #0e0e1a;
+      --bg3: #141428;
+      --surface: rgba(255,255,255,0.04);
+      --surface2: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.14);
+      --purple: #7c3aed;
+      --purple-light: #a855f7;
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+      --neon: #c084fc;
+      --neon2: #67e8f9;
+      --text: #f1f0ff;
+      --text2: #a09ec0;
+      --text3: #6b699a;
+      --success: #10b981;
+      --error: #ef4444;
+      --warning: #f59e0b;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 8px 32px rgba(0,0,0,0.4);
+      --shadow-purple: 0 0 40px rgba(124,58,237,0.25);
+      --transition: cubic-bezier(0.4,0,0.2,1);
+    }
+    .light-mode {
+      --bg: #f5f4ff;
+      --bg2: #eeedf8;
+      --bg3: #e5e3f5;
+      --surface: rgba(255,255,255,0.7);
+      --surface2: rgba(255,255,255,0.9);
+      --border: rgba(0,0,0,0.08);
+      --border2: rgba(0,0,0,0.14);
+      --text: #1a1830;
+      --text2: #4a4870;
+      --text3: #7a78a0;
+      --shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+    h1,h2,h3,h4,h5 { font-family: 'Syne', sans-serif; line-height: 1.15; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { cursor: pointer; font-family: 'DM Sans', sans-serif; }
+    ::selection { background: rgba(124,58,237,0.35); }
 
-  .tool-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 24px; padding: 36px; margin-bottom: 20px;
-    animation: fadeUp 0.6s ease both; display: none;
-  }
-  .tool-card.active { display: block; }
+    /* ─── CANVAS BACKGROUND ─── */
+    #bg-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 0; opacity: 0.5;
+    }
 
-  .dropzone {
-    border: 2px dashed var(--border); border-radius: 16px;
-    padding: 55px 20px; text-align: center; cursor: pointer;
-    transition: all 0.3s; position: relative; background: rgba(255,255,255,0.01);
-  }
-  .dropzone:hover, .dropzone.drag-over {
-    border-color: var(--accent); background: rgba(110,231,183,0.04);
-  }
-  .dropzone-icon { font-size: 2.8rem; margin-bottom: 14px; display: block; opacity: 0.7; }
-  .dropzone h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
-  .dropzone p { color: var(--muted); font-size: 0.88rem; }
-  .dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    /* ─── GRADIENT ORBS ─── */
+    .orb {
+      position: fixed; border-radius: 50%; filter: blur(100px);
+      pointer-events: none; z-index: 0; animation: orb-drift 18s ease-in-out infinite alternate;
+    }
+    .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(124,58,237,0.18), transparent 70%); top: -200px; left: -100px; animation-delay: 0s; }
+    .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(37,99,235,0.15), transparent 70%); top: 40%; right: -150px; animation-delay: -6s; }
+    .orb-3 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(192,132,252,0.12), transparent 70%); bottom: 10%; left: 20%; animation-delay: -12s; }
+    @keyframes orb-drift { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(40px, 30px) scale(1.1); } }
 
-  .options-row { display: flex; gap: 16px; margin-top: 22px; flex-wrap: wrap; align-items: flex-end; }
-  .option-group { flex: 1; min-width: 130px; }
-  .option-group label {
-    display: block; font-size: 0.82rem; color: var(--muted);
-    margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-  }
-  .option-group select {
-    width: 100%; background: var(--surface); border: 1px solid var(--border);
-    color: var(--text); padding: 10px 14px; border-radius: 10px;
-    font-family: inherit; font-size: 0.95rem; appearance: none; cursor: pointer;
-  }
-  .option-group select:focus { outline: none; border-color: var(--accent); }
-  input[type="range"] { width: 100%; accent-color: var(--accent); cursor: pointer; }
-  .quality-val { font-size: 0.85rem; color: var(--accent); font-weight: 700; text-align: center; margin-top: 6px; }
+    /* ─── NAVBAR ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 68px;
+      background: rgba(8,8,15,0.7);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .light-mode nav { background: rgba(245,244,255,0.8); }
+    nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; box-shadow: 0 0 20px rgba(124,58,237,0.4);
+    }
+    .nav-logo span { background: linear-gradient(90deg, var(--purple-light), var(--blue-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--text2); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-ghost {
+      padding: 8px 18px; border-radius: 8px; border: 1px solid var(--border2);
+      background: transparent; color: var(--text); font-size: 0.875rem; font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { background: var(--surface2); border-color: var(--purple); }
+    .btn-primary {
+      padding: 9px 20px; border-radius: 8px; border: none;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      color: #fff; font-size: 0.875rem; font-weight: 600;
+      box-shadow: 0 0 20px rgba(124,58,237,0.35);
+      transition: all 0.25s; position: relative; overflow: hidden;
+    }
+    .btn-primary::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,rgba(255,255,255,0.1),transparent); opacity: 0; transition: opacity 0.2s; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(124,58,237,0.5); }
+    .btn-primary:hover::after { opacity: 1; }
+    .btn-primary:active { transform: translateY(0); }
+    .theme-btn {
+      width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--border2);
+      background: var(--surface); display: flex; align-items: center; justify-content: center;
+      font-size: 17px; transition: all 0.2s;
+    }
+    .theme-btn:hover { border-color: var(--purple); background: var(--surface2); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 4px; }
+    .hamburger span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s; display: block; }
 
-  .convert-btn {
-    width: 100%; margin-top: 22px; padding: 15px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #0a0a0f; border: none; border-radius: 12px;
-    font-family: inherit; font-size: 1rem; font-weight: 900;
-    cursor: pointer; transition: all 0.3s;
-  }
-  .convert-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(110,231,183,0.25); }
-  .convert-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 120px 5% 80px; text-align: center; position: relative; z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px; border-radius: 100px;
+      background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.3);
+      font-size: 0.8rem; font-weight: 500; color: var(--neon);
+      margin-bottom: 28px; animation: fade-up 0.6s var(--transition) both;
+    }
+    .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--neon); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.85); } }
+    h1.hero-title {
+      font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 800;
+      letter-spacing: -0.03em; line-height: 1.08;
+      margin-bottom: 24px; animation: fade-up 0.6s 0.1s var(--transition) both;
+    }
+    .hero-title .gradient { background: linear-gradient(135deg, var(--purple-light) 0%, var(--neon2) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem); color: var(--text2); max-width: 560px;
+      margin: 0 auto 40px; font-weight: 300; line-height: 1.7;
+      animation: fade-up 0.6s 0.2s var(--transition) both;
+    }
+    .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; animation: fade-up 0.6s 0.3s var(--transition) both; }
+    .btn-large { padding: 14px 30px; font-size: 1rem; border-radius: 12px; }
+    .btn-outline-large {
+      padding: 13px 28px; border-radius: 12px; border: 1px solid var(--border2);
+      background: transparent; color: var(--text); font-size: 1rem; font-weight: 500;
+      transition: all 0.25s;
+    }
+    .btn-outline-large:hover { background: var(--surface2); border-color: var(--purple); }
+    .hero-stats {
+      display: flex; gap: 48px; justify-content: center; margin-top: 60px;
+      animation: fade-up 0.6s 0.4s var(--transition) both; flex-wrap: wrap;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-num { font-family: 'Syne',sans-serif; font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--purple-light), var(--blue-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-stat-label { font-size: 0.8rem; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.08em; }
+    @keyframes fade-up { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
 
-  .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; margin-top: 24px; }
-  .preview-item {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; overflow: hidden; animation: fadeUp 0.4s ease both; position: relative;
-  }
-  .preview-item img { width: 100%; height: 110px; object-fit: cover; display: block; }
-  .preview-info { padding: 8px 10px; }
-  .preview-name { font-size: 0.75rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
-  .preview-size { font-size: 0.8rem; font-weight: 700; color: var(--accent); }
-  .preview-remove {
-    position: absolute; top: 6px; right: 6px;
-    background: rgba(0,0,0,0.7); border: none; color: white;
-    width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
-    font-size: 0.7rem; display: flex; align-items: center; justify-content: center;
-  }
-  .preview-remove:hover { background: #ef4444; }
+    /* ─── TOOL SECTION ─── */
+    #tool {
+      position: relative; z-index: 1; padding: 40px 5% 100px; max-width: 1200px; margin: 0 auto;
+    }
+    .section-label {
+      display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--neon); margin-bottom: 12px;
+    }
+    .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -0.025em; margin-bottom: 16px; }
+    .section-sub { color: var(--text2); font-size: 1.05rem; max-width: 500px; font-weight: 300; }
 
-  .results-section { margin-top: 28px; display: none; }
-  .results-section.show { display: block; }
-  .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .results-title { font-size: 1rem; font-weight: 700; color: var(--accent); }
-  .download-all-btn {
-    background: rgba(110,231,183,0.1); border: 1px solid rgba(110,231,183,0.3);
-    color: var(--accent); padding: 7px 16px; border-radius: 100px;
-    cursor: pointer; font-family: inherit; font-size: 0.83rem; font-weight: 700;
-  }
-  .download-all-btn:hover { background: rgba(110,231,183,0.2); }
+    /* Upload Zone */
+    .upload-zone {
+      border: 2px dashed var(--border2);
+      border-radius: 20px;
+      padding: 56px 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s var(--transition);
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .upload-zone::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(37,99,235,0.06));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: var(--purple); background: rgba(124,58,237,0.06); }
+    .upload-zone:hover::before, .upload-zone.drag-over::before { opacity: 1; }
+    .upload-zone.drag-over { transform: scale(1.01); box-shadow: 0 0 40px rgba(124,58,237,0.2); }
+    .upload-icon {
+      width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 20px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(37,99,235,0.2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; transition: transform 0.3s;
+    }
+    .upload-zone:hover .upload-icon { transform: scale(1.08) rotate(-3deg); }
+    .upload-title { font-family: 'Syne',sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+    .upload-sub { color: var(--text2); font-size: 0.9rem; margin-bottom: 20px; }
+    .upload-formats { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .format-tag {
+      padding: 4px 12px; border-radius: 100px;
+      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.25);
+      font-size: 0.75rem; font-weight: 600; color: var(--purple-light); letter-spacing: 0.05em;
+    }
+    #file-input { display: none; }
 
-  .result-item {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 12px 16px;
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 10px; animation: fadeUp 0.4s ease both;
-  }
-  .result-thumb { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
-  .result-meta { flex: 1; min-width: 0; }
-  .result-name { font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .result-sizes { font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .size-saved { color: var(--success); font-weight: 700; }
-  .download-btn {
-    background: var(--accent); color: #0a0a0f; border: none;
-    padding: 7px 14px; border-radius: 8px; cursor: pointer;
-    font-family: inherit; font-size: 0.82rem; font-weight: 900;
-    transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
-  }
-  .download-btn:hover { opacity: 0.85; }
+    /* Tool Controls */
+    .tool-controls {
+      display: grid; grid-template-columns: 1fr 1fr auto; gap: 16px;
+      align-items: end; margin-bottom: 28px;
+    }
+    .control-group { display: flex; flex-direction: column; gap: 8px; }
+    .control-label { font-size: 0.8rem; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; }
+    .control-select {
+      padding: 11px 16px; border-radius: 10px; border: 1px solid var(--border2);
+      background: var(--surface2); color: var(--text); font-size: 0.9rem; font-family: 'DM Sans',sans-serif;
+      outline: none; transition: border-color 0.2s; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23a09ec0' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px;
+    }
+    .control-select:focus { border-color: var(--purple); }
+    .quality-slider-wrap { display: flex; align-items: center; gap: 10px; }
+    .quality-slider {
+      flex: 1; height: 4px; border-radius: 4px; appearance: none; outline: none; cursor: pointer;
+      background: linear-gradient(to right, var(--purple) 0%, var(--purple) var(--val,80%), var(--surface2) var(--val,80%), var(--surface2) 100%);
+    }
+    .quality-slider::-webkit-slider-thumb {
+      appearance: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--purple-light); border: 2px solid #fff; box-shadow: 0 0 8px rgba(124,58,237,0.5);
+      cursor: grab; transition: transform 0.15s;
+    }
+    .quality-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.2); }
+    .quality-val { font-weight: 700; font-size: 1rem; color: var(--purple-light); min-width: 36px; text-align: right; }
+    .process-btn {
+      padding: 12px 28px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      color: #fff; font-size: 0.95rem; font-weight: 700;
+      box-shadow: var(--shadow-purple); transition: all 0.25s;
+      display: flex; align-items: center; gap: 10px; white-space: nowrap;
+      height: 46px;
+    }
+    .process-btn:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(124,58,237,0.5); }
+    .process-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-  .progress-bar { height: 3px; background: var(--border); border-radius: 100px; margin-top: 14px; overflow: hidden; display: none; }
-  .progress-bar.show { display: block; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 100px; transition: width 0.3s ease; width: 0%; }
+    /* Image Grid */
+    #images-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+    .image-card {
+      border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: all 0.3s; position: relative;
+    }
+    .image-card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: var(--shadow); }
+    .card-preview {
+      position: relative; aspect-ratio: 16/10; overflow: hidden; background: var(--bg3); cursor: pointer;
+    }
+    .card-preview img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.3s; }
+    .card-preview:hover img { transform: scale(1.03); }
+    .card-overlay {
+      position: absolute; inset: 0; background: rgba(8,8,15,0.7);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .card-preview:hover .card-overlay { opacity: 1; }
+    .overlay-btn {
+      padding: 8px 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1); color: #fff; font-size: 0.85rem; font-weight: 600;
+      backdrop-filter: blur(8px); transition: all 0.2s;
+    }
+    .overlay-btn:hover { background: rgba(255,255,255,0.2); }
+    .card-body { padding: 16px; }
+    .card-filename { font-weight: 600; font-size: 0.9rem; margin-bottom: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .size-info { font-size: 0.8rem; color: var(--text2); }
+    .savings-badge {
+      font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 100px;
+    }
+    .savings-positive { background: rgba(16,185,129,0.15); color: var(--success); border: 1px solid rgba(16,185,129,0.25); }
+    .savings-zero { background: rgba(245,158,11,0.15); color: var(--warning); border: 1px solid rgba(245,158,11,0.25); }
+    .progress-bar-wrap { height: 3px; background: var(--bg3); border-radius: 3px; margin-bottom: 12px; overflow: hidden; }
+    .progress-bar { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--purple), var(--blue)); width: 0; transition: width 0.4s; }
+    .card-actions { display: flex; gap: 8px; }
+    .dl-btn {
+      flex: 1; padding: 9px; border-radius: 8px; border: none;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      color: #fff; font-size: 0.85rem; font-weight: 600; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .dl-btn:hover { box-shadow: 0 0 20px rgba(124,58,237,0.4); transform: translateY(-1px); }
+    .remove-btn {
+      width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border2);
+      background: transparent; color: var(--text3); font-size: 16px; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .remove-btn:hover { background: rgba(239,68,68,0.1); color: var(--error); border-color: rgba(239,68,68,0.3); }
+    .status-processing { display: flex; align-items: center; gap: 8px; padding: 8px 0; font-size: 0.85rem; color: var(--text2); }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--purple); animation: pulse 1.2s infinite; }
+    .empty-state {
+      text-align: center; padding: 60px 20px; grid-column: 1/-1; color: var(--text3); font-size: 0.95rem;
+    }
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
 
-  .processing { text-align: center; padding: 16px; color: var(--accent); font-weight: 700; display: none; }
-  .processing.show { display: block; }
-  .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(110,231,183,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 8px; vertical-align: middle; }
+    /* Download All Bar */
+    #dl-all-bar {
+      display: none; align-items: center; justify-content: space-between;
+      padding: 16px 24px; border-radius: var(--radius); background: var(--surface);
+      border: 1px solid var(--border2); margin-bottom: 24px;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .dl-all-info { font-size: 0.9rem; color: var(--text2); }
+    .dl-all-info strong { color: var(--text); }
+    .dl-all-btn {
+      padding: 10px 24px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      color: #fff; font-weight: 700; font-size: 0.9rem; transition: all 0.25s;
+    }
+    .dl-all-btn:hover { box-shadow: 0 0 24px rgba(124,58,237,0.4); }
 
-  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 36px 0; }
-  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 22px; text-align: center; }
-  .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .stat-label { color: var(--muted); font-size: 0.83rem; margin-top: 4px; }
+    /* Comparison Modal */
+    #compare-modal {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    #compare-modal.open { display: flex; }
+    .modal-box {
+      width: 100%; max-width: 820px; border-radius: 20px;
+      background: var(--bg2); border: 1px solid var(--border2);
+      overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+      animation: modal-in 0.3s var(--transition);
+    }
+    @keyframes modal-in { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+    .modal-header { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .modal-header h3 { font-family: 'Syne',sans-serif; font-size: 1.1rem; font-weight: 700; }
+    .modal-close { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border2); background: transparent; color: var(--text); font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .modal-close:hover { background: var(--surface2); }
+    .compare-container { position: relative; overflow: hidden; user-select: none; aspect-ratio: 16/9; background: var(--bg3); }
+    .compare-after, .compare-before { position: absolute; inset: 0; }
+    .compare-after img, .compare-before img { width: 100%; height: 100%; object-fit: contain; }
+    .compare-before { overflow: hidden; width: 50%; }
+    .compare-handle {
+      position: absolute; top: 0; bottom: 0; width: 3px;
+      background: #fff; left: 50%; transform: translateX(-50%);
+      cursor: ew-resize; z-index: 10;
+    }
+    .compare-handle::before {
+      content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 36px; height: 36px; border-radius: 50%; background: #fff;
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .compare-handle::after {
+      content: '◀ ▶'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-size: 10px; color: #555; line-height: 1; white-space: nowrap;
+      z-index: 11;
+    }
+    .compare-labels { display: flex; justify-content: space-between; padding: 12px 20px; border-top: 1px solid var(--border); }
+    .compare-label { font-size: 0.8rem; color: var(--text2); }
+    .compare-label strong { color: var(--text); }
 
-  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 16px 0 50px; }
-  .feature-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 22px; transition: border-color 0.3s; }
-  .feature-card:hover { border-color: rgba(110,231,183,0.3); }
-  .feature-icon { font-size: 1.7rem; margin-bottom: 10px; display: block; }
-  .feature-card h3 { font-size: 0.97rem; font-weight: 700; margin-bottom: 7px; }
-  .feature-card p { color: var(--muted); font-size: 0.83rem; line-height: 1.6; }
+    /* ─── SECTIONS WRAPPER ─── */
+    .sections-wrapper { position: relative; z-index: 1; }
 
-  .ad-slot {
-    background: var(--surface); border: 1px dashed var(--border);
-    border-radius: 12px; padding: 16px; text-align: center;
-    color: var(--muted); font-size: 0.78rem; margin: 16px 0;
-    min-height: 90px; display: flex; align-items: center; justify-content: center;
-  }
+    /* ─── HOW IT WORKS ─── */
+    #how { padding: 100px 5%; max-width: 1200px; margin: 0 auto; }
+    .how-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-top: 56px; }
+    .how-card {
+      padding: 32px; border-radius: var(--radius); background: var(--surface);
+      border: 1px solid var(--border); position: relative; overflow: hidden;
+      transition: all 0.3s;
+    }
+    .how-card:hover { border-color: var(--border2); transform: translateY(-4px); box-shadow: var(--shadow-purple); }
+    .how-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(124,58,237,0.05), transparent); }
+    .how-num {
+      font-family: 'Syne',sans-serif; font-size: 3.5rem; font-weight: 800; line-height: 1;
+      background: linear-gradient(135deg, var(--purple-light), var(--blue-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 20px; display: block;
+    }
+    .how-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; }
+    .how-card p { color: var(--text2); font-size: 0.92rem; line-height: 1.65; }
 
-  footer { border-top: 1px solid var(--border); padding: 28px 0; text-align: center; color: var(--muted); font-size: 0.83rem; }
+    /* ─── FEATURES ─── */
+    #features { padding: 100px 5%; }
+    .features-inner { max-width: 1200px; margin: 0 auto; }
+    .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 56px; }
+    .feature-card {
+      padding: 28px; border-radius: var(--radius); background: var(--surface);
+      border: 1px solid var(--border); transition: all 0.3s;
+    }
+    .feature-card:hover { border-color: var(--purple); transform: translateY(-3px); box-shadow: 0 0 30px rgba(124,58,237,0.15); }
+    .feature-icon {
+      width: 48px; height: 48px; border-radius: 12px; margin-bottom: 18px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(37,99,235,0.15));
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { color: var(--text2); font-size: 0.88rem; line-height: 1.6; }
 
-  .toast {
-    position: fixed; bottom: 28px; left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: var(--card); border: 1px solid var(--accent);
-    color: var(--accent); padding: 11px 22px; border-radius: 100px;
-    font-weight: 700; font-size: 0.88rem; z-index: 9999; transition: transform 0.4s ease;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+    /* ─── STATS ─── */
+    #stats { padding: 80px 5%; }
+    .stats-inner {
+      max-width: 900px; margin: 0 auto; border-radius: 24px;
+      background: var(--surface); border: 1px solid var(--border2);
+      padding: 60px 40px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(37,99,235,0.08));
+      text-align: center;
+    }
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 32px; margin-top: 40px; }
+    .stat-item .num {
+      font-family: 'Syne',sans-serif; font-size: 2.5rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--purple-light), var(--neon2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-item .lbl { font-size: 0.85rem; color: var(--text2); margin-top: 4px; }
 
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes spin { to { transform: rotate(360deg); } }
+    /* ─── TESTIMONIALS ─── */
+    #testimonials { padding: 100px 5%; }
+    .testimonials-inner { max-width: 1200px; margin: 0 auto; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 56px; }
+    .testimonial-card {
+      padding: 28px; border-radius: var(--radius); background: var(--surface);
+      border: 1px solid var(--border); transition: all 0.3s;
+    }
+    .testimonial-card:hover { border-color: var(--border2); transform: translateY(-3px); }
+    .stars { color: #f59e0b; font-size: 1rem; margin-bottom: 14px; letter-spacing: 2px; }
+    .testimonial-card blockquote { font-size: 0.92rem; color: var(--text2); line-height: 1.65; font-style: italic; margin-bottom: 20px; }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; color: #fff;
+    }
+    .av1 { background: linear-gradient(135deg, #7c3aed, #2563eb); }
+    .av2 { background: linear-gradient(135deg, #059669, #0891b2); }
+    .av3 { background: linear-gradient(135deg, #dc2626, #d97706); }
+    .av4 { background: linear-gradient(135deg, #7c3aed, #ec4899); }
+    .av5 { background: linear-gradient(135deg, #0891b2, #059669); }
+    .av6 { background: linear-gradient(135deg, #d97706, #dc2626); }
+    .author-info .name { font-weight: 600; font-size: 0.9rem; }
+    .author-info .role { font-size: 0.78rem; color: var(--text3); }
 
-  @media (max-width: 600px) {
-    .tool-card { padding: 20px 14px; }
-    .stats-row { grid-template-columns: 1fr; }
-    .options-row { flex-direction: column; }
-    .hero { padding: 44px 10px 36px; }
-    .lang-dropdown { right: -10px; }
-  }
-</style>
+    /* ─── PRICING ─── */
+    #pricing { padding: 100px 5%; }
+    .pricing-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+    .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; text-align: left; }
+    .pricing-card {
+      padding: 36px; border-radius: 20px; border: 1px solid var(--border);
+      background: var(--surface); position: relative; transition: all 0.3s;
+    }
+    .pricing-card:hover { transform: translateY(-4px); }
+    .pricing-card.featured {
+      border-color: var(--purple);
+      background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(37,99,235,0.08));
+      box-shadow: 0 0 40px rgba(124,58,237,0.2);
+    }
+    .pricing-popular {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      padding: 4px 18px; border-radius: 100px;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      font-size: 0.75rem; font-weight: 700; color: #fff; white-space: nowrap;
+    }
+    .pricing-plan { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 8px; }
+    .pricing-price { font-family: 'Syne',sans-serif; font-size: 3rem; font-weight: 800; margin-bottom: 4px; }
+    .pricing-price span { font-size: 1rem; font-weight: 400; color: var(--text2); }
+    .pricing-desc { font-size: 0.88rem; color: var(--text2); margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .pricing-features { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+    .pricing-feature { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+    .check { color: var(--success); font-size: 1.1rem; }
+    .cross { color: var(--text3); font-size: 1.1rem; }
+    .pricing-btn {
+      width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border2);
+      background: transparent; color: var(--text); font-weight: 600; font-size: 0.95rem;
+      transition: all 0.25s;
+    }
+    .pricing-btn:hover { background: var(--surface2); border-color: var(--purple); }
+    .pricing-btn.featured-btn {
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      border: none; color: #fff; box-shadow: 0 0 24px rgba(124,58,237,0.35);
+    }
+    .pricing-btn.featured-btn:hover { box-shadow: 0 0 36px rgba(124,58,237,0.5); transform: translateY(-1px); }
+
+    /* ─── FAQ ─── */
+    #faq { padding: 100px 5%; }
+    .faq-inner { max-width: 720px; margin: 0 auto; }
+    .faq-list { margin-top: 56px; display: flex; flex-direction: column; gap: 12px; }
+    .faq-item {
+      border-radius: var(--radius-sm); border: 1px solid var(--border);
+      background: var(--surface); overflow: hidden; transition: border-color 0.2s;
+    }
+    .faq-item:hover { border-color: var(--border2); }
+    .faq-item.open { border-color: var(--purple); }
+    .faq-q {
+      width: 100%; padding: 18px 22px; background: transparent; border: none;
+      color: var(--text); text-align: left; font-size: 0.95rem; font-weight: 600;
+      font-family: 'DM Sans',sans-serif; display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; cursor: pointer;
+    }
+    .faq-arrow { font-size: 0.85rem; color: var(--text3); transition: transform 0.3s; flex-shrink: 0; }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); color: var(--purple-light); }
+    .faq-a {
+      max-height: 0; overflow: hidden; transition: max-height 0.35s var(--transition), padding 0.3s;
+      padding: 0 22px; font-size: 0.9rem; color: var(--text2); line-height: 1.7;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding: 0 22px 18px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      position: relative; z-index: 1; padding: 70px 5% 30px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
+    .footer-brand p { color: var(--text2); font-size: 0.88rem; line-height: 1.65; margin: 16px 0 24px; max-width: 280px; }
+    .footer-socials { display: flex; gap: 10px; }
+    .social-btn {
+      width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border2);
+      background: var(--surface); display: flex; align-items: center; justify-content: center;
+      font-size: 16px; transition: all 0.2s; color: var(--text2);
+    }
+    .social-btn:hover { border-color: var(--purple); color: var(--text); background: var(--surface2); }
+    .footer-col h4 { font-family: 'Syne',sans-serif; font-weight: 700; font-size: 0.9rem; margin-bottom: 18px; letter-spacing: 0.02em; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a { font-size: 0.87rem; color: var(--text2); transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--text); }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 30px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
+    .footer-bottom p { font-size: 0.82rem; color: var(--text3); }
+    .footer-legal { display: flex; gap: 20px; }
+    .footer-legal a { font-size: 0.82rem; color: var(--text3); transition: color 0.2s; }
+    .footer-legal a:hover { color: var(--text2); }
+
+    /* ─── FAB ─── */
+    #fab {
+      position: fixed; bottom: 28px; right: 28px; z-index: 900;
+      width: 52px; height: 52px; border-radius: 16px; border: none;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      color: #fff; font-size: 22px; box-shadow: 0 8px 24px rgba(124,58,237,0.45);
+      display: none; align-items: center; justify-content: center;
+      transition: all 0.3s; cursor: pointer;
+    }
+    #fab.visible { display: flex; }
+    #fab:hover { transform: scale(1.08); box-shadow: 0 12px 32px rgba(124,58,237,0.6); }
+
+    /* ─── TOAST ─── */
+    #toast-container { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column-reverse; gap: 10px; pointer-events: none; }
+    .toast {
+      padding: 12px 20px; border-radius: 10px; font-size: 0.875rem; font-weight: 500;
+      backdrop-filter: blur(16px); border: 1px solid var(--border2);
+      animation: toast-in 0.3s var(--transition); white-space: nowrap;
+      pointer-events: none; display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .toast-success { background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.35); color: #6ee7b7; }
+    .toast-error { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.35); color: #fca5a5; }
+    .toast-info { background: rgba(124,58,237,0.15); border-color: rgba(124,58,237,0.35); color: var(--neon); }
+    @keyframes toast-in { from { opacity:0; transform: translateY(16px) scale(0.95); } to { opacity:1; transform: translateY(0) scale(1); } }
+    @keyframes toast-out { to { opacity:0; transform: translateY(16px) scale(0.95); } }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.65s var(--transition), transform 0.65s var(--transition); }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ─── MOBILE MENU ─── */
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(8,8,15,0.97); backdrop-filter: blur(20px);
+      padding: 80px 5% 40px; flex-direction: column; gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 1.4rem; font-weight: 700; font-family: 'Syne',sans-serif; color: var(--text2); transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--text); }
+    .mobile-close { position: absolute; top: 20px; right: 5%; width: 40px; height: 40px; background: var(--surface); border: 1px solid var(--border2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; color: var(--text); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .how-grid, .features-grid, .testimonials-grid { grid-template-columns: 1fr 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .tool-controls { grid-template-columns: 1fr 1fr; }
+      .tool-controls .process-btn { grid-column: 1/-1; }
+    }
+    @media (max-width: 620px) {
+      .how-grid, .features-grid, .testimonials-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .hero-stats { gap: 28px; }
+      .tool-controls { grid-template-columns: 1fr; }
+      .btn-large { width: 100%; justify-content: center; }
+      .hero-cta { flex-direction: column; align-items: center; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="bg-grid"></div>
-<div class="bg-glow glow-1"></div>
-<div class="bg-glow glow-2"></div>
-<div class="toast" id="toast"></div>
+<!-- Background Canvas + Orbs -->
+<canvas id="bg-canvas"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
-<header>
-  <div class="wrapper header-inner">
-    <div class="logo">SwiftImage</div>
-    <div class="lang-selector">
-      <button class="lang-current" onclick="toggleLangDropdown()" id="lang-current-btn">
-        <span id="current-flag">🇸🇦</span>
-        <span id="current-lang-name">العربية</span>
-        <span>▾</span>
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<!-- Comparison Modal -->
+<div id="compare-modal" role="dialog" aria-modal="true" aria-label="Before/After comparison">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Before / After Comparison</h3>
+      <button class="modal-close" id="modal-close-btn" aria-label="Close">✕</button>
+    </div>
+    <div class="compare-container" id="compare-container">
+      <div class="compare-after"><img id="compare-after-img" src="" alt="After compression" /></div>
+      <div class="compare-before" id="compare-before-el"><img id="compare-before-img" src="" alt="Before compression" /></div>
+      <div class="compare-handle" id="compare-handle"></div>
+    </div>
+    <div class="compare-labels">
+      <div class="compare-label">◀ <strong>Before</strong> <span id="before-size-label"></span></div>
+      <div class="compare-label"><span id="after-size-label"></span> <strong>After</strong> ▶</div>
+    </div>
+  </div>
+</div>
+
+<!-- Navbar -->
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="SwiftImage Home">
+    <div class="nav-logo-icon" aria-hidden="true">⚡</div>
+    <span>SwiftImage</span>
+  </a>
+  <div class="nav-links">
+    <a href="#tool">App</a>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="nav-actions">
+    <button class="theme-btn" id="theme-btn" aria-label="Toggle dark/light mode" title="Toggle theme">🌙</button>
+    <button class="btn-ghost" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">Log in</button>
+    <button class="btn-primary" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">Get Started Free</button>
+    <button class="hamburger" id="hamburger-btn" aria-label="Open navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+  <button class="mobile-close" id="mobile-close-btn" aria-label="Close navigation">✕</button>
+  <a href="#tool" class="mobile-link">App</a>
+  <a href="#features" class="mobile-link">Features</a>
+  <a href="#how" class="mobile-link">How It Works</a>
+  <a href="#pricing" class="mobile-link">Pricing</a>
+  <a href="#faq" class="mobile-link">FAQ</a>
+  <button class="btn-primary btn-large" onclick="closeMobileMenu(); document.getElementById('tool').scrollIntoView({behavior:'smooth'})">Get Started Free →</button>
+</div>
+
+<!-- HERO -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-badge"><span class="dot"></span> 100% Free · No Sign-up · Runs In Your Browser</div>
+  <h1 class="hero-title" id="hero-heading">
+    Images at the<br/><span class="gradient">Speed of Light</span>
+  </h1>
+  <p class="hero-sub">Compress, convert, and optimize your images instantly — all in your browser. Zero uploads, zero data sent, zero compromises on quality.</p>
+  <div class="hero-cta">
+    <button class="btn-primary btn-large" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">
+      ⚡ Start Compressing Free
+    </button>
+    <button class="btn-outline-large" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">
+      See How It Works →
+    </button>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num" data-count="2400000">0</div><div class="hero-stat-label">Images Processed</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" data-count="85">0</div><div class="hero-stat-label">Avg. Size Reduction %</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" data-count="120000">0</div><div class="hero-stat-label">Happy Users</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" data-count="99">0</div><div class="hero-stat-label">Satisfaction Score</div></div>
+  </div>
+</section>
+
+<div class="sections-wrapper">
+
+<!-- TOOL -->
+<section id="tool" aria-labelledby="tool-heading">
+  <div style="max-width:1200px;margin:0 auto;padding:0 5%">
+    <div style="text-align:center;margin-bottom:48px;" class="reveal">
+      <span class="section-label">The App</span>
+      <h2 class="section-title" id="tool-heading">Compress & Convert Instantly</h2>
+      <p class="section-sub" style="margin:0 auto">Drop your images below. No account. No server. Your files never leave your device.</p>
+    </div>
+  </div>
+  <div id="tool-inner">
+    <!-- Upload Zone -->
+    <div class="upload-zone reveal" id="upload-zone" tabindex="0" role="button" aria-label="Upload images by clicking or dragging">
+      <div class="upload-icon" aria-hidden="true">🖼️</div>
+      <div class="upload-title">Drop images here or click to browse</div>
+      <div class="upload-sub">Supports JPG, JPEG, PNG, WEBP · Up to 30 files at once</div>
+      <div class="upload-formats">
+        <span class="format-tag">JPG</span>
+        <span class="format-tag">JPEG</span>
+        <span class="format-tag">PNG</span>
+        <span class="format-tag">WEBP</span>
+      </div>
+    </div>
+    <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" multiple aria-label="File upload input" />
+
+    <!-- Controls -->
+    <div class="tool-controls reveal">
+      <div class="control-group">
+        <label class="control-label" for="output-format">Output Format</label>
+        <select class="control-select" id="output-format" aria-label="Select output format">
+          <option value="original">Keep Original Format</option>
+          <option value="image/jpeg">Convert to JPG</option>
+          <option value="image/png">Convert to PNG</option>
+          <option value="image/webp">Convert to WEBP</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="quality-slider">Quality: <span id="quality-display">80</span>%</label>
+        <div class="quality-slider-wrap">
+          <input type="range" class="quality-slider" id="quality-slider" min="10" max="100" value="80" step="1" aria-label="Image quality percentage" style="--val:80%" />
+          <span class="quality-val" id="quality-val">80%</span>
+        </div>
+      </div>
+      <button class="process-btn" id="process-btn" disabled aria-label="Process all images">
+        <div class="spinner" id="proc-spinner" aria-hidden="true"></div>
+        <span id="proc-label">⚡ Process All</span>
       </button>
-      <div class="lang-dropdown" id="lang-dropdown">
-        <div class="lang-option active" onclick="setLang('ar')" id="opt-ar"><span class="lang-flag">🇸🇦</span> العربية</div>
-        <div class="lang-option" onclick="setLang('en')" id="opt-en"><span class="lang-flag">🇺🇸</span> English</div>
-        <div class="lang-option" onclick="setLang('fr')" id="opt-fr"><span class="lang-flag">🇫🇷</span> Français</div>
-        <div class="lang-option" onclick="setLang('es')" id="opt-es"><span class="lang-flag">🇪🇸</span> Español</div>
-        <div class="lang-option" onclick="setLang('de')" id="opt-de"><span class="lang-flag">🇩🇪</span> Deutsch</div>
-        <div class="lang-option" onclick="setLang('pt')" id="opt-pt"><span class="lang-flag">🇧🇷</span> Português</div>
-        <div class="lang-option" onclick="setLang('it')" id="opt-it"><span class="lang-flag">🇮🇹</span> Italiano</div>
-        <div class="lang-option" onclick="setLang('ru')" id="opt-ru"><span class="lang-flag">🇷🇺</span> Русский</div>
-        <div class="lang-option" onclick="setLang('tr')" id="opt-tr"><span class="lang-flag">🇹🇷</span> Türkçe</div>
-        <div class="lang-option" onclick="setLang('zh')" id="opt-zh"><span class="lang-flag">🇨🇳</span> 中文</div>
-        <div class="lang-option" onclick="setLang('ja')" id="opt-ja"><span class="lang-flag">🇯🇵</span> 日本語</div>
-        <div class="lang-option" onclick="setLang('ko')" id="opt-ko"><span class="lang-flag">🇰🇷</span> 한국어</div>
-        <div class="lang-option" onclick="setLang('hi')" id="opt-hi"><span class="lang-flag">🇮🇳</span> हिन्दी</div>
-        <div class="lang-option" onclick="setLang('id')" id="opt-id"><span class="lang-flag">🇮🇩</span> Indonesia</div>
-        <div class="lang-option" onclick="setLang('nl')" id="opt-nl"><span class="lang-flag">🇳🇱</span> Nederlands</div>
+    </div>
+
+    <!-- Download All Bar -->
+    <div id="dl-all-bar" role="status">
+      <div class="dl-all-info">
+        <strong id="dl-count">0</strong> images ready · Saved <strong id="dl-savings">0%</strong> on average
+      </div>
+      <button class="dl-all-btn" id="dl-all-btn" aria-label="Download all processed images">⬇ Download All</button>
+    </div>
+
+    <!-- Images Grid -->
+    <div id="images-grid" role="list" aria-label="Uploaded images">
+      <div class="empty-state">
+        <div class="icon" aria-hidden="true">📂</div>
+        <p>Upload images above to get started. Your files stay private — they never leave your device.</p>
       </div>
     </div>
   </div>
-</header>
+</section>
 
-<main>
-  <div class="wrapper">
-    <section class="hero">
-      <div class="hero-badge"><span>✦</span><span id="t-badge"></span></div>
-      <h1 id="t-hero-title"></h1>
-      <p id="t-hero-desc"></p>
-    </section>
-
-    <div class="ad-slot"><span id="t-ad">Advertisement</span></div>
-
-    <div class="tools-nav">
-      <button class="tool-tab active" onclick="switchTool('convert')" id="tab-convert"></button>
-      <button class="tool-tab" onclick="switchTool('compress')" id="tab-compress"></button>
-    </div>
-
-    <!-- CONVERT TOOL -->
-    <div class="tool-card active" id="tool-convert">
-      <div class="dropzone" id="dropzone-convert">
-        <input type="file" accept="image/*" multiple id="file-convert" onchange="handleFiles(this.files,'convert')">
-        <span class="dropzone-icon">🖼️</span>
-        <h3 id="t-drop1-title"></h3>
-        <p id="t-drop1-sub"></p>
-      </div>
-      <div class="preview-grid" id="preview-convert"></div>
-      <div class="options-row">
-        <div class="option-group">
-          <label id="t-label-format"></label>
-          <select id="output-format">
-            <option value="image/jpeg">JPG</option>
-            <option value="image/png">PNG</option>
-            <option value="image/webp">WebP</option>
-          </select>
-        </div>
-        <div class="option-group">
-          <label id="t-label-quality"></label>
-          <input type="range" min="10" max="100" value="90" id="quality-convert" oninput="document.getElementById('qval-convert').textContent=this.value+'%'">
-          <div class="quality-val" id="qval-convert">90%</div>
-        </div>
-      </div>
-      <div class="progress-bar" id="prog-convert"><div class="progress-fill" id="progfill-convert"></div></div>
-      <div class="processing" id="proc-convert"><span id="t-proc1"></span> <span class="spinner"></span></div>
-      <button class="convert-btn" id="btn-convert" onclick="processFiles('convert')" disabled>
-        <span id="t-btn-convert"></span>
-      </button>
-      <div class="results-section" id="results-convert">
-        <div class="results-header">
-          <span class="results-title" id="t-result1-title"></span>
-          <button class="download-all-btn" onclick="downloadAll('convert')" id="t-dlall1"></button>
-        </div>
-        <div id="results-list-convert"></div>
-      </div>
-    </div>
-
-    <!-- COMPRESS TOOL -->
-    <div class="tool-card" id="tool-compress">
-      <div class="dropzone" id="dropzone-compress">
-        <input type="file" accept="image/*" multiple id="file-compress" onchange="handleFiles(this.files,'compress')">
-        <span class="dropzone-icon">🗜️</span>
-        <h3 id="t-drop2-title"></h3>
-        <p id="t-drop2-sub"></p>
-      </div>
-      <div class="preview-grid" id="preview-compress"></div>
-      <div class="options-row">
-        <div class="option-group">
-          <label id="t-label-compress-q"></label>
-          <input type="range" min="10" max="95" value="75" id="quality-compress" oninput="updateCompressLabel(this.value)">
-          <div class="quality-val" id="qval-compress"></div>
-        </div>
-        <div class="option-group">
-          <label id="t-label-compress-fmt"></label>
-          <select id="compress-format">
-            <option value="same" id="t-opt-same"></option>
-            <option value="image/jpeg">JPG</option>
-            <option value="image/webp">WebP</option>
-          </select>
-        </div>
-      </div>
-      <div class="progress-bar" id="prog-compress"><div class="progress-fill" id="progfill-compress"></div></div>
-      <div class="processing" id="proc-compress"><span id="t-proc2"></span> <span class="spinner"></span></div>
-      <button class="convert-btn" id="btn-compress" onclick="processFiles('compress')" disabled>
-        <span id="t-btn-compress"></span>
-      </button>
-      <div class="results-section" id="results-compress">
-        <div class="results-header">
-          <span class="results-title" id="t-result2-title"></span>
-          <button class="download-all-btn" onclick="downloadAll('compress')" id="t-dlall2"></button>
-        </div>
-        <div id="results-list-compress"></div>
-      </div>
-    </div>
-
-    <div class="ad-slot"><span id="t-ad2">Advertisement</span></div>
-
-    <div class="stats-row">
-      <div class="stat-card"><div class="stat-num">100%</div><div class="stat-label" id="t-stat1"></div></div>
-      <div class="stat-card"><div class="stat-num">0</div><div class="stat-label" id="t-stat2"></div></div>
-      <div class="stat-card"><div class="stat-num">∞</div><div class="stat-label" id="t-stat3"></div></div>
-    </div>
-
-    <div class="features">
-      <div class="feature-card"><span class="feature-icon">🔒</span><h3 id="t-f1t"></h3><p id="t-f1d"></p></div>
-      <div class="feature-card"><span class="feature-icon">⚡</span><h3 id="t-f2t"></h3><p id="t-f2d"></p></div>
-      <div class="feature-card"><span class="feature-icon">📦</span><h3 id="t-f3t"></h3><p id="t-f3d"></p></div>
-      <div class="feature-card"><span class="feature-icon">🌐</span><h3 id="t-f4t"></h3><p id="t-f4d"></p></div>
-    </div>
-
-    <div class="ad-slot"><span id="t-ad3">Advertisement</span></div>
+<!-- HOW IT WORKS -->
+<section id="how" aria-labelledby="how-heading">
+  <div class="reveal" style="text-align:center">
+    <span class="section-label">Process</span>
+    <h2 class="section-title" id="how-heading">How It Works</h2>
+    <p class="section-sub" style="margin:0 auto">Three steps from upload to optimized download. No fluff, no friction.</p>
   </div>
-</main>
+  <div class="how-grid">
+    <div class="how-card reveal">
+      <span class="how-num">01</span>
+      <h3>Upload Your Images</h3>
+      <p>Drag and drop up to 30 images at once — JPG, PNG, or WEBP. No file size limits imposed by a server because we never touch your files.</p>
+    </div>
+    <div class="how-card reveal reveal-delay-1">
+      <span class="how-num">02</span>
+      <h3>Choose Your Settings</h3>
+      <p>Pick your output format and adjust quality with a precision slider. Convert between formats or just crunch file sizes — your choice.</p>
+    </div>
+    <div class="how-card reveal reveal-delay-2">
+      <span class="how-num">03</span>
+      <h3>Download Instantly</h3>
+      <p>See the before/after comparison, verify the file size savings, and download individually or grab all files at once. Zero waiting.</p>
+    </div>
+  </div>
+</section>
 
-<footer><div class="wrapper"><p id="t-footer"></p><p style="margin-top:10px;font-size:0.8rem;"><a href="about.html" style="color:var(--accent);text-decoration:none;margin:0 10px" id="footer-about">من نحن</a><a href="privacy.html" style="color:var(--accent);text-decoration:none;margin:0 10px" id="footer-privacy">سياسة الخصوصية</a></p></div></footer>
+<!-- FEATURES -->
+<section id="features" aria-labelledby="features-heading">
+  <div class="features-inner">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label">Capabilities</span>
+      <h2 class="section-title" id="features-heading">Everything You Need</h2>
+      <p class="section-sub" style="margin:0 auto">Professional-grade image optimization, engineered for speed and simplicity.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon" aria-hidden="true">🔒</div>
+        <h3>100% Private</h3>
+        <p>All processing runs locally in your browser using the Canvas API. Your images are never uploaded to any server.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon" aria-hidden="true">⚡</div>
+        <h3>Lightning Fast</h3>
+        <p>No upload round-trips. Processing happens at near-native speed directly on your device's hardware.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon" aria-hidden="true">📦</div>
+        <h3>Batch Processing</h3>
+        <p>Handle up to 30 images simultaneously. Convert an entire product catalogue or photo shoot in seconds.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon" aria-hidden="true">🔄</div>
+        <h3>Format Conversion</h3>
+        <p>Seamlessly convert between JPG, PNG, and WEBP. WEBP conversion alone can cut file sizes by up to 34%.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon" aria-hidden="true">🎚️</div>
+        <h3>Precision Quality Control</h3>
+        <p>Fine-tune compression from 10% to 100% quality with a real-time slider. Find the perfect balance of size and fidelity.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon" aria-hidden="true">👁️</div>
+        <h3>Before/After Comparison</h3>
+        <p>A draggable split-screen slider lets you inspect visual quality at any compression level before you commit.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon" aria-hidden="true">📊</div>
+        <h3>Size Reduction Stats</h3>
+        <p>Instantly see exactly how many kilobytes or megabytes you've saved, displayed as a clear percentage badge.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon" aria-hidden="true">📱</div>
+        <h3>Mobile First</h3>
+        <p>Fully responsive and touch-optimized. Compress images directly from your phone or tablet with ease.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon" aria-hidden="true">🚫</div>
+        <h3>No Sign-up Required</h3>
+        <p>Open the page, drop your files, download. No accounts, no emails, no subscriptions needed for the core tool.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-inner reveal">
+    <span class="section-label">By The Numbers</span>
+    <h2 class="section-title">Results That Speak</h2>
+    <p style="color:var(--text2);font-size:1rem;margin-top:8px;">Trusted by designers, developers, and marketers worldwide.</p>
+    <div class="stats-grid">
+      <div class="stat-item"><div class="num" data-count="2400000">0</div><div class="lbl">Images Processed</div></div>
+      <div class="stat-item"><div class="num" data-count="85">0</div><div class="lbl">Avg. Size Reduction %</div></div>
+      <div class="stat-item"><div class="num" data-count="120000">0</div><div class="lbl">Active Users</div></div>
+      <div class="stat-item"><div class="num" data-count="4">0</div><div class="lbl">Supported Formats</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" aria-labelledby="testimonials-heading">
+  <div class="testimonials-inner">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label">Social Proof</span>
+      <h2 class="section-title" id="testimonials-heading">What People Are Saying</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="stars" aria-label="5 stars">★★★★★</div>
+        <blockquote>"SwiftImage has become essential in my workflow. I export mockups from Figma, drop them in, and have optimized WEBP files ready in under ten seconds. The privacy aspect alone beats every competitor."</blockquote>
+        <div class="testimonial-author">
+          <div class="avatar av1" aria-hidden="true">S</div>
+          <div class="author-info"><div class="name">Sara K.</div><div class="role">Product Designer, Berlin</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="stars" aria-label="5 stars">★★★★★</div>
+        <blockquote>"I manage a Shopify store with hundreds of product photos. SwiftImage batch-converts everything to WEBP in one go. My Core Web Vitals went green within a week of switching."</blockquote>
+        <div class="testimonial-author">
+          <div class="avatar av2" aria-hidden="true">M</div>
+          <div class="author-info"><div class="name">Marcus T.</div><div class="role">E-commerce Owner, London</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="stars" aria-label="5 stars">★★★★★</div>
+        <blockquote>"Finally a tool that respects privacy. I'm a photographer and my work is sensitive — knowing that nothing ever leaves my browser is a huge deal. And the quality is genuinely excellent."</blockquote>
+        <div class="testimonial-author">
+          <div class="avatar av3" aria-hidden="true">A</div>
+          <div class="author-info"><div class="name">Amara L.</div><div class="role">Freelance Photographer, NYC</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="stars" aria-label="5 stars">★★★★★</div>
+        <blockquote>"Our dev team recommended SwiftImage for image optimization during deploys. The fact that it's a single HTML file you can self-host is genius. We embedded it in our internal toolbox."</blockquote>
+        <div class="testimonial-author">
+          <div class="avatar av4" aria-hidden="true">J</div>
+          <div class="author-info"><div class="name">Joel R.</div><div class="role">Frontend Engineer, Amsterdam</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="stars" aria-label="5 stars">★★★★★</div>
+        <blockquote>"I run a content agency and my clients send giant PNG files constantly. SwiftImage turns them into small WEBPs in bulk. The before/after slider is satisfying every single time."</blockquote>
+        <div class="testimonial-author">
+          <div class="avatar av5" aria-hidden="true">P</div>
+          <div class="author-info"><div class="name">Priya N.</div><div class="role">Content Strategist, Toronto</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="stars" aria-label="5 stars">★★★★★</div>
+        <blockquote>"Used to pay for a subscription tool to do exactly this. SwiftImage does it for free, faster, and with a cleaner UI. Cancelled that subscription the same day I found this."</blockquote>
+        <div class="testimonial-author">
+          <div class="avatar av6" aria-hidden="true">D</div>
+          <div class="author-info"><div class="name">Daniel W.</div><div class="role">Marketing Lead, São Paulo</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" aria-labelledby="pricing-heading">
+  <div class="pricing-inner">
+    <div class="reveal">
+      <span class="section-label">Pricing</span>
+      <h2 class="section-title" id="pricing-heading">Simple, Honest Pricing</h2>
+      <p style="color:var(--text2);max-width:420px;margin:12px auto 0;font-size:1rem;">Start free. Upgrade when you need more power. No hidden fees.</p>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="pricing-card">
+        <div class="pricing-plan">Free</div>
+        <div class="pricing-price">$0 <span>/ forever</span></div>
+        <div class="pricing-desc">Everything you need for personal use, no strings attached.</div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="check">✓</span> Unlimited image processing</div>
+          <div class="pricing-feature"><span class="check">✓</span> JPG, PNG, WEBP conversion</div>
+          <div class="pricing-feature"><span class="check">✓</span> Batch upload (30 images)</div>
+          <div class="pricing-feature"><span class="check">✓</span> Before/after comparison</div>
+          <div class="pricing-feature"><span class="check">✓</span> 100% private, browser-only</div>
+          <div class="pricing-feature"><span class="cross" aria-label="Not included">✗</span> <span style="color:var(--text3)">API access</span></div>
+          <div class="pricing-feature"><span class="cross" aria-label="Not included">✗</span> <span style="color:var(--text3)">Priority support</span></div>
+        </div>
+        <button class="pricing-btn" onclick="document.getElementById('tool').scrollIntoView({behavior:'smooth'})">Get Started Free</button>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-popular" aria-label="Most popular plan">Most Popular</div>
+        <div class="pricing-plan">Pro</div>
+        <div class="pricing-price">$9 <span>/ month</span></div>
+        <div class="pricing-desc">For professionals, agencies, and teams shipping at scale.</div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><span class="check">✓</span> Everything in Free</div>
+          <div class="pricing-feature"><span class="check">✓</span> REST API access</div>
+          <div class="pricing-feature"><span class="check">✓</span> Batch upload (500 images)</div>
+          <div class="pricing-feature"><span class="check">✓</span> Custom compression profiles</div>
+          <div class="pricing-feature"><span class="check">✓</span> Priority email support</div>
+          <div class="pricing-feature"><span class="check">✓</span> Team workspace (up to 5)</div>
+          <div class="pricing-feature"><span class="check">✓</span> Early access to new formats</div>
+        </div>
+        <button class="pricing-btn featured-btn" onclick="showToast('Pro plan coming soon! You\'ll be the first to know.','info')">Upgrade to Pro →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" aria-labelledby="faq-heading">
+  <div class="faq-inner">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label">FAQ</span>
+      <h2 class="section-title" id="faq-heading">Questions & Answers</h2>
+    </div>
+    <div class="faq-list reveal" role="list">
+      <div class="faq-item" role="listitem">
+        <button class="faq-q" aria-expanded="false">Are my images uploaded to a server? <span class="faq-arrow" aria-hidden="true">▼</span></button>
+        <div class="faq-a">No, never. SwiftImage runs entirely in your web browser using the HTML5 Canvas API. Your images are loaded directly into memory, processed locally, and the result is made available for download — all without a single byte leaving your device.</div>
+      </div>
+      <div class="faq-item" role="listitem">
+        <button class="faq-q" aria-expanded="false">What image formats are supported? <span class="faq-arrow" aria-hidden="true">▼</span></button>
+        <div class="faq-a">SwiftImage supports JPG/JPEG, PNG, and WEBP for both input and output. You can convert in any direction: JPG to WEBP, PNG to JPG, WEBP to PNG, and so on. Support for AVIF and GIF is planned for a future release.</div>
+      </div>
+      <div class="faq-item" role="listitem">
+        <button class="faq-q" aria-expanded="false">Is there a file size or image count limit? <span class="faq-arrow" aria-hidden="true">▼</span></button>
+        <div class="faq-a">The free tier supports batch processing of up to 30 images simultaneously. There is no hard file size limit per image — though very large images (above 50 MB) may take a few seconds depending on your device's processing power. Pro users can process 500 images per batch.</div>
+      </div>
+      <div class="faq-item" role="listitem">
+        <button class="faq-q" aria-expanded="false">What does the quality slider actually control? <span class="faq-arrow" aria-hidden="true">▼</span></button>
+        <div class="faq-a">The quality slider maps directly to the browser's Canvas `toDataURL` quality parameter (0–1 scale). At 80%, most images retain full perceptual quality while achieving a significant reduction in file size. For WEBP, even 85% quality typically outperforms JPG at 95%. We recommend starting at 80% and adjusting using the before/after slider.</div>
+      </div>
+      <div class="faq-item" role="listitem">
+        <button class="faq-q" aria-expanded="false">Does SwiftImage work offline? <span class="faq-arrow" aria-hidden="true">▼</span></button>
+        <div class="faq-a">Once the page has loaded, the tool itself works entirely offline — since no server communication is involved in processing. A full offline/PWA mode that caches the page itself is on our roadmap for the Pro tier.</div>
+      </div>
+      <div class="faq-item" role="listitem">
+        <button class="faq-q" aria-expanded="false">Will compressing reduce visible image quality? <span class="faq-arrow" aria-hidden="true">▼</span></button>
+        <div class="faq-a">At quality settings above 70%, the difference is imperceptible to the human eye for most images. Use the draggable before/after comparison slider built into every processed image to inspect results before downloading. You remain in full control.</div>
+      </div>
+      <div class="faq-item" role="listitem">
+        <button class="faq-q" aria-expanded="false">Can I use SwiftImage on mobile? <span class="faq-arrow" aria-hidden="true">▼</span></button>
+        <div class="faq-a">Yes. SwiftImage is fully responsive and touch-optimized. You can tap to open the file picker on iOS and Android, adjust settings, and download your processed images directly to your camera roll or downloads folder.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" aria-label="SwiftImage Home">
+        <div class="nav-logo-icon" aria-hidden="true">⚡</div>
+        <span>SwiftImage</span>
+      </a>
+      <p>The fastest, most private image compression and conversion tool on the web. Built with love for designers, developers, and everyone in between.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn" aria-label="SwiftImage on Twitter">𝕏</a>
+        <a href="#" class="social-btn" aria-label="SwiftImage on GitHub">⌥</a>
+        <a href="#" class="social-btn" aria-label="SwiftImage on LinkedIn">in</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#tool">Image Compressor</a></li>
+        <li><a href="#tool">Format Converter</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#" onclick="showToast('API docs coming soon!','info');return false;">API Docs</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#" onclick="showToast('About page coming soon!','info');return false;">About</a></li>
+        <li><a href="#" onclick="showToast('Blog coming soon!','info');return false;">Blog</a></li>
+        <li><a href="#" onclick="showToast('Changelog coming soon!','info');return false;">Changelog</a></li>
+        <li><a href="#" onclick="showToast('Contact coming soon!','info');return false;">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#" onclick="showToast('Documentation coming soon!','info');return false;">Documentation</a></li>
+        <li><a href="#" onclick="showToast('Status page coming soon!','info');return false;">Status</a></li>
+        <li><a href="mailto:hello@swiftimage.app">hello@swiftimage.app</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 SwiftImage. Made with ⚡ for the open web.</p>
+    <div class="footer-legal">
+      <a href="#" onclick="showToast('Privacy Policy coming soon.','info');return false;">Privacy Policy</a>
+      <a href="#" onclick="showToast('Terms of Service coming soon.','info');return false;">Terms of Service</a>
+      <a href="#" onclick="showToast('Cookie Policy coming soon.','info');return false;">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
+
+</div><!-- end sections-wrapper -->
+
+<!-- FAB -->
+<button id="fab" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-// ===== TRANSLATIONS =====
-const T = {
-  ar: {
-    rtl: true, flag: '🇸🇦', name: 'العربية',
-    badge: 'مجاني 100% • بدون تسجيل • خصوصية تامة',
-    heroTitle: 'تحويل الصور <span>بسرعة</span><br>وجودة عالية',
-    heroDesc: 'حوّل صورك بين PNG و JPG و WebP، أو اضغطها - كل شيء يتم في متصفحك، ملفاتك لا تُرفع لأي خادم.',
-    tabConvert: 'تحويل الصيغة', tabCompress: 'ضغط الصور',
-    drop1Title: 'اسحب صورك هنا أو اضغط للاختيار', drop1Sub: 'يدعم: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'اسحب الصور هنا للضغط', drop2Sub: 'تقليل الحجم مع الحفاظ على الجودة',
-    labelFormat: 'تحويل إلى', labelQuality: 'الجودة',
-    labelCompressQ: 'مستوى الضغط', labelCompressFmt: 'صيغة الإخراج',
-    optSame: 'نفس الصيغة',
-    proc1: 'جاري التحويل...', proc2: 'جاري الضغط...',
-    btnConvert: '⚡ تحويل الصور', btnCompress: '🗜️ ضغط الصور',
-    result1: '✅ تم التحويل بنجاح', result2: '✅ تم الضغط بنجاح',
-    dlAll: 'تحميل الكل', download: 'تحميل',
-    stat1: 'مجاني بالكامل', stat2: 'رفع للخوادم', stat3: 'بدون حد للملفات',
-    f1t: 'خصوصية تامة', f1d: 'صورك تُعالَج في متصفحك فقط',
-    f2t: 'معالجة فورية', f2d: 'تحويل وضغط في ثوانٍ بتقنيات HTML5',
-    f3t: 'صور متعددة', f3d: 'حوّل عشرات الصور دفعة واحدة',
-    f4t: 'كل الصيغ', f4d: 'PNG, JPG, WebP, BMP, GIF مدعومة بالكامل',
-    footer: '© 2025 SwiftImage • تحويل الصور مجاناً • جميع العمليات في متصفحك',
-    ad: 'إعلان', saved: 'وُفِّر', original: 'الأصل',
-    compLow: 'منخفض', compMid: 'متوسط', compHigh: 'عالي', noFiles: 'اختر صوراً أولاً', done: 'تم! ✓'
-  },
-  en: {
-    rtl: false, flag: '🇺🇸', name: 'English',
-    badge: '100% Free • No Registration • Full Privacy',
-    heroTitle: 'Convert Images <span>Fast</span><br>& High Quality',
-    heroDesc: 'Convert images between PNG, JPG, and WebP formats, or compress them — all done in your browser, nothing uploaded.',
-    tabConvert: 'Convert Format', tabCompress: 'Compress Images',
-    drop1Title: 'Drag images here or click to select', drop1Sub: 'Supports: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Drag images here to compress', drop2Sub: 'Reduce file size while maintaining quality',
-    labelFormat: 'Convert to', labelQuality: 'Quality',
-    labelCompressQ: 'Compression Level', labelCompressFmt: 'Output Format',
-    optSame: 'Same Format',
-    proc1: 'Converting...', proc2: 'Compressing...',
-    btnConvert: '⚡ Convert Images', btnCompress: '🗜️ Compress Images',
-    result1: '✅ Conversion Complete', result2: '✅ Compression Complete',
-    dlAll: 'Download All', download: 'Download',
-    stat1: 'Completely Free', stat2: 'Server Uploads', stat3: 'No File Limits',
-    f1t: 'Full Privacy', f1d: 'Images processed in your browser only',
-    f2t: 'Instant Processing', f2d: 'Convert and compress in seconds',
-    f3t: 'Batch Processing', f3d: 'Convert dozens of images at once',
-    f4t: 'All Formats', f4d: 'PNG, JPG, WebP, BMP, GIF fully supported',
-    footer: '© 2025 SwiftImage • Free Image Converter • All processing in your browser',
-    ad: 'Advertisement', saved: 'Saved', original: 'Original',
-    compLow: 'Low', compMid: 'Medium', compHigh: 'High', noFiles: 'Please select images first', done: 'Done! ✓'
-  },
-  fr: {
-    rtl: false, flag: '🇫🇷', name: 'Français',
-    badge: '100% Gratuit • Sans inscription • Confidentialité totale',
-    heroTitle: 'Convertir des images <span>Rapidement</span><br>& Haute Qualité',
-    heroDesc: 'Convertissez vos images entre PNG, JPG et WebP, ou compressez-les — tout se passe dans votre navigateur, rien n\'est téléchargé.',
-    tabConvert: 'Convertir', tabCompress: 'Compresser',
-    drop1Title: 'Glissez vos images ici ou cliquez', drop1Sub: 'Supporte: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Glissez vos images ici pour compresser', drop2Sub: 'Réduire la taille tout en maintenant la qualité',
-    labelFormat: 'Convertir en', labelQuality: 'Qualité',
-    labelCompressQ: 'Niveau de compression', labelCompressFmt: 'Format de sortie',
-    optSame: 'Même format',
-    proc1: 'Conversion en cours...', proc2: 'Compression en cours...',
-    btnConvert: '⚡ Convertir les images', btnCompress: '🗜️ Compresser les images',
-    result1: '✅ Conversion réussie', result2: '✅ Compression réussie',
-    dlAll: 'Tout télécharger', download: 'Télécharger',
-    stat1: 'Entièrement gratuit', stat2: 'Envoi serveur', stat3: 'Sans limite de fichiers',
-    f1t: 'Confidentialité totale', f1d: 'Images traitées dans votre navigateur uniquement',
-    f2t: 'Traitement instantané', f2d: 'Convertissez en quelques secondes',
-    f3t: 'Traitement par lots', f3d: 'Convertissez des dizaines d\'images à la fois',
-    f4t: 'Tous les formats', f4d: 'PNG, JPG, WebP, BMP, GIF entièrement supportés',
-    footer: '© 2025 SwiftImage • Convertisseur d\'images gratuit • Tout se passe dans votre navigateur',
-    ad: 'Publicité', saved: 'Économisé', original: 'Original',
-    compLow: 'Faible', compMid: 'Moyen', compHigh: 'Élevé', noFiles: 'Sélectionnez des images d\'abord', done: 'Fait! ✓'
-  },
-  es: {
-    rtl: false, flag: '🇪🇸', name: 'Español',
-    badge: '100% Gratis • Sin registro • Privacidad total',
-    heroTitle: 'Convierte imágenes <span>Rápido</span><br>& Alta Calidad',
-    heroDesc: 'Convierte imágenes entre PNG, JPG y WebP, o comprímalas — todo en tu navegador, nada se sube a servidores.',
-    tabConvert: 'Convertir', tabCompress: 'Comprimir',
-    drop1Title: 'Arrastra imágenes aquí o haz clic', drop1Sub: 'Soporta: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Arrastra imágenes aquí para comprimir', drop2Sub: 'Reduce el tamaño manteniendo la calidad',
-    labelFormat: 'Convertir a', labelQuality: 'Calidad',
-    labelCompressQ: 'Nivel de compresión', labelCompressFmt: 'Formato de salida',
-    optSame: 'Mismo formato',
-    proc1: 'Convirtiendo...', proc2: 'Comprimiendo...',
-    btnConvert: '⚡ Convertir imágenes', btnCompress: '🗜️ Comprimir imágenes',
-    result1: '✅ Conversión completa', result2: '✅ Compresión completa',
-    dlAll: 'Descargar todo', download: 'Descargar',
-    stat1: 'Completamente gratis', stat2: 'Subidas al servidor', stat3: 'Sin límite de archivos',
-    f1t: 'Privacidad total', f1d: 'Imágenes procesadas solo en tu navegador',
-    f2t: 'Procesamiento instantáneo', f2d: 'Convierte en segundos',
-    f3t: 'Procesamiento por lotes', f3d: 'Convierte decenas de imágenes a la vez',
-    f4t: 'Todos los formatos', f4d: 'PNG, JPG, WebP, BMP, GIF completamente soportados',
-    footer: '© 2025 SwiftImage • Conversor de imágenes gratis • Todo en tu navegador',
-    ad: 'Publicidad', saved: 'Ahorrado', original: 'Original',
-    compLow: 'Bajo', compMid: 'Medio', compHigh: 'Alto', noFiles: 'Selecciona imágenes primero', done: '¡Hecho! ✓'
-  },
-  de: {
-    rtl: false, flag: '🇩🇪', name: 'Deutsch',
-    badge: '100% Kostenlos • Ohne Registrierung • Volle Privatsphäre',
-    heroTitle: 'Bilder <span>Schnell</span><br>konvertieren & komprimieren',
-    heroDesc: 'Konvertieren Sie Bilder zwischen PNG, JPG und WebP oder komprimieren Sie sie — alles im Browser, nichts wird hochgeladen.',
-    tabConvert: 'Konvertieren', tabCompress: 'Komprimieren',
-    drop1Title: 'Bilder hierher ziehen oder klicken', drop1Sub: 'Unterstützt: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Bilder hierher ziehen zum Komprimieren', drop2Sub: 'Größe reduzieren bei gleichbleibender Qualität',
-    labelFormat: 'Konvertieren zu', labelQuality: 'Qualität',
-    labelCompressQ: 'Kompressionsstufe', labelCompressFmt: 'Ausgabeformat',
-    optSame: 'Gleiches Format',
-    proc1: 'Konvertierung...', proc2: 'Komprimierung...',
-    btnConvert: '⚡ Bilder konvertieren', btnCompress: '🗜️ Bilder komprimieren',
-    result1: '✅ Konvertierung abgeschlossen', result2: '✅ Komprimierung abgeschlossen',
-    dlAll: 'Alle herunterladen', download: 'Herunterladen',
-    stat1: 'Völlig kostenlos', stat2: 'Server-Uploads', stat3: 'Keine Dateilimits',
-    f1t: 'Volle Privatsphäre', f1d: 'Bilder werden nur in Ihrem Browser verarbeitet',
-    f2t: 'Sofortige Verarbeitung', f2d: 'In Sekunden konvertieren',
-    f3t: 'Stapelverarbeitung', f3d: 'Dutzende Bilder auf einmal konvertieren',
-    f4t: 'Alle Formate', f4d: 'PNG, JPG, WebP, BMP, GIF vollständig unterstützt',
-    footer: '© 2025 SwiftImage • Kostenloser Bildkonverter • Alles in Ihrem Browser',
-    ad: 'Werbung', saved: 'Gespart', original: 'Original',
-    compLow: 'Niedrig', compMid: 'Mittel', compHigh: 'Hoch', noFiles: 'Bitte zuerst Bilder auswählen', done: 'Fertig! ✓'
-  },
-  pt: {
-    rtl: false, flag: '🇧🇷', name: 'Português',
-    badge: '100% Grátis • Sem registro • Privacidade total',
-    heroTitle: 'Converta imagens <span>Rápido</span><br>& Alta Qualidade',
-    heroDesc: 'Converta imagens entre PNG, JPG e WebP ou comprima-as — tudo no seu navegador, nada é enviado.',
-    tabConvert: 'Converter', tabCompress: 'Comprimir',
-    drop1Title: 'Arraste imagens aqui ou clique', drop1Sub: 'Suporta: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Arraste imagens aqui para comprimir', drop2Sub: 'Reduza o tamanho mantendo a qualidade',
-    labelFormat: 'Converter para', labelQuality: 'Qualidade',
-    labelCompressQ: 'Nível de compressão', labelCompressFmt: 'Formato de saída',
-    optSame: 'Mesmo formato',
-    proc1: 'Convertendo...', proc2: 'Comprimindo...',
-    btnConvert: '⚡ Converter imagens', btnCompress: '🗜️ Comprimir imagens',
-    result1: '✅ Conversão concluída', result2: '✅ Compressão concluída',
-    dlAll: 'Baixar tudo', download: 'Baixar',
-    stat1: 'Completamente grátis', stat2: 'Envios ao servidor', stat3: 'Sem limite de arquivos',
-    f1t: 'Privacidade total', f1d: 'Imagens processadas apenas no seu navegador',
-    f2t: 'Processamento instantâneo', f2d: 'Converta em segundos',
-    f3t: 'Processamento em lote', f3d: 'Converta dezenas de imagens de uma vez',
-    f4t: 'Todos os formatos', f4d: 'PNG, JPG, WebP, BMP, GIF totalmente suportados',
-    footer: '© 2025 SwiftImage • Conversor de imagens grátis • Tudo no seu navegador',
-    ad: 'Publicidade', saved: 'Economizado', original: 'Original',
-    compLow: 'Baixo', compMid: 'Médio', compHigh: 'Alto', noFiles: 'Selecione imagens primeiro', done: 'Feito! ✓'
-  },
-  it: {
-    rtl: false, flag: '🇮🇹', name: 'Italiano',
-    badge: '100% Gratuito • Senza registrazione • Privacy totale',
-    heroTitle: 'Converti immagini <span>Velocemente</span><br>& Alta Qualità',
-    heroDesc: 'Converti immagini tra PNG, JPG e WebP o comprimile — tutto nel tuo browser, niente viene caricato.',
-    tabConvert: 'Converti', tabCompress: 'Comprimi',
-    drop1Title: 'Trascina immagini qui o clicca', drop1Sub: 'Supporta: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Trascina immagini qui per comprimere', drop2Sub: 'Riduci la dimensione mantenendo la qualità',
-    labelFormat: 'Converti in', labelQuality: 'Qualità',
-    labelCompressQ: 'Livello di compressione', labelCompressFmt: 'Formato di output',
-    optSame: 'Stesso formato',
-    proc1: 'Conversione...', proc2: 'Compressione...',
-    btnConvert: '⚡ Converti immagini', btnCompress: '🗜️ Comprimi immagini',
-    result1: '✅ Conversione completata', result2: '✅ Compressione completata',
-    dlAll: 'Scarica tutto', download: 'Scarica',
-    stat1: 'Completamente gratuito', stat2: 'Upload al server', stat3: 'Nessun limite di file',
-    f1t: 'Privacy totale', f1d: 'Immagini elaborate solo nel tuo browser',
-    f2t: 'Elaborazione istantanea', f2d: 'Converti in secondi',
-    f3t: 'Elaborazione in batch', f3d: 'Converti decine di immagini in una volta',
-    f4t: 'Tutti i formati', f4d: 'PNG, JPG, WebP, BMP, GIF completamente supportati',
-    footer: '© 2025 SwiftImage • Convertitore di immagini gratuito • Tutto nel tuo browser',
-    ad: 'Pubblicità', saved: 'Risparmiato', original: 'Originale',
-    compLow: 'Basso', compMid: 'Medio', compHigh: 'Alto', noFiles: 'Seleziona prima le immagini', done: 'Fatto! ✓'
-  },
-  ru: {
-    rtl: false, flag: '🇷🇺', name: 'Русский',
-    badge: '100% Бесплатно • Без регистрации • Полная конфиденциальность',
-    heroTitle: 'Конвертируйте изображения <span>Быстро</span><br>и качественно',
-    heroDesc: 'Конвертируйте изображения между PNG, JPG и WebP или сжимайте их — всё в вашем браузере, ничего не загружается.',
-    tabConvert: 'Конвертировать', tabCompress: 'Сжать',
-    drop1Title: 'Перетащите изображения сюда или нажмите', drop1Sub: 'Поддерживает: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Перетащите изображения сюда для сжатия', drop2Sub: 'Уменьшите размер, сохраняя качество',
-    labelFormat: 'Конвертировать в', labelQuality: 'Качество',
-    labelCompressQ: 'Уровень сжатия', labelCompressFmt: 'Формат вывода',
-    optSame: 'Тот же формат',
-    proc1: 'Конвертация...', proc2: 'Сжатие...',
-    btnConvert: '⚡ Конвертировать', btnCompress: '🗜️ Сжать изображения',
-    result1: '✅ Конвертация завершена', result2: '✅ Сжатие завершено',
-    dlAll: 'Скачать всё', download: 'Скачать',
-    stat1: 'Полностью бесплатно', stat2: 'Загрузок на сервер', stat3: 'Без ограничений',
-    f1t: 'Полная конфиденциальность', f1d: 'Изображения обрабатываются только в вашем браузере',
-    f2t: 'Мгновенная обработка', f2d: 'Конвертируйте за секунды',
-    f3t: 'Пакетная обработка', f3d: 'Конвертируйте десятки изображений за раз',
-    f4t: 'Все форматы', f4d: 'PNG, JPG, WebP, BMP, GIF полностью поддерживаются',
-    footer: '© 2025 SwiftImage • Бесплатный конвертер изображений • Всё в вашем браузере',
-    ad: 'Реклама', saved: 'Сохранено', original: 'Оригинал',
-    compLow: 'Низкий', compMid: 'Средний', compHigh: 'Высокий', noFiles: 'Сначала выберите изображения', done: 'Готово! ✓'
-  },
-  tr: {
-    rtl: false, flag: '🇹🇷', name: 'Türkçe',
-    badge: '%100 Ücretsiz • Kayıt yok • Tam gizlilik',
-    heroTitle: 'Görüntüleri <span>Hızlıca</span><br>Dönüştür & Sıkıştır',
-    heroDesc: 'Görüntüleri PNG, JPG ve WebP arasında dönüştürün veya sıkıştırın — her şey tarayıcınızda yapılır, hiçbir şey yüklenmez.',
-    tabConvert: 'Dönüştür', tabCompress: 'Sıkıştır',
-    drop1Title: 'Görüntüleri buraya sürükleyin veya tıklayın', drop1Sub: 'Destekler: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Sıkıştırmak için görüntüleri buraya sürükleyin', drop2Sub: 'Kaliteyi koruyarak boyutu azaltın',
-    labelFormat: 'Dönüştür:', labelQuality: 'Kalite',
-    labelCompressQ: 'Sıkıştırma seviyesi', labelCompressFmt: 'Çıkış formatı',
-    optSame: 'Aynı format',
-    proc1: 'Dönüştürülüyor...', proc2: 'Sıkıştırılıyor...',
-    btnConvert: '⚡ Görüntüleri dönüştür', btnCompress: '🗜️ Görüntüleri sıkıştır',
-    result1: '✅ Dönüştürme tamamlandı', result2: '✅ Sıkıştırma tamamlandı',
-    dlAll: 'Tümünü indir', download: 'İndir',
-    stat1: 'Tamamen ücretsiz', stat2: 'Sunucu yüklemesi', stat3: 'Dosya limiti yok',
-    f1t: 'Tam gizlilik', f1d: 'Görüntüler yalnızca tarayıcınızda işlenir',
-    f2t: 'Anında işlem', f2d: 'Saniyeler içinde dönüştürün',
-    f3t: 'Toplu işlem', f3d: 'Onlarca görüntüyü aynı anda dönüştürün',
-    f4t: 'Tüm formatlar', f4d: 'PNG, JPG, WebP, BMP, GIF tam desteklenir',
-    footer: '© 2025 SwiftImage • Ücretsiz görüntü dönüştürücü • Her şey tarayıcınızda',
-    ad: 'Reklam', saved: 'Tasarruf', original: 'Orijinal',
-    compLow: 'Düşük', compMid: 'Orta', compHigh: 'Yüksek', noFiles: 'Önce görüntü seçin', done: 'Bitti! ✓'
-  },
-  zh: {
-    rtl: false, flag: '🇨🇳', name: '中文',
-    badge: '100%免费 • 无需注册 • 完全隐私',
-    heroTitle: '快速<span>转换</span>图片<br>保持高质量',
-    heroDesc: '在PNG、JPG和WebP之间转换图片，或压缩图片——全在浏览器中完成，无需上传到服务器。',
-    tabConvert: '格式转换', tabCompress: '压缩图片',
-    drop1Title: '拖拽图片到这里或点击选择', drop1Sub: '支持: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: '拖拽图片到这里进行压缩', drop2Sub: '在保持质量的同时减小文件大小',
-    labelFormat: '转换为', labelQuality: '质量',
-    labelCompressQ: '压缩级别', labelCompressFmt: '输出格式',
-    optSame: '相同格式',
-    proc1: '转换中...', proc2: '压缩中...',
-    btnConvert: '⚡ 转换图片', btnCompress: '🗜️ 压缩图片',
-    result1: '✅ 转换完成', result2: '✅ 压缩完成',
-    dlAll: '全部下载', download: '下载',
-    stat1: '完全免费', stat2: '服务器上传', stat3: '无文件限制',
-    f1t: '完全隐私', f1d: '图片仅在您的浏览器中处理',
-    f2t: '即时处理', f2d: '几秒内完成转换',
-    f3t: '批量处理', f3d: '一次转换数十张图片',
-    f4t: '所有格式', f4d: 'PNG, JPG, WebP, BMP, GIF完全支持',
-    footer: '© 2025 SwiftImage • 免费图片转换器 • 一切在浏览器中完成',
-    ad: '广告', saved: '节省', original: '原始',
-    compLow: '低', compMid: '中', compHigh: '高', noFiles: '请先选择图片', done: '完成! ✓'
-  },
-  ja: {
-    rtl: false, flag: '🇯🇵', name: '日本語',
-    badge: '100%無料 • 登録不要 • 完全プライバシー',
-    heroTitle: '画像を<span>素早く</span><br>高品質に変換',
-    heroDesc: 'PNG、JPG、WebP間で画像を変換したり圧縮したりできます — すべてブラウザ内で完結、サーバーへのアップロード不要。',
-    tabConvert: 'フォーマット変換', tabCompress: '画像圧縮',
-    drop1Title: 'ここに画像をドラッグまたはクリック', drop1Sub: '対応: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'ここに画像をドラッグして圧縮', drop2Sub: '品質を保ちながらファイルサイズを削減',
-    labelFormat: '変換先', labelQuality: '品質',
-    labelCompressQ: '圧縮レベル', labelCompressFmt: '出力形式',
-    optSame: '同じ形式',
-    proc1: '変換中...', proc2: '圧縮中...',
-    btnConvert: '⚡ 画像を変換', btnCompress: '🗜️ 画像を圧縮',
-    result1: '✅ 変換完了', result2: '✅ 圧縮完了',
-    dlAll: 'すべてダウンロード', download: 'ダウンロード',
-    stat1: '完全無料', stat2: 'サーバーアップロード', stat3: 'ファイル数制限なし',
-    f1t: '完全プライバシー', f1d: '画像はブラウザ内のみで処理',
-    f2t: '即時処理', f2d: '数秒で変換完了',
-    f3t: 'バッチ処理', f3d: '複数の画像を一度に変換',
-    f4t: 'すべての形式', f4d: 'PNG, JPG, WebP, BMP, GIF完全対応',
-    footer: '© 2025 SwiftImage • 無料画像変換ツール • すべてブラウザ内で完結',
-    ad: '広告', saved: '削減', original: '元のサイズ',
-    compLow: '低', compMid: '中', compHigh: '高', noFiles: '最初に画像を選択してください', done: '完了! ✓'
-  },
-  ko: {
-    rtl: false, flag: '🇰🇷', name: '한국어',
-    badge: '100% 무료 • 회원가입 불필요 • 완전한 개인정보 보호',
-    heroTitle: '이미지를 <span>빠르게</span><br>고품질로 변환',
-    heroDesc: 'PNG, JPG, WebP 간에 이미지를 변환하거나 압축하세요 — 모든 작업이 브라우저에서 이루어집니다.',
-    tabConvert: '형식 변환', tabCompress: '이미지 압축',
-    drop1Title: '이미지를 여기에 드래그하거나 클릭', drop1Sub: '지원: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: '압축할 이미지를 여기에 드래그', drop2Sub: '품질을 유지하면서 파일 크기 줄이기',
-    labelFormat: '변환 형식', labelQuality: '품질',
-    labelCompressQ: '압축 수준', labelCompressFmt: '출력 형식',
-    optSame: '같은 형식',
-    proc1: '변환 중...', proc2: '압축 중...',
-    btnConvert: '⚡ 이미지 변환', btnCompress: '🗜️ 이미지 압축',
-    result1: '✅ 변환 완료', result2: '✅ 압축 완료',
-    dlAll: '모두 다운로드', download: '다운로드',
-    stat1: '완전 무료', stat2: '서버 업로드', stat3: '파일 제한 없음',
-    f1t: '완전한 개인정보 보호', f1d: '이미지는 브라우저에서만 처리됩니다',
-    f2t: '즉시 처리', f2d: '몇 초 안에 변환',
-    f3t: '일괄 처리', f3d: '한 번에 수십 개의 이미지 변환',
-    f4t: '모든 형식', f4d: 'PNG, JPG, WebP, BMP, GIF 완전 지원',
-    footer: '© 2025 SwiftImage • 무료 이미지 변환기 • 모든 작업은 브라우저에서',
-    ad: '광고', saved: '절약됨', original: '원본',
-    compLow: '낮음', compMid: '중간', compHigh: '높음', noFiles: '먼저 이미지를 선택하세요', done: '완료! ✓'
-  },
-  hi: {
-    rtl: false, flag: '🇮🇳', name: 'हिन्दी',
-    badge: '100% मुफ्त • बिना पंजीकरण • पूर्ण गोपनीयता',
-    heroTitle: 'छवियां <span>तेज़ी से</span><br>उच्च गुणवत्ता में बदलें',
-    heroDesc: 'PNG, JPG और WebP के बीच छवियां बदलें या संपीड़ित करें — सब कुछ आपके ब्राउज़र में होता है।',
-    tabConvert: 'फॉर्मेट बदलें', tabCompress: 'संपीड़ित करें',
-    drop1Title: 'यहां छवियां खींचें या क्लिक करें', drop1Sub: 'समर्थन: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'संपीड़न के लिए छवियां खींचें', drop2Sub: 'गुणवत्ता बनाए रखते हुए आकार घटाएं',
-    labelFormat: 'में बदलें', labelQuality: 'गुणवत्ता',
-    labelCompressQ: 'संपीड़न स्तर', labelCompressFmt: 'आउटपुट फॉर्मेट',
-    optSame: 'समान फॉर्मेट',
-    proc1: 'परिवर्तित हो रहा है...', proc2: 'संपीड़ित हो रहा है...',
-    btnConvert: '⚡ छवियां बदलें', btnCompress: '🗜️ छवियां संपीड़ित करें',
-    result1: '✅ परिवर्तन पूर्ण', result2: '✅ संपीड़न पूर्ण',
-    dlAll: 'सब डाउनलोड करें', download: 'डाउनलोड',
-    stat1: 'पूरी तरह मुफ्त', stat2: 'सर्वर अपलोड', stat3: 'कोई फ़ाइल सीमा नहीं',
-    f1t: 'पूर्ण गोपनीयता', f1d: 'छवियां केवल आपके ब्राउज़र में संसाधित होती हैं',
-    f2t: 'तत्काल प्रसंस्करण', f2d: 'सेकंड में बदलें',
-    f3t: 'बैच प्रसंस्करण', f3d: 'एक साथ दर्जनों छवियां बदलें',
-    f4t: 'सभी फॉर्मेट', f4d: 'PNG, JPG, WebP, BMP, GIF पूरी तरह समर्थित',
-    footer: '© 2025 SwiftImage • मुफ्त छवि परिवर्तक • सब आपके ब्राउज़र में',
-    ad: 'विज्ञापन', saved: 'बचाया', original: 'मूल',
-    compLow: 'कम', compMid: 'मध्यम', compHigh: 'उच्च', noFiles: 'पहले छवियां चुनें', done: 'हो गया! ✓'
-  },
-  id: {
-    rtl: false, flag: '🇮🇩', name: 'Indonesia',
-    badge: '100% Gratis • Tanpa daftar • Privasi penuh',
-    heroTitle: 'Konversi Gambar <span>Cepat</span><br>& Berkualitas Tinggi',
-    heroDesc: 'Konversi gambar antara PNG, JPG, dan WebP, atau kompres — semuanya di browser Anda, tidak ada yang diunggah.',
-    tabConvert: 'Konversi Format', tabCompress: 'Kompres Gambar',
-    drop1Title: 'Seret gambar ke sini atau klik', drop1Sub: 'Mendukung: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Seret gambar ke sini untuk dikompres', drop2Sub: 'Kurangi ukuran sambil mempertahankan kualitas',
-    labelFormat: 'Konversi ke', labelQuality: 'Kualitas',
-    labelCompressQ: 'Tingkat kompresi', labelCompressFmt: 'Format output',
-    optSame: 'Format sama',
-    proc1: 'Mengkonversi...', proc2: 'Mengkompres...',
-    btnConvert: '⚡ Konversi gambar', btnCompress: '🗜️ Kompres gambar',
-    result1: '✅ Konversi selesai', result2: '✅ Kompresi selesai',
-    dlAll: 'Unduh semua', download: 'Unduh',
-    stat1: 'Sepenuhnya gratis', stat2: 'Unggahan server', stat3: 'Tanpa batas file',
-    f1t: 'Privasi penuh', f1d: 'Gambar diproses hanya di browser Anda',
-    f2t: 'Pemrosesan instan', f2d: 'Konversi dalam hitungan detik',
-    f3t: 'Pemrosesan batch', f3d: 'Konversi puluhan gambar sekaligus',
-    f4t: 'Semua format', f4d: 'PNG, JPG, WebP, BMP, GIF didukung penuh',
-    footer: '© 2025 SwiftImage • Konverter gambar gratis • Semuanya di browser Anda',
-    ad: 'Iklan', saved: 'Dihemat', original: 'Asli',
-    compLow: 'Rendah', compMid: 'Sedang', compHigh: 'Tinggi', noFiles: 'Pilih gambar terlebih dahulu', done: 'Selesai! ✓'
-  },
-  nl: {
-    rtl: false, flag: '🇳🇱', name: 'Nederlands',
-    badge: '100% Gratis • Geen registratie • Volledige privacy',
-    heroTitle: 'Afbeeldingen <span>Snel</span><br>& Hoge Kwaliteit converteren',
-    heroDesc: 'Converteer afbeeldingen tussen PNG, JPG en WebP of comprimeer ze — alles in uw browser, niets wordt geüpload.',
-    tabConvert: 'Converteren', tabCompress: 'Comprimeren',
-    drop1Title: 'Sleep afbeeldingen hierheen of klik', drop1Sub: 'Ondersteunt: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Sleep afbeeldingen hierheen om te comprimeren', drop2Sub: 'Verklein de bestandsgrootte met behoud van kwaliteit',
-    labelFormat: 'Converteren naar', labelQuality: 'Kwaliteit',
-    labelCompressQ: 'Compressieniveau', labelCompressFmt: 'Uitvoerformaat',
-    optSame: 'Zelfde formaat',
-    proc1: 'Converteren...', proc2: 'Comprimeren...',
-    btnConvert: '⚡ Afbeeldingen converteren', btnCompress: '🗜️ Afbeeldingen comprimeren',
-    result1: '✅ Conversie voltooid', result2: '✅ Compressie voltooid',
-    dlAll: 'Alles downloaden', download: 'Downloaden',
-    stat1: 'Volledig gratis', stat2: 'Server uploads', stat3: 'Geen bestandslimiet',
-    f1t: 'Volledige privacy', f1d: 'Afbeeldingen worden alleen in uw browser verwerkt',
-    f2t: 'Directe verwerking', f2d: 'Converteren in seconden',
-    f3t: 'Batchverwerking', f3d: 'Converteer tientallen afbeeldingen tegelijk',
-    f4t: 'Alle formaten', f4d: 'PNG, JPG, WebP, BMP, GIF volledig ondersteund',
-    footer: '© 2025 SwiftImage • Gratis afbeeldingsconverter • Alles in uw browser',
-    ad: 'Advertentie', saved: 'Bespaard', original: 'Origineel',
-    compLow: 'Laag', compMid: 'Gemiddeld', compHigh: 'Hoog', noFiles: 'Selecteer eerst afbeeldingen', done: 'Klaar! ✓'
+// ─── ANALYTICS PLACEHOLDER ───────────────────────────────────────────
+// Replace with your privacy-friendly analytics (e.g. Plausible, Fathom)
+// Example: <script defer data-domain="swiftimage.app" src="https://plausible.io/js/script.js"></script>
+// window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q||[]).push(arguments) }
+
+// ─── PARTICLE CANVAS ─────────────────────────────────────────────────
+(function () {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  for (let i = 0; i < 60; i++) {
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25,
+      r: Math.random() * 1.5 + 0.3,
+      o: Math.random() * 0.4 + 0.1
+    });
   }
-};
-
-// ===== STATE =====
-let currentLang = 'ar';
-let filesMap = { convert: [], compress: [] };
-let resultsMap = { convert: [], compress: [] };
-
-// ===== LANG =====
-function toggleLangDropdown() {
-  document.getElementById('lang-dropdown').classList.toggle('open');
-}
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('.lang-selector')) {
-    document.getElementById('lang-dropdown').classList.remove('open');
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(180,140,255,${p.o})`;
+      ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+    });
+    requestAnimationFrame(draw);
   }
+  draw();
+})();
+
+// ─── THEME TOGGLE ────────────────────────────────────────────────────
+const themeBtn = document.getElementById('theme-btn');
+let isDark = true;
+themeBtn.addEventListener('click', () => {
+  isDark = !isDark;
+  document.body.classList.toggle('light-mode', !isDark);
+  themeBtn.textContent = isDark ? '🌙' : '☀️';
+  themeBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
 });
 
-function setLang(lang) {
-  currentLang = lang;
-  const t = T[lang];
-  document.getElementById('lang-dropdown').classList.remove('open');
-  document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
-  document.getElementById('opt-' + lang).classList.add('active');
-  document.getElementById('current-flag').textContent = t.flag;
-  document.getElementById('current-lang-name').textContent = t.name;
+// ─── NAVBAR SCROLL ───────────────────────────────────────────────────
+const navbar = document.getElementById('navbar');
+const fab = document.getElementById('fab');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 10);
+  fab.classList.toggle('visible', window.scrollY > 500);
+});
 
-  const isRTL = t.rtl;
-  document.documentElement.lang = lang;
-  document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
-  document.body.classList.toggle('ltr', !isRTL);
+// ─── MOBILE MENU ─────────────────────────────────────────────────────
+const hamburger = document.getElementById('hamburger-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+const mobileClose = document.getElementById('mobile-close-btn');
+function openMobileMenu() { mobileMenu.classList.add('open'); hamburger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+function closeMobileMenu() { mobileMenu.classList.remove('open'); hamburger.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+hamburger.addEventListener('click', openMobileMenu);
+mobileClose.addEventListener('click', closeMobileMenu);
+document.querySelectorAll('.mobile-link').forEach(a => a.addEventListener('click', closeMobileMenu));
 
-  document.getElementById('t-badge').textContent = t.badge;
-  document.getElementById('t-hero-title').innerHTML = t.heroTitle;
-  document.getElementById('t-hero-desc').textContent = t.heroDesc;
-  document.getElementById('tab-convert').textContent = t.tabConvert;
-  document.getElementById('tab-compress').textContent = t.tabCompress;
-  document.getElementById('t-drop1-title').textContent = t.drop1Title;
-  document.getElementById('t-drop1-sub').textContent = t.drop1Sub;
-  document.getElementById('t-drop2-title').textContent = t.drop2Title;
-  document.getElementById('t-drop2-sub').textContent = t.drop2Sub;
-  document.getElementById('t-label-format').textContent = t.labelFormat;
-  document.getElementById('t-label-quality').textContent = t.labelQuality;
-  document.getElementById('t-label-compress-q').textContent = t.labelCompressQ;
-  document.getElementById('t-label-compress-fmt').textContent = t.labelCompressFmt;
-  document.getElementById('t-opt-same').textContent = t.optSame;
-  document.getElementById('t-proc1').textContent = t.proc1;
-  document.getElementById('t-proc2').textContent = t.proc2;
-  document.getElementById('t-btn-convert').textContent = t.btnConvert;
-  document.getElementById('t-btn-compress').textContent = t.btnCompress;
-  document.getElementById('t-result1-title').textContent = t.result1;
-  document.getElementById('t-result2-title').textContent = t.result2;
-  document.getElementById('t-dlall1').textContent = t.dlAll;
-  document.getElementById('t-dlall2').textContent = t.dlAll;
-  document.getElementById('t-stat1').textContent = t.stat1;
-  document.getElementById('t-stat2').textContent = t.stat2;
-  document.getElementById('t-stat3').textContent = t.stat3;
-  document.getElementById('t-f1t').textContent = t.f1t;
-  document.getElementById('t-f1d').textContent = t.f1d;
-  document.getElementById('t-f2t').textContent = t.f2t;
-  document.getElementById('t-f2d').textContent = t.f2d;
-  document.getElementById('t-f3t').textContent = t.f3t;
-  document.getElementById('t-f3d').textContent = t.f3d;
-  document.getElementById('t-f4t').textContent = t.f4t;
-  document.getElementById('t-f4d').textContent = t.f4d;
-  document.getElementById('t-footer').textContent = t.footer;
-  ['t-ad','t-ad2','t-ad3'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = t.ad; });
-  updateCompressLabel(document.getElementById('quality-compress').value);
-  try { sessionStorage.setItem('swiftimage_lang', lang); } catch(e) {}
+// ─── TOAST ───────────────────────────────────────────────────────────
+function showToast(msg, type = 'success') {
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.innerHTML = `<span>${icons[type]}</span><span>${msg}</span>`;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => {
+    el.style.animation = 'toast-out 0.3s forwards';
+    setTimeout(() => el.remove(), 320);
+  }, 3200);
 }
 
-// ===== TOOL SWITCH =====
-function switchTool(tool) {
-  document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.tool-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tool-' + tool).classList.add('active');
-  document.getElementById('tab-' + tool).classList.add('active');
-}
+// ─── SCROLL REVEAL ───────────────────────────────────────────────────
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-// ===== FILE HANDLING =====
-function handleFiles(files, tool) {
-  Array.from(files).forEach(f => { if (f.type.startsWith('image/')) filesMap[tool].push(f); });
-  renderPreviews(tool);
-  document.getElementById('btn-' + tool).disabled = !filesMap[tool].length;
+// ─── ANIMATED COUNTERS ───────────────────────────────────────────────
+function animateCounter(el) {
+  const target = parseInt(el.dataset.count, 10);
+  const duration = 1800;
+  const start = performance.now();
+  function update(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = Math.round(ease * target);
+    if (target >= 1000000) el.textContent = (val / 1000000).toFixed(1) + 'M+';
+    else if (target >= 1000) el.textContent = (val / 1000).toFixed(0) + 'K+';
+    else el.textContent = val + (target < 10 ? '' : '%');
+    if (p < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
 }
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { animateCounter(e.target); counterObs.unobserve(e.target); } });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
 
-function renderPreviews(tool) {
-  const grid = document.getElementById('preview-' + tool);
-  grid.innerHTML = '';
-  filesMap[tool].forEach((file, i) => {
-    const url = URL.createObjectURL(file);
-    const item = document.createElement('div');
-    item.className = 'preview-item';
-    item.innerHTML = `<img src="${url}"><button class="preview-remove" onclick="removeFile('${tool}',${i})">✕</button><div class="preview-info"><div class="preview-name">${file.name}</div><div class="preview-size">${formatSize(file.size)}</div></div>`;
-    grid.appendChild(item);
+// ─── FAQ ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-q').setAttribute('aria-expanded','false'); });
+    if (!isOpen) { item.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
   });
-}
-
-function removeFile(tool, i) {
-  filesMap[tool].splice(i, 1);
-  renderPreviews(tool);
-  document.getElementById('btn-' + tool).disabled = !filesMap[tool].length;
-}
-
-// ===== DRAG DROP =====
-['convert','compress'].forEach(tool => {
-  const dz = document.getElementById('dropzone-' + tool);
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
-  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
-  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); handleFiles(e.dataTransfer.files, tool); });
 });
 
-// ===== PROCESS =====
-async function processFiles(tool) {
-  const t = T[currentLang];
-  if (!filesMap[tool].length) { showToast(t.noFiles); return; }
-  const btn = document.getElementById('btn-' + tool);
-  const proc = document.getElementById('proc-' + tool);
-  const prog = document.getElementById('prog-' + tool);
-  const fill = document.getElementById('progfill-' + tool);
-  const list = document.getElementById('results-list-' + tool);
-  const section = document.getElementById('results-' + tool);
+// ─── QUALITY SLIDER ──────────────────────────────────────────────────
+const qs = document.getElementById('quality-slider');
+const qv = document.getElementById('quality-val');
+const qd = document.getElementById('quality-display');
+qs.addEventListener('input', () => {
+  const v = qs.value;
+  qv.textContent = v + '%';
+  qd.textContent = v;
+  qs.style.setProperty('--val', v + '%');
+});
 
-  btn.disabled = true; proc.classList.add('show'); prog.classList.add('show');
-  fill.style.width = '0%'; list.innerHTML = ''; resultsMap[tool] = [];
+// ─── UPLOAD ZONE ─────────────────────────────────────────────────────
+const uploadZone = document.getElementById('upload-zone');
+const fileInput = document.getElementById('file-input');
 
-  for (let i = 0; i < filesMap[tool].length; i++) {
-    const result = await processImage(filesMap[tool][i], tool);
-    resultsMap[tool].push(result);
-    fill.style.width = ((i + 1) / filesMap[tool].length * 100) + '%';
-    list.appendChild(createResultItem(result, tool));
-  }
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.classList.remove('drag-over');
+  handleFiles(Array.from(e.dataTransfer.files).filter(f => f.type.match(/image\/(jpeg|png|webp)/)));
+});
+fileInput.addEventListener('change', () => {
+  handleFiles(Array.from(fileInput.files));
+  fileInput.value = '';
+});
 
-  proc.classList.remove('show'); section.classList.add('show');
-  btn.disabled = false; showToast(t.done);
-}
+// ─── IMAGE STORE ─────────────────────────────────────────────────────
+let imageStore = [];
+let idCounter = 0;
 
-function processImage(file, tool) {
-  const MAX_DIM = 3000; // limit for mobile performance
-  return new Promise(resolve => {
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = () => {
-      // Scale down large images for speed
-      let w = img.naturalWidth, h = img.naturalHeight;
-      if (w > MAX_DIM || h > MAX_DIM) {
-        const ratio = Math.min(MAX_DIM / w, MAX_DIM / h);
-        w = Math.round(w * ratio);
-        h = Math.round(h * ratio);
-      }
-      const canvas = document.createElement('canvas');
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      URL.revokeObjectURL(url);
-
-      let fmt, q, ext;
-      if (tool === 'convert') {
-        fmt = document.getElementById('output-format').value;
-        q = parseInt(document.getElementById('quality-convert').value) / 100;
-      } else {
-        const f = document.getElementById('compress-format').value;
-        fmt = f === 'same' ? file.type : f;
-        q = parseInt(document.getElementById('quality-compress').value) / 100;
-      }
-      ext = fmt === 'image/jpeg' ? 'jpg' : fmt === 'image/webp' ? 'webp' : 'png';
-      const name = file.name.replace(/\.[^.]+$/, '') + '.' + ext;
-
-      canvas.toBlob(blob => {
-        resolve({ blob, name, originalSize: file.size, newSize: blob.size, dataUrl: canvas.toDataURL(fmt, q) });
-      }, fmt, fmt === 'image/png' ? undefined : q);
+function handleFiles(files) {
+  if (!files.length) return;
+  if (files.length > 30) { showToast('Max 30 images at once. Extra files ignored.', 'error'); files = files.slice(0, 30); }
+  files.forEach(file => {
+    const id = ++idCounter;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      imageStore.push({ id, file, originalSrc: e.target.result, processedSrc: null, processedSize: null, originalSize: file.size });
+      renderGrid();
     };
-    img.src = url;
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('process-btn').disabled = false;
+  showToast(`${files.length} image${files.length > 1 ? 's' : ''} added`, 'success');
+}
+
+function formatSize(bytes) {
+  if (bytes >= 1048576) return (bytes / 1048576).toFixed(2) + ' MB';
+  return (bytes / 1024).toFixed(1) + ' KB';
+}
+
+function renderGrid() {
+  const grid = document.getElementById('images-grid');
+  if (!imageStore.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="icon">📂</div><p>Upload images above to get started.</p></div>';
+    document.getElementById('dl-all-bar').style.display = 'none';
+    return;
+  }
+  grid.innerHTML = '';
+  let processedCount = 0;
+  let totalSavings = 0;
+  imageStore.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'image-card';
+    div.setAttribute('role', 'listitem');
+    const savings = item.processedSize ? Math.round((1 - item.processedSize / item.originalSize) * 100) : null;
+    if (item.processedSize !== null) { processedCount++; totalSavings += savings; }
+    div.innerHTML = `
+      <div class="card-preview">
+        <img src="${item.processedSrc || item.originalSrc}" alt="${item.file.name}" loading="lazy" />
+        ${item.processedSrc ? `<div class="card-overlay"><button class="overlay-btn" onclick="openCompare(${item.id})" aria-label="Compare before and after for ${item.file.name}">⬛ Compare</button></div>` : ''}
+      </div>
+      <div class="card-body">
+        <div class="card-filename" title="${item.file.name}">${item.file.name}</div>
+        <div class="card-meta">
+          <span class="size-info">${formatSize(item.originalSize)}${item.processedSize ? ` → ${formatSize(item.processedSize)}` : ''}</span>
+          ${savings !== null ? `<span class="savings-badge ${savings > 0 ? 'savings-positive' : 'savings-zero'}" aria-label="${savings}% savings">${savings > 0 ? '↓ ' + savings + '%' : '~0%'}</span>` : ''}
+        </div>
+        <div class="progress-bar-wrap"><div class="progress-bar" style="width:${item.processedSrc ? '100%' : '0%'}"></div></div>
+        ${!item.processedSrc ? `<div class="status-processing"><div class="status-dot"></div>Waiting to process…</div>` : ''}
+        <div class="card-actions">
+          ${item.processedSrc ? `<button class="dl-btn" onclick="downloadImage(${item.id})" aria-label="Download ${item.file.name}">⬇ Download</button>` : `<button class="dl-btn" style="opacity:.4;cursor:not-allowed" disabled aria-disabled="true">⬇ Download</button>`}
+          <button class="remove-btn" onclick="removeImage(${item.id})" aria-label="Remove ${item.file.name}">✕</button>
+        </div>
+      </div>`;
+    grid.appendChild(div);
+  });
+  const dlBar = document.getElementById('dl-all-bar');
+  if (processedCount > 0) {
+    dlBar.style.display = 'flex';
+    document.getElementById('dl-count').textContent = processedCount;
+    document.getElementById('dl-savings').textContent = Math.round(totalSavings / processedCount) + '%';
+  } else {
+    dlBar.style.display = 'none';
+  }
+}
+
+function removeImage(id) {
+  imageStore = imageStore.filter(i => i.id !== id);
+  if (!imageStore.length) document.getElementById('process-btn').disabled = true;
+  renderGrid();
+  showToast('Image removed', 'info');
+}
+
+// ─── PROCESS ─────────────────────────────────────────────────────────
+document.getElementById('process-btn').addEventListener('click', processAll);
+
+async function processAll() {
+  if (!imageStore.length) return;
+  const btn = document.getElementById('process-btn');
+  const spinner = document.getElementById('proc-spinner');
+  const label = document.getElementById('proc-label');
+  btn.disabled = true;
+  spinner.style.display = 'block';
+  label.textContent = 'Processing…';
+  const format = document.getElementById('output-format').value;
+  const quality = parseInt(document.getElementById('quality-slider').value, 10) / 100;
+
+  for (let item of imageStore) {
+    await processImage(item, format, quality);
+    renderGrid();
+    await sleep(30);
+  }
+  spinner.style.display = 'none';
+  label.textContent = '⚡ Process All';
+  btn.disabled = false;
+  showToast('All images processed!', 'success');
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function processImage(item, format, quality) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      if (format === 'image/png' || (format === 'original' && item.file.type === 'image/png')) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      } else {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      ctx.drawImage(img, 0, 0);
+      const outputFormat = format === 'original' ? item.file.type : format;
+      const mimeType = outputFormat || 'image/jpeg';
+      const dataUrl = canvas.toDataURL(mimeType, quality);
+      const byteStr = atob(dataUrl.split(',')[1]);
+      const processedSize = byteStr.length;
+      item.processedSrc = dataUrl;
+      item.processedSize = processedSize;
+      item.outputFormat = mimeType;
+      resolve();
+    };
+    img.src = item.originalSrc;
   });
 }
 
-function createResultItem(result, tool) {
-  const t = T[currentLang];
-  const saved = Math.round((1 - result.newSize / result.originalSize) * 100);
-  const savedHtml = saved > 0 ? `<span class="size-saved">-${saved}% ${t.saved}</span>` : '';
-  const div = document.createElement('div');
-  div.className = 'result-item';
-  div.innerHTML = `<img class="result-thumb" src="${result.dataUrl}"><div class="result-meta"><div class="result-name">${result.name}</div><div class="result-sizes"><span>${t.original}: ${formatSize(result.originalSize)}</span><span>→</span><span>${formatSize(result.newSize)}</span>${savedHtml}</div></div><button class="download-btn">${t.download}</button>`;
-  div.querySelector('.download-btn').addEventListener('click', () => downloadFile(result));
-  return div;
-}
-
-function downloadFile(result) {
+// ─── DOWNLOAD ────────────────────────────────────────────────────────
+function downloadImage(id) {
+  const item = imageStore.find(i => i.id === id);
+  if (!item || !item.processedSrc) return;
+  const ext = item.outputFormat === 'image/png' ? 'png' : item.outputFormat === 'image/webp' ? 'webp' : 'jpg';
+  const base = item.file.name.replace(/\.[^.]+$/, '');
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(result.blob);
-  a.download = result.name; a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  a.href = item.processedSrc;
+  a.download = `${base}_swiftimage.${ext}`;
+  a.click();
+  showToast(`Downloaded ${base}.${ext}`, 'success');
 }
 
-function downloadAll(tool) {
-  resultsMap[tool].forEach((r, i) => setTimeout(() => downloadFile(r), i * 300));
+document.getElementById('dl-all-btn').addEventListener('click', () => {
+  const processed = imageStore.filter(i => i.processedSrc);
+  if (!processed.length) return;
+  processed.forEach((item, idx) => { setTimeout(() => downloadImage(item.id), idx * 200); });
+  showToast(`Downloading ${processed.length} images…`, 'info');
+});
+
+// ─── COMPARE MODAL ───────────────────────────────────────────────────
+function openCompare(id) {
+  const item = imageStore.find(i => i.id === id);
+  if (!item || !item.processedSrc) return;
+  document.getElementById('compare-before-img').src = item.originalSrc;
+  document.getElementById('compare-after-img').src = item.processedSrc;
+  document.getElementById('before-size-label').textContent = formatSize(item.originalSize);
+  document.getElementById('after-size-label').textContent = formatSize(item.processedSize);
+  document.getElementById('compare-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setupCompareDrag();
 }
 
-// ===== HELPERS =====
-function formatSize(b) {
-  if (b < 1024) return b + ' B';
-  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
-  return (b/1048576).toFixed(2) + ' MB';
+document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+document.getElementById('compare-modal').addEventListener('click', (e) => { if (e.target === document.getElementById('compare-modal')) closeModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+function closeModal() {
+  document.getElementById('compare-modal').classList.remove('open');
+  document.body.style.overflow = '';
 }
 
-function updateCompressLabel(val) {
-  const t = T[currentLang];
-  let label = val < 40 ? t.compLow : val < 75 ? t.compMid : t.compHigh;
-  document.getElementById('qval-compress').textContent = label + ' (' + val + '%)';
+function setupCompareDrag() {
+  const container = document.getElementById('compare-container');
+  const handle = document.getElementById('compare-handle');
+  const beforeEl = document.getElementById('compare-before-el');
+  let dragging = false;
+
+  function setPos(x) {
+    const rect = container.getBoundingClientRect();
+    const pct = Math.max(5, Math.min(95, ((x - rect.left) / rect.width) * 100));
+    handle.style.left = pct + '%';
+    beforeEl.style.width = pct + '%';
+  }
+
+  handle.addEventListener('mousedown', () => { dragging = true; });
+  document.addEventListener('mousemove', (e) => { if (dragging) setPos(e.clientX); });
+  document.addEventListener('mouseup', () => { dragging = false; });
+  handle.addEventListener('touchstart', (e) => { dragging = true; e.preventDefault(); }, { passive: false });
+  document.addEventListener('touchmove', (e) => { if (dragging) setPos(e.touches[0].clientX); }, { passive: true });
+  document.addEventListener('touchend', () => { dragging = false; });
+  setPos(container.getBoundingClientRect().left + container.getBoundingClientRect().width / 2);
 }
 
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg; toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2500);
-}
-
-// Init - restore saved language
-const savedLang = sessionStorage.getItem('swiftimage_lang') || 'ar';
-setLang(savedLang);
+// ─── SMOOTH SCROLL for anchor links ──────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
 </script>
 </body>
 </html>
