@@ -1,996 +1,347 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="SwiftImage - Free Image Converter & Compressor | تحويل وضغط الصور مجاناً">
-<meta name="keywords" content="image converter, image compressor, PNG to JPG, WebP converter, تحويل صور, convertisseur image">
-<title>SwiftImage | Free Image Converter</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --card: #16161f;
-    --border: #ffffff0f;
-    --accent: #6ee7b7;
-    --accent2: #818cf8;
-    --accent3: #f472b6;
-    --text: #f1f5f9;
-    --muted: #64748b;
-    --success: #34d399;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Tajawal', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  body.ltr { direction: ltr; font-family: 'Syne', sans-serif; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  .bg-grid {
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(110,231,183,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(110,231,183,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none; z-index: 0;
-  }
-  .bg-glow {
-    position: fixed; width: 600px; height: 600px;
-    border-radius: 50%; filter: blur(120px);
-    pointer-events: none; z-index: 0; opacity: 0.12;
-  }
-  .glow-1 { background: var(--accent); top: -200px; right: -100px; }
-  .glow-2 { background: var(--accent2); bottom: -200px; left: -100px; }
+  <title>SwiftImage - Free Image Compressor & Converter</title>
 
-  .wrapper { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+  <meta
+    name="description"
+    content="Compress and convert JPG, PNG and WEBP images online for free. Fast, secure and high quality image tools."
+  />
 
-  header {
-    padding: 16px 0; border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
-    background: rgba(10,10,15,0.85);
-  }
-  .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .logo {
-    font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text; letter-spacing: -1px; flex-shrink: 0;
-  }
+  <meta
+    name="keywords"
+    content="image compressor, jpg to png, png to webp, webp converter, compress image online"
+  />
 
-  /* Language selector */
-  .lang-selector { position: relative; }
-  .lang-current {
-    background: var(--card); border: 1px solid var(--border);
-    color: var(--text); padding: 8px 14px; border-radius: 100px;
-    cursor: pointer; font-family: inherit; font-size: 0.85rem;
-    font-weight: 700; display: flex; align-items: center; gap: 6px;
-    transition: all 0.3s; white-space: nowrap;
-  }
-  .lang-current:hover { border-color: var(--accent); color: var(--accent); }
-  .lang-dropdown {
-    position: absolute; top: calc(100% + 8px); right: 0;
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 16px; padding: 8px; min-width: 180px;
-    display: none; z-index: 200; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  }
-  .lang-dropdown.open { display: block; animation: fadeUp 0.2s ease; }
-  .lang-option {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 12px; border-radius: 10px; cursor: pointer;
-    font-size: 0.9rem; font-weight: 600; transition: background 0.2s;
-    color: var(--text);
-  }
-  .lang-option:hover { background: rgba(255,255,255,0.05); }
-  .lang-option.active { color: var(--accent); background: rgba(110,231,183,0.08); }
-  .lang-flag { font-size: 1.1rem; }
+  <link
+    rel="icon"
+    href="https://cdn-icons-png.flaticon.com/512/136/136524.png"
+  />
 
-  .hero { text-align: center; padding: 70px 20px 50px; animation: fadeUp 0.8s ease both; }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(110,231,183,0.1); border: 1px solid rgba(110,231,183,0.2);
-    color: var(--accent); padding: 6px 16px; border-radius: 100px;
-    font-size: 0.85rem; font-weight: 700; margin-bottom: 24px;
-  }
-  .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.6rem); font-weight: 900;
-    line-height: 1.15; margin-bottom: 16px; letter-spacing: -1px;
-  }
-  .hero h1 span {
-    background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .hero p { color: var(--muted); font-size: 1.05rem; max-width: 520px; margin: 0 auto 40px; line-height: 1.7; }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-  .tools-nav { display: flex; justify-content: center; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
-  .tool-tab {
-    background: var(--card); border: 1px solid var(--border);
-    color: var(--muted); padding: 10px 22px; border-radius: 100px;
-    cursor: pointer; font-family: inherit; font-size: 0.95rem;
-    font-weight: 700; transition: all 0.3s;
-  }
-  .tool-tab:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
-  .tool-tab.active {
-    background: linear-gradient(135deg, rgba(110,231,183,0.15), rgba(129,140,248,0.15));
-    border-color: var(--accent); color: var(--accent);
-  }
+    body {
+      background: #0f172a;
+      color: white;
+      overflow-x: hidden;
+    }
 
-  .tool-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 24px; padding: 36px; margin-bottom: 20px;
-    animation: fadeUp 0.6s ease both; display: none;
-  }
-  .tool-card.active { display: block; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 25px 8%;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(10px);
+      background: rgba(15,23,42,0.8);
+      z-index: 999;
+    }
 
-  .dropzone {
-    border: 2px dashed var(--border); border-radius: 16px;
-    padding: 55px 20px; text-align: center; cursor: pointer;
-    transition: all 0.3s; position: relative; background: rgba(255,255,255,0.01);
-  }
-  .dropzone:hover, .dropzone.drag-over {
-    border-color: var(--accent); background: rgba(110,231,183,0.04);
-  }
-  .dropzone-icon { font-size: 2.8rem; margin-bottom: 14px; display: block; opacity: 0.7; }
-  .dropzone h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
-  .dropzone p { color: var(--muted); font-size: 0.88rem; }
-  .dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-  .options-row { display: flex; gap: 16px; margin-top: 22px; flex-wrap: wrap; align-items: flex-end; }
-  .option-group { flex: 1; min-width: 130px; }
-  .option-group label {
-    display: block; font-size: 0.82rem; color: var(--muted);
-    margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-  }
-  .option-group select {
-    width: 100%; background: var(--surface); border: 1px solid var(--border);
-    color: var(--text); padding: 10px 14px; border-radius: 10px;
-    font-family: inherit; font-size: 0.95rem; appearance: none; cursor: pointer;
-  }
-  .option-group select:focus { outline: none; border-color: var(--accent); }
-  input[type="range"] { width: 100%; accent-color: var(--accent); cursor: pointer; }
-  .quality-val { font-size: 0.85rem; color: var(--accent); font-weight: 700; text-align: center; margin-top: 6px; }
+    nav a {
+      color: #cbd5e1;
+      text-decoration: none;
+      margin-left: 25px;
+      transition: 0.3s;
+    }
 
-  .convert-btn {
-    width: 100%; margin-top: 22px; padding: 15px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #0a0a0f; border: none; border-radius: 12px;
-    font-family: inherit; font-size: 1rem; font-weight: 900;
-    cursor: pointer; transition: all 0.3s;
-  }
-  .convert-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(110,231,183,0.25); }
-  .convert-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    nav a:hover {
+      color: white;
+    }
 
-  .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; margin-top: 24px; }
-  .preview-item {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; overflow: hidden; animation: fadeUp 0.4s ease both; position: relative;
-  }
-  .preview-item img { width: 100%; height: 110px; object-fit: cover; display: block; }
-  .preview-info { padding: 8px 10px; }
-  .preview-name { font-size: 0.75rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
-  .preview-size { font-size: 0.8rem; font-weight: 700; color: var(--accent); }
-  .preview-remove {
-    position: absolute; top: 6px; right: 6px;
-    background: rgba(0,0,0,0.7); border: none; color: white;
-    width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
-    font-size: 0.7rem; display: flex; align-items: center; justify-content: center;
-  }
-  .preview-remove:hover { background: #ef4444; }
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+    }
 
-  .results-section { margin-top: 28px; display: none; }
-  .results-section.show { display: block; }
-  .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .results-title { font-size: 1rem; font-weight: 700; color: var(--accent); }
-  .download-all-btn {
-    background: rgba(110,231,183,0.1); border: 1px solid rgba(110,231,183,0.3);
-    color: var(--accent); padding: 7px 16px; border-radius: 100px;
-    cursor: pointer; font-family: inherit; font-size: 0.83rem; font-weight: 700;
-  }
-  .download-all-btn:hover { background: rgba(110,231,183,0.2); }
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: #7c3aed;
+      filter: blur(160px);
+      opacity: 0.25;
+      z-index: -1;
+    }
 
-  .result-item {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 12px 16px;
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 10px; animation: fadeUp 0.4s ease both;
-  }
-  .result-thumb { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
-  .result-meta { flex: 1; min-width: 0; }
-  .result-name { font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .result-sizes { font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .size-saved { color: var(--success); font-weight: 700; }
-  .download-btn {
-    background: var(--accent); color: #0a0a0f; border: none;
-    padding: 7px 14px; border-radius: 8px; cursor: pointer;
-    font-family: inherit; font-size: 0.82rem; font-weight: 900;
-    transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
-  }
-  .download-btn:hover { opacity: 0.85; }
+    .hero h1 {
+      font-size: 64px;
+      max-width: 900px;
+      line-height: 1.1;
+      margin-bottom: 25px;
+    }
 
-  .progress-bar { height: 3px; background: var(--border); border-radius: 100px; margin-top: 14px; overflow: hidden; display: none; }
-  .progress-bar.show { display: block; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 100px; transition: width 0.3s ease; width: 0%; }
+    .hero p {
+      color: #94a3b8;
+      max-width: 700px;
+      font-size: 20px;
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
 
-  .processing { text-align: center; padding: 16px; color: var(--accent); font-weight: 700; display: none; }
-  .processing.show { display: block; }
-  .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(110,231,183,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 8px; vertical-align: middle; }
+    .upload-btn {
+      padding: 18px 40px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 10px 30px rgba(124,58,237,0.35);
+    }
 
-  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 36px 0; }
-  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 22px; text-align: center; }
-  .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .stat-label { color: var(--muted); font-size: 0.83rem; margin-top: 4px; }
+    .upload-btn:hover {
+      transform: translateY(-4px);
+    }
 
-  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 16px 0 50px; }
-  .feature-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 22px; transition: border-color 0.3s; }
-  .feature-card:hover { border-color: rgba(110,231,183,0.3); }
-  .feature-icon { font-size: 1.7rem; margin-bottom: 10px; display: block; }
-  .feature-card h3 { font-size: 0.97rem; font-weight: 700; margin-bottom: 7px; }
-  .feature-card p { color: var(--muted); font-size: 0.83rem; line-height: 1.6; }
+    .drop-zone {
+      width: 90%;
+      max-width: 900px;
+      margin-top: 60px;
+      border: 2px dashed rgba(255,255,255,0.2);
+      padding: 70px 30px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.03);
+      transition: 0.3s;
+    }
 
-  .ad-slot {
-    background: var(--surface); border: 1px dashed var(--border);
-    border-radius: 12px; padding: 16px; text-align: center;
-    color: var(--muted); font-size: 0.78rem; margin: 16px 0;
-    min-height: 90px; display: flex; align-items: center; justify-content: center;
-  }
+    .drop-zone.dragover {
+      border-color: #7c3aed;
+      background: rgba(124,58,237,0.12);
+      transform: scale(1.01);
+    }
 
-  footer { border-top: 1px solid var(--border); padding: 28px 0; text-align: center; color: var(--muted); font-size: 0.83rem; }
+    .drop-zone h2 {
+      font-size: 34px;
+      margin-bottom: 15px;
+    }
 
-  .toast {
-    position: fixed; bottom: 28px; left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: var(--card); border: 1px solid var(--accent);
-    color: var(--accent); padding: 11px 22px; border-radius: 100px;
-    font-weight: 700; font-size: 0.88rem; z-index: 9999; transition: transform 0.4s ease;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+    .drop-zone p {
+      color: #94a3b8;
+      font-size: 18px;
+    }
 
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes spin { to { transform: rotate(360deg); } }
+    .tools {
+      padding: 120px 8%;
+    }
 
-  @media (max-width: 600px) {
-    .tool-card { padding: 20px 14px; }
-    .stats-row { grid-template-columns: 1fr; }
-    .options-row { flex-direction: column; }
-    .hero { padding: 44px 10px 36px; }
-    .lang-dropdown { right: -10px; }
-  }
-</style>
+    .section-title {
+      text-align: center;
+      font-size: 42px;
+      margin-bottom: 70px;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .tool-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 35px;
+      border-radius: 24px;
+      transition: 0.3s;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(124,58,237,0.4);
+    }
+
+    .tool-card h3 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .tool-card p {
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+
+    .features {
+      padding: 100px 8%;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+    }
+
+    .feature {
+      background: rgba(255,255,255,0.03);
+      padding: 30px;
+      border-radius: 24px;
+    }
+
+    .feature h4 {
+      margin-bottom: 12px;
+      font-size: 22px;
+    }
+
+    .feature p {
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      padding: 50px 20px;
+      color: #94a3b8;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    @media(max-width: 768px) {
+      .hero h1 {
+        font-size: 42px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      nav {
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<div class="bg-grid"></div>
-<div class="bg-glow glow-1"></div>
-<div class="bg-glow glow-2"></div>
-<div class="toast" id="toast"></div>
-
-<header>
-  <div class="wrapper header-inner">
+  <header>
     <div class="logo">SwiftImage</div>
-    <div class="lang-selector">
-      <button class="lang-current" onclick="toggleLangDropdown()" id="lang-current-btn">
-        <span id="current-flag">🇸🇦</span>
-        <span id="current-lang-name">العربية</span>
-        <span>▾</span>
-      </button>
-      <div class="lang-dropdown" id="lang-dropdown">
-        <div class="lang-option active" onclick="setLang('ar')" id="opt-ar"><span class="lang-flag">🇸🇦</span> العربية</div>
-        <div class="lang-option" onclick="setLang('en')" id="opt-en"><span class="lang-flag">🇺🇸</span> English</div>
-        <div class="lang-option" onclick="setLang('fr')" id="opt-fr"><span class="lang-flag">🇫🇷</span> Français</div>
-        <div class="lang-option" onclick="setLang('es')" id="opt-es"><span class="lang-flag">🇪🇸</span> Español</div>
-        <div class="lang-option" onclick="setLang('de')" id="opt-de"><span class="lang-flag">🇩🇪</span> Deutsch</div>
-        <div class="lang-option" onclick="setLang('pt')" id="opt-pt"><span class="lang-flag">🇧🇷</span> Português</div>
-        <div class="lang-option" onclick="setLang('it')" id="opt-it"><span class="lang-flag">🇮🇹</span> Italiano</div>
-        <div class="lang-option" onclick="setLang('ru')" id="opt-ru"><span class="lang-flag">🇷🇺</span> Русский</div>
-        <div class="lang-option" onclick="setLang('tr')" id="opt-tr"><span class="lang-flag">🇹🇷</span> Türkçe</div>
-        <div class="lang-option" onclick="setLang('zh')" id="opt-zh"><span class="lang-flag">🇨🇳</span> 中文</div>
-        <div class="lang-option" onclick="setLang('ja')" id="opt-ja"><span class="lang-flag">🇯🇵</span> 日本語</div>
-        <div class="lang-option" onclick="setLang('ko')" id="opt-ko"><span class="lang-flag">🇰🇷</span> 한국어</div>
-        <div class="lang-option" onclick="setLang('hi')" id="opt-hi"><span class="lang-flag">🇮🇳</span> हिन्दी</div>
-        <div class="lang-option" onclick="setLang('id')" id="opt-id"><span class="lang-flag">🇮🇩</span> Indonesia</div>
-        <div class="lang-option" onclick="setLang('nl')" id="opt-nl"><span class="lang-flag">🇳🇱</span> Nederlands</div>
+
+    <nav>
+      <a href="#tools">Tools</a>
+      <a href="#features">Features</a>
+      <a href="#">API</a>
+      <a href="#">Pricing</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Compress & Convert Images Instantly</h1>
+
+    <p>
+      Free online JPG, PNG & WEBP image compressor and converter.
+      Fast, secure and high-quality image processing directly in your browser.
+    </p>
+
+    <button class="upload-btn">Upload Image</button>
+
+    <div class="drop-zone" id="dropZone">
+      <h2>Drag & Drop Your Image Here</h2>
+      <p>Supports JPG, PNG and WEBP formats</p>
+    </div>
+  </section>
+
+  <section class="tools" id="tools">
+    <h2 class="section-title">Popular Tools</h2>
+
+    <div class="tools-grid">
+      <div class="tool-card">
+        <h3>Compress Image</h3>
+        <p>Reduce image size without losing quality in seconds.</p>
+      </div>
+
+      <div class="tool-card">
+        <h3>JPG to PNG</h3>
+        <p>Convert JPG images to high-quality transparent PNG files.</p>
+      </div>
+
+      <div class="tool-card">
+        <h3>PNG to WEBP</h3>
+        <p>Convert PNG images into lightweight WEBP format instantly.</p>
+      </div>
+
+      <div class="tool-card">
+        <h3>WEBP to JPG</h3>
+        <p>Transform WEBP images into compatible JPG format easily.</p>
       </div>
     </div>
-  </div>
-</header>
+  </section>
 
-<main>
-  <div class="wrapper">
-    <section class="hero">
-      <div class="hero-badge"><span>✦</span><span id="t-badge"></span></div>
-      <h1 id="t-hero-title"></h1>
-      <p id="t-hero-desc"></p>
-    </section>
+  <section class="features" id="features">
+    <h2 class="section-title">Why Choose SwiftImage?</h2>
 
-    <div class="ad-slot"><span id="t-ad">Advertisement</span></div>
-
-    <div class="tools-nav">
-      <button class="tool-tab active" onclick="switchTool('convert')" id="tab-convert"></button>
-      <button class="tool-tab" onclick="switchTool('compress')" id="tab-compress"></button>
-    </div>
-
-    <!-- CONVERT TOOL -->
-    <div class="tool-card active" id="tool-convert">
-      <div class="dropzone" id="dropzone-convert">
-        <input type="file" accept="image/*" multiple id="file-convert" onchange="handleFiles(this.files,'convert')">
-        <span class="dropzone-icon">🖼️</span>
-        <h3 id="t-drop1-title"></h3>
-        <p id="t-drop1-sub"></p>
+    <div class="features-grid">
+      <div class="feature">
+        <h4>⚡ Ultra Fast</h4>
+        <p>Convert and compress images in seconds with blazing-fast performance.</p>
       </div>
-      <div class="preview-grid" id="preview-convert"></div>
-      <div class="options-row">
-        <div class="option-group">
-          <label id="t-label-format"></label>
-          <select id="output-format">
-            <option value="image/jpeg">JPG</option>
-            <option value="image/png">PNG</option>
-            <option value="image/webp">WebP</option>
-          </select>
-        </div>
-        <div class="option-group">
-          <label id="t-label-quality"></label>
-          <input type="range" min="10" max="100" value="90" id="quality-convert" oninput="document.getElementById('qval-convert').textContent=this.value+'%'">
-          <div class="quality-val" id="qval-convert">90%</div>
-        </div>
+
+      <div class="feature">
+        <h4>🔒 Secure Processing</h4>
+        <p>Your images stay private and secure during processing.</p>
       </div>
-      <div class="progress-bar" id="prog-convert"><div class="progress-fill" id="progfill-convert"></div></div>
-      <div class="processing" id="proc-convert"><span id="t-proc1"></span> <span class="spinner"></span></div>
-      <button class="convert-btn" id="btn-convert" onclick="processFiles('convert')" disabled>
-        <span id="t-btn-convert"></span>
-      </button>
-      <div class="results-section" id="results-convert">
-        <div class="results-header">
-          <span class="results-title" id="t-result1-title"></span>
-          <button class="download-all-btn" onclick="downloadAll('convert')" id="t-dlall1"></button>
-        </div>
-        <div id="results-list-convert"></div>
+
+      <div class="feature">
+        <h4>🌐 Browser Based</h4>
+        <p>No software installation required. Everything works directly online.</p>
+      </div>
+
+      <div class="feature">
+        <h4>📱 Mobile Friendly</h4>
+        <p>Fully responsive design optimized for all devices.</p>
       </div>
     </div>
+  </section>
 
-    <!-- COMPRESS TOOL -->
-    <div class="tool-card" id="tool-compress">
-      <div class="dropzone" id="dropzone-compress">
-        <input type="file" accept="image/*" multiple id="file-compress" onchange="handleFiles(this.files,'compress')">
-        <span class="dropzone-icon">🗜️</span>
-        <h3 id="t-drop2-title"></h3>
-        <p id="t-drop2-sub"></p>
-      </div>
-      <div class="preview-grid" id="preview-compress"></div>
-      <div class="options-row">
-        <div class="option-group">
-          <label id="t-label-compress-q"></label>
-          <input type="range" min="10" max="95" value="75" id="quality-compress" oninput="updateCompressLabel(this.value)">
-          <div class="quality-val" id="qval-compress"></div>
-        </div>
-        <div class="option-group">
-          <label id="t-label-compress-fmt"></label>
-          <select id="compress-format">
-            <option value="same" id="t-opt-same"></option>
-            <option value="image/jpeg">JPG</option>
-            <option value="image/webp">WebP</option>
-          </select>
-        </div>
-      </div>
-      <div class="progress-bar" id="prog-compress"><div class="progress-fill" id="progfill-compress"></div></div>
-      <div class="processing" id="proc-compress"><span id="t-proc2"></span> <span class="spinner"></span></div>
-      <button class="convert-btn" id="btn-compress" onclick="processFiles('compress')" disabled>
-        <span id="t-btn-compress"></span>
-      </button>
-      <div class="results-section" id="results-compress">
-        <div class="results-header">
-          <span class="results-title" id="t-result2-title"></span>
-          <button class="download-all-btn" onclick="downloadAll('compress')" id="t-dlall2"></button>
-        </div>
-        <div id="results-list-compress"></div>
-      </div>
-    </div>
+  <footer>
+    © 2026 SwiftImage — Free Image Compressor & Converter
+  </footer>
 
-    <div class="ad-slot"><span id="t-ad2">Advertisement</span></div>
+  <script>
+    const dropZone = document.getElementById('dropZone');
 
-    <div class="stats-row">
-      <div class="stat-card"><div class="stat-num">100%</div><div class="stat-label" id="t-stat1"></div></div>
-      <div class="stat-card"><div class="stat-num">0</div><div class="stat-label" id="t-stat2"></div></div>
-      <div class="stat-card"><div class="stat-num">∞</div><div class="stat-label" id="t-stat3"></div></div>
-    </div>
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
 
-    <div class="features">
-      <div class="feature-card"><span class="feature-icon">🔒</span><h3 id="t-f1t"></h3><p id="t-f1d"></p></div>
-      <div class="feature-card"><span class="feature-icon">⚡</span><h3 id="t-f2t"></h3><p id="t-f2d"></p></div>
-      <div class="feature-card"><span class="feature-icon">📦</span><h3 id="t-f3t"></h3><p id="t-f3d"></p></div>
-      <div class="feature-card"><span class="feature-icon">🌐</span><h3 id="t-f4t"></h3><p id="t-f4d"></p></div>
-    </div>
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('dragover');
+    });
 
-    <div class="ad-slot"><span id="t-ad3">Advertisement</span></div>
-  </div>
-</main>
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
 
-<footer><div class="wrapper"><p id="t-footer"></p><p style="margin-top:10px;font-size:0.8rem;"><a href="about.html" style="color:var(--accent);text-decoration:none;margin:0 10px" id="footer-about">من نحن</a><a href="privacy.html" style="color:var(--accent);text-decoration:none;margin:0 10px" id="footer-privacy">سياسة الخصوصية</a></p></div></footer>
+      const files = e.dataTransfer.files;
 
-<script>
-// ===== TRANSLATIONS =====
-const T = {
-  ar: {
-    rtl: true, flag: '🇸🇦', name: 'العربية',
-    badge: 'مجاني 100% • بدون تسجيل • خصوصية تامة',
-    heroTitle: 'تحويل الصور <span>بسرعة</span><br>وجودة عالية',
-    heroDesc: 'حوّل صورك بين PNG و JPG و WebP، أو اضغطها - كل شيء يتم في متصفحك، ملفاتك لا تُرفع لأي خادم.',
-    tabConvert: 'تحويل الصيغة', tabCompress: 'ضغط الصور',
-    drop1Title: 'اسحب صورك هنا أو اضغط للاختيار', drop1Sub: 'يدعم: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'اسحب الصور هنا للضغط', drop2Sub: 'تقليل الحجم مع الحفاظ على الجودة',
-    labelFormat: 'تحويل إلى', labelQuality: 'الجودة',
-    labelCompressQ: 'مستوى الضغط', labelCompressFmt: 'صيغة الإخراج',
-    optSame: 'نفس الصيغة',
-    proc1: 'جاري التحويل...', proc2: 'جاري الضغط...',
-    btnConvert: '⚡ تحويل الصور', btnCompress: '🗜️ ضغط الصور',
-    result1: '✅ تم التحويل بنجاح', result2: '✅ تم الضغط بنجاح',
-    dlAll: 'تحميل الكل', download: 'تحميل',
-    stat1: 'مجاني بالكامل', stat2: 'رفع للخوادم', stat3: 'بدون حد للملفات',
-    f1t: 'خصوصية تامة', f1d: 'صورك تُعالَج في متصفحك فقط',
-    f2t: 'معالجة فورية', f2d: 'تحويل وضغط في ثوانٍ بتقنيات HTML5',
-    f3t: 'صور متعددة', f3d: 'حوّل عشرات الصور دفعة واحدة',
-    f4t: 'كل الصيغ', f4d: 'PNG, JPG, WebP, BMP, GIF مدعومة بالكامل',
-    footer: '© 2025 SwiftImage • تحويل الصور مجاناً • جميع العمليات في متصفحك',
-    ad: 'إعلان', saved: 'وُفِّر', original: 'الأصل',
-    compLow: 'منخفض', compMid: 'متوسط', compHigh: 'عالي', noFiles: 'اختر صوراً أولاً', done: 'تم! ✓'
-  },
-  en: {
-    rtl: false, flag: '🇺🇸', name: 'English',
-    badge: '100% Free • No Registration • Full Privacy',
-    heroTitle: 'Convert Images <span>Fast</span><br>& High Quality',
-    heroDesc: 'Convert images between PNG, JPG, and WebP formats, or compress them — all done in your browser, nothing uploaded.',
-    tabConvert: 'Convert Format', tabCompress: 'Compress Images',
-    drop1Title: 'Drag images here or click to select', drop1Sub: 'Supports: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Drag images here to compress', drop2Sub: 'Reduce file size while maintaining quality',
-    labelFormat: 'Convert to', labelQuality: 'Quality',
-    labelCompressQ: 'Compression Level', labelCompressFmt: 'Output Format',
-    optSame: 'Same Format',
-    proc1: 'Converting...', proc2: 'Compressing...',
-    btnConvert: '⚡ Convert Images', btnCompress: '🗜️ Compress Images',
-    result1: '✅ Conversion Complete', result2: '✅ Compression Complete',
-    dlAll: 'Download All', download: 'Download',
-    stat1: 'Completely Free', stat2: 'Server Uploads', stat3: 'No File Limits',
-    f1t: 'Full Privacy', f1d: 'Images processed in your browser only',
-    f2t: 'Instant Processing', f2d: 'Convert and compress in seconds',
-    f3t: 'Batch Processing', f3d: 'Convert dozens of images at once',
-    f4t: 'All Formats', f4d: 'PNG, JPG, WebP, BMP, GIF fully supported',
-    footer: '© 2025 SwiftImage • Free Image Converter • All processing in your browser',
-    ad: 'Advertisement', saved: 'Saved', original: 'Original',
-    compLow: 'Low', compMid: 'Medium', compHigh: 'High', noFiles: 'Please select images first', done: 'Done! ✓'
-  },
-  fr: {
-    rtl: false, flag: '🇫🇷', name: 'Français',
-    badge: '100% Gratuit • Sans inscription • Confidentialité totale',
-    heroTitle: 'Convertir des images <span>Rapidement</span><br>& Haute Qualité',
-    heroDesc: 'Convertissez vos images entre PNG, JPG et WebP, ou compressez-les — tout se passe dans votre navigateur, rien n\'est téléchargé.',
-    tabConvert: 'Convertir', tabCompress: 'Compresser',
-    drop1Title: 'Glissez vos images ici ou cliquez', drop1Sub: 'Supporte: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Glissez vos images ici pour compresser', drop2Sub: 'Réduire la taille tout en maintenant la qualité',
-    labelFormat: 'Convertir en', labelQuality: 'Qualité',
-    labelCompressQ: 'Niveau de compression', labelCompressFmt: 'Format de sortie',
-    optSame: 'Même format',
-    proc1: 'Conversion en cours...', proc2: 'Compression en cours...',
-    btnConvert: '⚡ Convertir les images', btnCompress: '🗜️ Compresser les images',
-    result1: '✅ Conversion réussie', result2: '✅ Compression réussie',
-    dlAll: 'Tout télécharger', download: 'Télécharger',
-    stat1: 'Entièrement gratuit', stat2: 'Envoi serveur', stat3: 'Sans limite de fichiers',
-    f1t: 'Confidentialité totale', f1d: 'Images traitées dans votre navigateur uniquement',
-    f2t: 'Traitement instantané', f2d: 'Convertissez en quelques secondes',
-    f3t: 'Traitement par lots', f3d: 'Convertissez des dizaines d\'images à la fois',
-    f4t: 'Tous les formats', f4d: 'PNG, JPG, WebP, BMP, GIF entièrement supportés',
-    footer: '© 2025 SwiftImage • Convertisseur d\'images gratuit • Tout se passe dans votre navigateur',
-    ad: 'Publicité', saved: 'Économisé', original: 'Original',
-    compLow: 'Faible', compMid: 'Moyen', compHigh: 'Élevé', noFiles: 'Sélectionnez des images d\'abord', done: 'Fait! ✓'
-  },
-  es: {
-    rtl: false, flag: '🇪🇸', name: 'Español',
-    badge: '100% Gratis • Sin registro • Privacidad total',
-    heroTitle: 'Convierte imágenes <span>Rápido</span><br>& Alta Calidad',
-    heroDesc: 'Convierte imágenes entre PNG, JPG y WebP, o comprímalas — todo en tu navegador, nada se sube a servidores.',
-    tabConvert: 'Convertir', tabCompress: 'Comprimir',
-    drop1Title: 'Arrastra imágenes aquí o haz clic', drop1Sub: 'Soporta: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Arrastra imágenes aquí para comprimir', drop2Sub: 'Reduce el tamaño manteniendo la calidad',
-    labelFormat: 'Convertir a', labelQuality: 'Calidad',
-    labelCompressQ: 'Nivel de compresión', labelCompressFmt: 'Formato de salida',
-    optSame: 'Mismo formato',
-    proc1: 'Convirtiendo...', proc2: 'Comprimiendo...',
-    btnConvert: '⚡ Convertir imágenes', btnCompress: '🗜️ Comprimir imágenes',
-    result1: '✅ Conversión completa', result2: '✅ Compresión completa',
-    dlAll: 'Descargar todo', download: 'Descargar',
-    stat1: 'Completamente gratis', stat2: 'Subidas al servidor', stat3: 'Sin límite de archivos',
-    f1t: 'Privacidad total', f1d: 'Imágenes procesadas solo en tu navegador',
-    f2t: 'Procesamiento instantáneo', f2d: 'Convierte en segundos',
-    f3t: 'Procesamiento por lotes', f3d: 'Convierte decenas de imágenes a la vez',
-    f4t: 'Todos los formatos', f4d: 'PNG, JPG, WebP, BMP, GIF completamente soportados',
-    footer: '© 2025 SwiftImage • Conversor de imágenes gratis • Todo en tu navegador',
-    ad: 'Publicidad', saved: 'Ahorrado', original: 'Original',
-    compLow: 'Bajo', compMid: 'Medio', compHigh: 'Alto', noFiles: 'Selecciona imágenes primero', done: '¡Hecho! ✓'
-  },
-  de: {
-    rtl: false, flag: '🇩🇪', name: 'Deutsch',
-    badge: '100% Kostenlos • Ohne Registrierung • Volle Privatsphäre',
-    heroTitle: 'Bilder <span>Schnell</span><br>konvertieren & komprimieren',
-    heroDesc: 'Konvertieren Sie Bilder zwischen PNG, JPG und WebP oder komprimieren Sie sie — alles im Browser, nichts wird hochgeladen.',
-    tabConvert: 'Konvertieren', tabCompress: 'Komprimieren',
-    drop1Title: 'Bilder hierher ziehen oder klicken', drop1Sub: 'Unterstützt: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Bilder hierher ziehen zum Komprimieren', drop2Sub: 'Größe reduzieren bei gleichbleibender Qualität',
-    labelFormat: 'Konvertieren zu', labelQuality: 'Qualität',
-    labelCompressQ: 'Kompressionsstufe', labelCompressFmt: 'Ausgabeformat',
-    optSame: 'Gleiches Format',
-    proc1: 'Konvertierung...', proc2: 'Komprimierung...',
-    btnConvert: '⚡ Bilder konvertieren', btnCompress: '🗜️ Bilder komprimieren',
-    result1: '✅ Konvertierung abgeschlossen', result2: '✅ Komprimierung abgeschlossen',
-    dlAll: 'Alle herunterladen', download: 'Herunterladen',
-    stat1: 'Völlig kostenlos', stat2: 'Server-Uploads', stat3: 'Keine Dateilimits',
-    f1t: 'Volle Privatsphäre', f1d: 'Bilder werden nur in Ihrem Browser verarbeitet',
-    f2t: 'Sofortige Verarbeitung', f2d: 'In Sekunden konvertieren',
-    f3t: 'Stapelverarbeitung', f3d: 'Dutzende Bilder auf einmal konvertieren',
-    f4t: 'Alle Formate', f4d: 'PNG, JPG, WebP, BMP, GIF vollständig unterstützt',
-    footer: '© 2025 SwiftImage • Kostenloser Bildkonverter • Alles in Ihrem Browser',
-    ad: 'Werbung', saved: 'Gespart', original: 'Original',
-    compLow: 'Niedrig', compMid: 'Mittel', compHigh: 'Hoch', noFiles: 'Bitte zuerst Bilder auswählen', done: 'Fertig! ✓'
-  },
-  pt: {
-    rtl: false, flag: '🇧🇷', name: 'Português',
-    badge: '100% Grátis • Sem registro • Privacidade total',
-    heroTitle: 'Converta imagens <span>Rápido</span><br>& Alta Qualidade',
-    heroDesc: 'Converta imagens entre PNG, JPG e WebP ou comprima-as — tudo no seu navegador, nada é enviado.',
-    tabConvert: 'Converter', tabCompress: 'Comprimir',
-    drop1Title: 'Arraste imagens aqui ou clique', drop1Sub: 'Suporta: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Arraste imagens aqui para comprimir', drop2Sub: 'Reduza o tamanho mantendo a qualidade',
-    labelFormat: 'Converter para', labelQuality: 'Qualidade',
-    labelCompressQ: 'Nível de compressão', labelCompressFmt: 'Formato de saída',
-    optSame: 'Mesmo formato',
-    proc1: 'Convertendo...', proc2: 'Comprimindo...',
-    btnConvert: '⚡ Converter imagens', btnCompress: '🗜️ Comprimir imagens',
-    result1: '✅ Conversão concluída', result2: '✅ Compressão concluída',
-    dlAll: 'Baixar tudo', download: 'Baixar',
-    stat1: 'Completamente grátis', stat2: 'Envios ao servidor', stat3: 'Sem limite de arquivos',
-    f1t: 'Privacidade total', f1d: 'Imagens processadas apenas no seu navegador',
-    f2t: 'Processamento instantâneo', f2d: 'Converta em segundos',
-    f3t: 'Processamento em lote', f3d: 'Converta dezenas de imagens de uma vez',
-    f4t: 'Todos os formatos', f4d: 'PNG, JPG, WebP, BMP, GIF totalmente suportados',
-    footer: '© 2025 SwiftImage • Conversor de imagens grátis • Tudo no seu navegador',
-    ad: 'Publicidade', saved: 'Economizado', original: 'Original',
-    compLow: 'Baixo', compMid: 'Médio', compHigh: 'Alto', noFiles: 'Selecione imagens primeiro', done: 'Feito! ✓'
-  },
-  it: {
-    rtl: false, flag: '🇮🇹', name: 'Italiano',
-    badge: '100% Gratuito • Senza registrazione • Privacy totale',
-    heroTitle: 'Converti immagini <span>Velocemente</span><br>& Alta Qualità',
-    heroDesc: 'Converti immagini tra PNG, JPG e WebP o comprimile — tutto nel tuo browser, niente viene caricato.',
-    tabConvert: 'Converti', tabCompress: 'Comprimi',
-    drop1Title: 'Trascina immagini qui o clicca', drop1Sub: 'Supporta: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Trascina immagini qui per comprimere', drop2Sub: 'Riduci la dimensione mantenendo la qualità',
-    labelFormat: 'Converti in', labelQuality: 'Qualità',
-    labelCompressQ: 'Livello di compressione', labelCompressFmt: 'Formato di output',
-    optSame: 'Stesso formato',
-    proc1: 'Conversione...', proc2: 'Compressione...',
-    btnConvert: '⚡ Converti immagini', btnCompress: '🗜️ Comprimi immagini',
-    result1: '✅ Conversione completata', result2: '✅ Compressione completata',
-    dlAll: 'Scarica tutto', download: 'Scarica',
-    stat1: 'Completamente gratuito', stat2: 'Upload al server', stat3: 'Nessun limite di file',
-    f1t: 'Privacy totale', f1d: 'Immagini elaborate solo nel tuo browser',
-    f2t: 'Elaborazione istantanea', f2d: 'Converti in secondi',
-    f3t: 'Elaborazione in batch', f3d: 'Converti decine di immagini in una volta',
-    f4t: 'Tutti i formati', f4d: 'PNG, JPG, WebP, BMP, GIF completamente supportati',
-    footer: '© 2025 SwiftImage • Convertitore di immagini gratuito • Tutto nel tuo browser',
-    ad: 'Pubblicità', saved: 'Risparmiato', original: 'Originale',
-    compLow: 'Basso', compMid: 'Medio', compHigh: 'Alto', noFiles: 'Seleziona prima le immagini', done: 'Fatto! ✓'
-  },
-  ru: {
-    rtl: false, flag: '🇷🇺', name: 'Русский',
-    badge: '100% Бесплатно • Без регистрации • Полная конфиденциальность',
-    heroTitle: 'Конвертируйте изображения <span>Быстро</span><br>и качественно',
-    heroDesc: 'Конвертируйте изображения между PNG, JPG и WebP или сжимайте их — всё в вашем браузере, ничего не загружается.',
-    tabConvert: 'Конвертировать', tabCompress: 'Сжать',
-    drop1Title: 'Перетащите изображения сюда или нажмите', drop1Sub: 'Поддерживает: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Перетащите изображения сюда для сжатия', drop2Sub: 'Уменьшите размер, сохраняя качество',
-    labelFormat: 'Конвертировать в', labelQuality: 'Качество',
-    labelCompressQ: 'Уровень сжатия', labelCompressFmt: 'Формат вывода',
-    optSame: 'Тот же формат',
-    proc1: 'Конвертация...', proc2: 'Сжатие...',
-    btnConvert: '⚡ Конвертировать', btnCompress: '🗜️ Сжать изображения',
-    result1: '✅ Конвертация завершена', result2: '✅ Сжатие завершено',
-    dlAll: 'Скачать всё', download: 'Скачать',
-    stat1: 'Полностью бесплатно', stat2: 'Загрузок на сервер', stat3: 'Без ограничений',
-    f1t: 'Полная конфиденциальность', f1d: 'Изображения обрабатываются только в вашем браузере',
-    f2t: 'Мгновенная обработка', f2d: 'Конвертируйте за секунды',
-    f3t: 'Пакетная обработка', f3d: 'Конвертируйте десятки изображений за раз',
-    f4t: 'Все форматы', f4d: 'PNG, JPG, WebP, BMP, GIF полностью поддерживаются',
-    footer: '© 2025 SwiftImage • Бесплатный конвертер изображений • Всё в вашем браузере',
-    ad: 'Реклама', saved: 'Сохранено', original: 'Оригинал',
-    compLow: 'Низкий', compMid: 'Средний', compHigh: 'Высокий', noFiles: 'Сначала выберите изображения', done: 'Готово! ✓'
-  },
-  tr: {
-    rtl: false, flag: '🇹🇷', name: 'Türkçe',
-    badge: '%100 Ücretsiz • Kayıt yok • Tam gizlilik',
-    heroTitle: 'Görüntüleri <span>Hızlıca</span><br>Dönüştür & Sıkıştır',
-    heroDesc: 'Görüntüleri PNG, JPG ve WebP arasında dönüştürün veya sıkıştırın — her şey tarayıcınızda yapılır, hiçbir şey yüklenmez.',
-    tabConvert: 'Dönüştür', tabCompress: 'Sıkıştır',
-    drop1Title: 'Görüntüleri buraya sürükleyin veya tıklayın', drop1Sub: 'Destekler: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Sıkıştırmak için görüntüleri buraya sürükleyin', drop2Sub: 'Kaliteyi koruyarak boyutu azaltın',
-    labelFormat: 'Dönüştür:', labelQuality: 'Kalite',
-    labelCompressQ: 'Sıkıştırma seviyesi', labelCompressFmt: 'Çıkış formatı',
-    optSame: 'Aynı format',
-    proc1: 'Dönüştürülüyor...', proc2: 'Sıkıştırılıyor...',
-    btnConvert: '⚡ Görüntüleri dönüştür', btnCompress: '🗜️ Görüntüleri sıkıştır',
-    result1: '✅ Dönüştürme tamamlandı', result2: '✅ Sıkıştırma tamamlandı',
-    dlAll: 'Tümünü indir', download: 'İndir',
-    stat1: 'Tamamen ücretsiz', stat2: 'Sunucu yüklemesi', stat3: 'Dosya limiti yok',
-    f1t: 'Tam gizlilik', f1d: 'Görüntüler yalnızca tarayıcınızda işlenir',
-    f2t: 'Anında işlem', f2d: 'Saniyeler içinde dönüştürün',
-    f3t: 'Toplu işlem', f3d: 'Onlarca görüntüyü aynı anda dönüştürün',
-    f4t: 'Tüm formatlar', f4d: 'PNG, JPG, WebP, BMP, GIF tam desteklenir',
-    footer: '© 2025 SwiftImage • Ücretsiz görüntü dönüştürücü • Her şey tarayıcınızda',
-    ad: 'Reklam', saved: 'Tasarruf', original: 'Orijinal',
-    compLow: 'Düşük', compMid: 'Orta', compHigh: 'Yüksek', noFiles: 'Önce görüntü seçin', done: 'Bitti! ✓'
-  },
-  zh: {
-    rtl: false, flag: '🇨🇳', name: '中文',
-    badge: '100%免费 • 无需注册 • 完全隐私',
-    heroTitle: '快速<span>转换</span>图片<br>保持高质量',
-    heroDesc: '在PNG、JPG和WebP之间转换图片，或压缩图片——全在浏览器中完成，无需上传到服务器。',
-    tabConvert: '格式转换', tabCompress: '压缩图片',
-    drop1Title: '拖拽图片到这里或点击选择', drop1Sub: '支持: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: '拖拽图片到这里进行压缩', drop2Sub: '在保持质量的同时减小文件大小',
-    labelFormat: '转换为', labelQuality: '质量',
-    labelCompressQ: '压缩级别', labelCompressFmt: '输出格式',
-    optSame: '相同格式',
-    proc1: '转换中...', proc2: '压缩中...',
-    btnConvert: '⚡ 转换图片', btnCompress: '🗜️ 压缩图片',
-    result1: '✅ 转换完成', result2: '✅ 压缩完成',
-    dlAll: '全部下载', download: '下载',
-    stat1: '完全免费', stat2: '服务器上传', stat3: '无文件限制',
-    f1t: '完全隐私', f1d: '图片仅在您的浏览器中处理',
-    f2t: '即时处理', f2d: '几秒内完成转换',
-    f3t: '批量处理', f3d: '一次转换数十张图片',
-    f4t: '所有格式', f4d: 'PNG, JPG, WebP, BMP, GIF完全支持',
-    footer: '© 2025 SwiftImage • 免费图片转换器 • 一切在浏览器中完成',
-    ad: '广告', saved: '节省', original: '原始',
-    compLow: '低', compMid: '中', compHigh: '高', noFiles: '请先选择图片', done: '完成! ✓'
-  },
-  ja: {
-    rtl: false, flag: '🇯🇵', name: '日本語',
-    badge: '100%無料 • 登録不要 • 完全プライバシー',
-    heroTitle: '画像を<span>素早く</span><br>高品質に変換',
-    heroDesc: 'PNG、JPG、WebP間で画像を変換したり圧縮したりできます — すべてブラウザ内で完結、サーバーへのアップロード不要。',
-    tabConvert: 'フォーマット変換', tabCompress: '画像圧縮',
-    drop1Title: 'ここに画像をドラッグまたはクリック', drop1Sub: '対応: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'ここに画像をドラッグして圧縮', drop2Sub: '品質を保ちながらファイルサイズを削減',
-    labelFormat: '変換先', labelQuality: '品質',
-    labelCompressQ: '圧縮レベル', labelCompressFmt: '出力形式',
-    optSame: '同じ形式',
-    proc1: '変換中...', proc2: '圧縮中...',
-    btnConvert: '⚡ 画像を変換', btnCompress: '🗜️ 画像を圧縮',
-    result1: '✅ 変換完了', result2: '✅ 圧縮完了',
-    dlAll: 'すべてダウンロード', download: 'ダウンロード',
-    stat1: '完全無料', stat2: 'サーバーアップロード', stat3: 'ファイル数制限なし',
-    f1t: '完全プライバシー', f1d: '画像はブラウザ内のみで処理',
-    f2t: '即時処理', f2d: '数秒で変換完了',
-    f3t: 'バッチ処理', f3d: '複数の画像を一度に変換',
-    f4t: 'すべての形式', f4d: 'PNG, JPG, WebP, BMP, GIF完全対応',
-    footer: '© 2025 SwiftImage • 無料画像変換ツール • すべてブラウザ内で完結',
-    ad: '広告', saved: '削減', original: '元のサイズ',
-    compLow: '低', compMid: '中', compHigh: '高', noFiles: '最初に画像を選択してください', done: '完了! ✓'
-  },
-  ko: {
-    rtl: false, flag: '🇰🇷', name: '한국어',
-    badge: '100% 무료 • 회원가입 불필요 • 완전한 개인정보 보호',
-    heroTitle: '이미지를 <span>빠르게</span><br>고품질로 변환',
-    heroDesc: 'PNG, JPG, WebP 간에 이미지를 변환하거나 압축하세요 — 모든 작업이 브라우저에서 이루어집니다.',
-    tabConvert: '형식 변환', tabCompress: '이미지 압축',
-    drop1Title: '이미지를 여기에 드래그하거나 클릭', drop1Sub: '지원: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: '압축할 이미지를 여기에 드래그', drop2Sub: '품질을 유지하면서 파일 크기 줄이기',
-    labelFormat: '변환 형식', labelQuality: '품질',
-    labelCompressQ: '압축 수준', labelCompressFmt: '출력 형식',
-    optSame: '같은 형식',
-    proc1: '변환 중...', proc2: '압축 중...',
-    btnConvert: '⚡ 이미지 변환', btnCompress: '🗜️ 이미지 압축',
-    result1: '✅ 변환 완료', result2: '✅ 압축 완료',
-    dlAll: '모두 다운로드', download: '다운로드',
-    stat1: '완전 무료', stat2: '서버 업로드', stat3: '파일 제한 없음',
-    f1t: '완전한 개인정보 보호', f1d: '이미지는 브라우저에서만 처리됩니다',
-    f2t: '즉시 처리', f2d: '몇 초 안에 변환',
-    f3t: '일괄 처리', f3d: '한 번에 수십 개의 이미지 변환',
-    f4t: '모든 형식', f4d: 'PNG, JPG, WebP, BMP, GIF 완전 지원',
-    footer: '© 2025 SwiftImage • 무료 이미지 변환기 • 모든 작업은 브라우저에서',
-    ad: '광고', saved: '절약됨', original: '원본',
-    compLow: '낮음', compMid: '중간', compHigh: '높음', noFiles: '먼저 이미지를 선택하세요', done: '완료! ✓'
-  },
-  hi: {
-    rtl: false, flag: '🇮🇳', name: 'हिन्दी',
-    badge: '100% मुफ्त • बिना पंजीकरण • पूर्ण गोपनीयता',
-    heroTitle: 'छवियां <span>तेज़ी से</span><br>उच्च गुणवत्ता में बदलें',
-    heroDesc: 'PNG, JPG और WebP के बीच छवियां बदलें या संपीड़ित करें — सब कुछ आपके ब्राउज़र में होता है।',
-    tabConvert: 'फॉर्मेट बदलें', tabCompress: 'संपीड़ित करें',
-    drop1Title: 'यहां छवियां खींचें या क्लिक करें', drop1Sub: 'समर्थन: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'संपीड़न के लिए छवियां खींचें', drop2Sub: 'गुणवत्ता बनाए रखते हुए आकार घटाएं',
-    labelFormat: 'में बदलें', labelQuality: 'गुणवत्ता',
-    labelCompressQ: 'संपीड़न स्तर', labelCompressFmt: 'आउटपुट फॉर्मेट',
-    optSame: 'समान फॉर्मेट',
-    proc1: 'परिवर्तित हो रहा है...', proc2: 'संपीड़ित हो रहा है...',
-    btnConvert: '⚡ छवियां बदलें', btnCompress: '🗜️ छवियां संपीड़ित करें',
-    result1: '✅ परिवर्तन पूर्ण', result2: '✅ संपीड़न पूर्ण',
-    dlAll: 'सब डाउनलोड करें', download: 'डाउनलोड',
-    stat1: 'पूरी तरह मुफ्त', stat2: 'सर्वर अपलोड', stat3: 'कोई फ़ाइल सीमा नहीं',
-    f1t: 'पूर्ण गोपनीयता', f1d: 'छवियां केवल आपके ब्राउज़र में संसाधित होती हैं',
-    f2t: 'तत्काल प्रसंस्करण', f2d: 'सेकंड में बदलें',
-    f3t: 'बैच प्रसंस्करण', f3d: 'एक साथ दर्जनों छवियां बदलें',
-    f4t: 'सभी फॉर्मेट', f4d: 'PNG, JPG, WebP, BMP, GIF पूरी तरह समर्थित',
-    footer: '© 2025 SwiftImage • मुफ्त छवि परिवर्तक • सब आपके ब्राउज़र में',
-    ad: 'विज्ञापन', saved: 'बचाया', original: 'मूल',
-    compLow: 'कम', compMid: 'मध्यम', compHigh: 'उच्च', noFiles: 'पहले छवियां चुनें', done: 'हो गया! ✓'
-  },
-  id: {
-    rtl: false, flag: '🇮🇩', name: 'Indonesia',
-    badge: '100% Gratis • Tanpa daftar • Privasi penuh',
-    heroTitle: 'Konversi Gambar <span>Cepat</span><br>& Berkualitas Tinggi',
-    heroDesc: 'Konversi gambar antara PNG, JPG, dan WebP, atau kompres — semuanya di browser Anda, tidak ada yang diunggah.',
-    tabConvert: 'Konversi Format', tabCompress: 'Kompres Gambar',
-    drop1Title: 'Seret gambar ke sini atau klik', drop1Sub: 'Mendukung: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Seret gambar ke sini untuk dikompres', drop2Sub: 'Kurangi ukuran sambil mempertahankan kualitas',
-    labelFormat: 'Konversi ke', labelQuality: 'Kualitas',
-    labelCompressQ: 'Tingkat kompresi', labelCompressFmt: 'Format output',
-    optSame: 'Format sama',
-    proc1: 'Mengkonversi...', proc2: 'Mengkompres...',
-    btnConvert: '⚡ Konversi gambar', btnCompress: '🗜️ Kompres gambar',
-    result1: '✅ Konversi selesai', result2: '✅ Kompresi selesai',
-    dlAll: 'Unduh semua', download: 'Unduh',
-    stat1: 'Sepenuhnya gratis', stat2: 'Unggahan server', stat3: 'Tanpa batas file',
-    f1t: 'Privasi penuh', f1d: 'Gambar diproses hanya di browser Anda',
-    f2t: 'Pemrosesan instan', f2d: 'Konversi dalam hitungan detik',
-    f3t: 'Pemrosesan batch', f3d: 'Konversi puluhan gambar sekaligus',
-    f4t: 'Semua format', f4d: 'PNG, JPG, WebP, BMP, GIF didukung penuh',
-    footer: '© 2025 SwiftImage • Konverter gambar gratis • Semuanya di browser Anda',
-    ad: 'Iklan', saved: 'Dihemat', original: 'Asli',
-    compLow: 'Rendah', compMid: 'Sedang', compHigh: 'Tinggi', noFiles: 'Pilih gambar terlebih dahulu', done: 'Selesai! ✓'
-  },
-  nl: {
-    rtl: false, flag: '🇳🇱', name: 'Nederlands',
-    badge: '100% Gratis • Geen registratie • Volledige privacy',
-    heroTitle: 'Afbeeldingen <span>Snel</span><br>& Hoge Kwaliteit converteren',
-    heroDesc: 'Converteer afbeeldingen tussen PNG, JPG en WebP of comprimeer ze — alles in uw browser, niets wordt geüpload.',
-    tabConvert: 'Converteren', tabCompress: 'Comprimeren',
-    drop1Title: 'Sleep afbeeldingen hierheen of klik', drop1Sub: 'Ondersteunt: PNG, JPG, WebP, BMP, GIF',
-    drop2Title: 'Sleep afbeeldingen hierheen om te comprimeren', drop2Sub: 'Verklein de bestandsgrootte met behoud van kwaliteit',
-    labelFormat: 'Converteren naar', labelQuality: 'Kwaliteit',
-    labelCompressQ: 'Compressieniveau', labelCompressFmt: 'Uitvoerformaat',
-    optSame: 'Zelfde formaat',
-    proc1: 'Converteren...', proc2: 'Comprimeren...',
-    btnConvert: '⚡ Afbeeldingen converteren', btnCompress: '🗜️ Afbeeldingen comprimeren',
-    result1: '✅ Conversie voltooid', result2: '✅ Compressie voltooid',
-    dlAll: 'Alles downloaden', download: 'Downloaden',
-    stat1: 'Volledig gratis', stat2: 'Server uploads', stat3: 'Geen bestandslimiet',
-    f1t: 'Volledige privacy', f1d: 'Afbeeldingen worden alleen in uw browser verwerkt',
-    f2t: 'Directe verwerking', f2d: 'Converteren in seconden',
-    f3t: 'Batchverwerking', f3d: 'Converteer tientallen afbeeldingen tegelijk',
-    f4t: 'Alle formaten', f4d: 'PNG, JPG, WebP, BMP, GIF volledig ondersteund',
-    footer: '© 2025 SwiftImage • Gratis afbeeldingsconverter • Alles in uw browser',
-    ad: 'Advertentie', saved: 'Bespaard', original: 'Origineel',
-    compLow: 'Laag', compMid: 'Gemiddeld', compHigh: 'Hoog', noFiles: 'Selecteer eerst afbeeldingen', done: 'Klaar! ✓'
-  }
-};
-
-// ===== STATE =====
-let currentLang = 'ar';
-let filesMap = { convert: [], compress: [] };
-let resultsMap = { convert: [], compress: [] };
-
-// ===== LANG =====
-function toggleLangDropdown() {
-  document.getElementById('lang-dropdown').classList.toggle('open');
-}
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('.lang-selector')) {
-    document.getElementById('lang-dropdown').classList.remove('open');
-  }
-});
-
-function setLang(lang) {
-  currentLang = lang;
-  const t = T[lang];
-  document.getElementById('lang-dropdown').classList.remove('open');
-  document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('active'));
-  document.getElementById('opt-' + lang).classList.add('active');
-  document.getElementById('current-flag').textContent = t.flag;
-  document.getElementById('current-lang-name').textContent = t.name;
-
-  const isRTL = t.rtl;
-  document.documentElement.lang = lang;
-  document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
-  document.body.classList.toggle('ltr', !isRTL);
-
-  document.getElementById('t-badge').textContent = t.badge;
-  document.getElementById('t-hero-title').innerHTML = t.heroTitle;
-  document.getElementById('t-hero-desc').textContent = t.heroDesc;
-  document.getElementById('tab-convert').textContent = t.tabConvert;
-  document.getElementById('tab-compress').textContent = t.tabCompress;
-  document.getElementById('t-drop1-title').textContent = t.drop1Title;
-  document.getElementById('t-drop1-sub').textContent = t.drop1Sub;
-  document.getElementById('t-drop2-title').textContent = t.drop2Title;
-  document.getElementById('t-drop2-sub').textContent = t.drop2Sub;
-  document.getElementById('t-label-format').textContent = t.labelFormat;
-  document.getElementById('t-label-quality').textContent = t.labelQuality;
-  document.getElementById('t-label-compress-q').textContent = t.labelCompressQ;
-  document.getElementById('t-label-compress-fmt').textContent = t.labelCompressFmt;
-  document.getElementById('t-opt-same').textContent = t.optSame;
-  document.getElementById('t-proc1').textContent = t.proc1;
-  document.getElementById('t-proc2').textContent = t.proc2;
-  document.getElementById('t-btn-convert').textContent = t.btnConvert;
-  document.getElementById('t-btn-compress').textContent = t.btnCompress;
-  document.getElementById('t-result1-title').textContent = t.result1;
-  document.getElementById('t-result2-title').textContent = t.result2;
-  document.getElementById('t-dlall1').textContent = t.dlAll;
-  document.getElementById('t-dlall2').textContent = t.dlAll;
-  document.getElementById('t-stat1').textContent = t.stat1;
-  document.getElementById('t-stat2').textContent = t.stat2;
-  document.getElementById('t-stat3').textContent = t.stat3;
-  document.getElementById('t-f1t').textContent = t.f1t;
-  document.getElementById('t-f1d').textContent = t.f1d;
-  document.getElementById('t-f2t').textContent = t.f2t;
-  document.getElementById('t-f2d').textContent = t.f2d;
-  document.getElementById('t-f3t').textContent = t.f3t;
-  document.getElementById('t-f3d').textContent = t.f3d;
-  document.getElementById('t-f4t').textContent = t.f4t;
-  document.getElementById('t-f4d').textContent = t.f4d;
-  document.getElementById('t-footer').textContent = t.footer;
-  ['t-ad','t-ad2','t-ad3'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = t.ad; });
-  updateCompressLabel(document.getElementById('quality-compress').value);
-}
-
-// ===== TOOL SWITCH =====
-function switchTool(tool) {
-  document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.tool-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tool-' + tool).classList.add('active');
-  document.getElementById('tab-' + tool).classList.add('active');
-}
-
-// ===== FILE HANDLING =====
-function handleFiles(files, tool) {
-  Array.from(files).forEach(f => { if (f.type.startsWith('image/')) filesMap[tool].push(f); });
-  renderPreviews(tool);
-  document.getElementById('btn-' + tool).disabled = !filesMap[tool].length;
-}
-
-function renderPreviews(tool) {
-  const grid = document.getElementById('preview-' + tool);
-  grid.innerHTML = '';
-  filesMap[tool].forEach((file, i) => {
-    const url = URL.createObjectURL(file);
-    const item = document.createElement('div');
-    item.className = 'preview-item';
-    item.innerHTML = `<img src="${url}"><button class="preview-remove" onclick="removeFile('${tool}',${i})">✕</button><div class="preview-info"><div class="preview-name">${file.name}</div><div class="preview-size">${formatSize(file.size)}</div></div>`;
-    grid.appendChild(item);
-  });
-}
-
-function removeFile(tool, i) {
-  filesMap[tool].splice(i, 1);
-  renderPreviews(tool);
-  document.getElementById('btn-' + tool).disabled = !filesMap[tool].length;
-}
-
-// ===== DRAG DROP =====
-['convert','compress'].forEach(tool => {
-  const dz = document.getElementById('dropzone-' + tool);
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
-  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
-  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); handleFiles(e.dataTransfer.files, tool); });
-});
-
-// ===== PROCESS =====
-async function processFiles(tool) {
-  const t = T[currentLang];
-  if (!filesMap[tool].length) { showToast(t.noFiles); return; }
-  const btn = document.getElementById('btn-' + tool);
-  const proc = document.getElementById('proc-' + tool);
-  const prog = document.getElementById('prog-' + tool);
-  const fill = document.getElementById('progfill-' + tool);
-  const list = document.getElementById('results-list-' + tool);
-  const section = document.getElementById('results-' + tool);
-
-  btn.disabled = true; proc.classList.add('show'); prog.classList.add('show');
-  fill.style.width = '0%'; list.innerHTML = ''; resultsMap[tool] = [];
-
-  for (let i = 0; i < filesMap[tool].length; i++) {
-    const result = await processImage(filesMap[tool][i], tool);
-    resultsMap[tool].push(result);
-    fill.style.width = ((i + 1) / filesMap[tool].length * 100) + '%';
-    list.appendChild(createResultItem(result, tool));
-  }
-
-  proc.classList.remove('show'); section.classList.add('show');
-  btn.disabled = false; showToast(t.done);
-}
-
-function processImage(file, tool) {
-  const MAX_DIM = 3000; // limit for mobile performance
-  return new Promise(resolve => {
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = () => {
-      // Scale down large images for speed
-      let w = img.naturalWidth, h = img.naturalHeight;
-      if (w > MAX_DIM || h > MAX_DIM) {
-        const ratio = Math.min(MAX_DIM / w, MAX_DIM / h);
-        w = Math.round(w * ratio);
-        h = Math.round(h * ratio);
+      if (files.length > 0) {
+        alert(`Uploaded: ${files[0].name}`);
       }
-      const canvas = document.createElement('canvas');
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      URL.revokeObjectURL(url);
+    });
+  </script>
 
-      let fmt, q, ext;
-      if (tool === 'convert') {
-        fmt = document.getElementById('output-format').value;
-        q = parseInt(document.getElementById('quality-convert').value) / 100;
-      } else {
-        const f = document.getElementById('compress-format').value;
-        fmt = f === 'same' ? file.type : f;
-        q = parseInt(document.getElementById('quality-compress').value) / 100;
-      }
-      ext = fmt === 'image/jpeg' ? 'jpg' : fmt === 'image/webp' ? 'webp' : 'png';
-      const name = file.name.replace(/\.[^.]+$/, '') + '.' + ext;
-
-      canvas.toBlob(blob => {
-        resolve({ blob, name, originalSize: file.size, newSize: blob.size, dataUrl: canvas.toDataURL(fmt, q) });
-      }, fmt, fmt === 'image/png' ? undefined : q);
-    };
-    img.src = url;
-  });
-}
-
-function createResultItem(result, tool) {
-  const t = T[currentLang];
-  const saved = Math.round((1 - result.newSize / result.originalSize) * 100);
-  const savedHtml = saved > 0 ? `<span class="size-saved">-${saved}% ${t.saved}</span>` : '';
-  const div = document.createElement('div');
-  div.className = 'result-item';
-  div.innerHTML = `<img class="result-thumb" src="${result.dataUrl}"><div class="result-meta"><div class="result-name">${result.name}</div><div class="result-sizes"><span>${t.original}: ${formatSize(result.originalSize)}</span><span>→</span><span>${formatSize(result.newSize)}</span>${savedHtml}</div></div><button class="download-btn">${t.download}</button>`;
-  div.querySelector('.download-btn').addEventListener('click', () => downloadFile(result));
-  return div;
-}
-
-function downloadFile(result) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(result.blob);
-  a.download = result.name; a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-}
-
-function downloadAll(tool) {
-  resultsMap[tool].forEach((r, i) => setTimeout(() => downloadFile(r), i * 300));
-}
-
-// ===== HELPERS =====
-function formatSize(b) {
-  if (b < 1024) return b + ' B';
-  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
-  return (b/1048576).toFixed(2) + ' MB';
-}
-
-function updateCompressLabel(val) {
-  const t = T[currentLang];
-  let label = val < 40 ? t.compLow : val < 75 ? t.compMid : t.compHigh;
-  document.getElementById('qval-compress').textContent = label + ' (' + val + '%)';
-}
-
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg; toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2500);
-}
-
-// Init
-setLang('ar');
-</script>
 </body>
 </html>
