@@ -1,0 +1,338 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <title>SwiftImage - Free Image Compressor & Converter</title><meta
+name="description"
+content="Compress and convert JPG, PNG and WEBP images online for free. Fast, secure and high quality image tools."
+/>
+
+<meta
+name="keywords"
+content="image compressor, jpg to png, png to webp, webp converter, compress image online"
+/>
+
+  <link
+    rel="icon"
+    href="https://cdn-icons-png.flaticon.com/512/136/136524.png"
+  />  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 25px 8%;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(10px);
+      background: rgba(15,23,42,0.8);
+      z-index: 999;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    nav a {
+      color: #cbd5e1;
+      text-decoration: none;
+      margin-left: 25px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: #7c3aed;
+      filter: blur(160px);
+      opacity: 0.25;
+      z-index: -1;
+    }
+
+    .hero h1 {
+      font-size: 64px;
+      max-width: 900px;
+      line-height: 1.1;
+      margin-bottom: 25px;
+    }
+
+    .hero p {
+      color: #94a3b8;
+      max-width: 700px;
+      font-size: 20px;
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    .upload-btn {
+      padding: 18px 40px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 10px 30px rgba(124,58,237,0.35);
+    }
+
+    .upload-btn:hover {
+      transform: translateY(-4px);
+    }
+
+    .drop-zone {
+      width: 90%;
+      max-width: 900px;
+      margin-top: 60px;
+      border: 2px dashed rgba(255,255,255,0.2);
+      padding: 70px 30px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.03);
+      transition: 0.3s;
+    }
+
+    .drop-zone.dragover {
+      border-color: #7c3aed;
+      background: rgba(124,58,237,0.12);
+      transform: scale(1.01);
+    }
+
+    .drop-zone h2 {
+      font-size: 34px;
+      margin-bottom: 15px;
+    }
+
+    .drop-zone p {
+      color: #94a3b8;
+      font-size: 18px;
+    }
+
+    .tools {
+      padding: 120px 8%;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 42px;
+      margin-bottom: 70px;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .tool-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 35px;
+      border-radius: 24px;
+      transition: 0.3s;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(124,58,237,0.4);
+    }
+
+    .tool-card h3 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .tool-card p {
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+
+    .features {
+      padding: 100px 8%;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+    }
+
+    .feature {
+      background: rgba(255,255,255,0.03);
+      padding: 30px;
+      border-radius: 24px;
+    }
+
+    .feature h4 {
+      margin-bottom: 12px;
+      font-size: 22px;
+    }
+
+    .feature p {
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      padding: 50px 20px;
+      color: #94a3b8;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    @media(max-width: 768px) {
+      .hero h1 {
+        font-size: 42px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      nav {
+        display: none;
+      }
+    }
+  </style></head>
+<body>  <header>
+    <div class="logo">SwiftImage</div><nav>
+  <a href="#tools">Tools</a>
+  <a href="#features">Features</a>
+  <a href="#">API</a>
+  <a href="#">Pricing</a>
+</nav>
+
+  </header>  <section class="hero">
+    <h1>Compress & Convert Images Instantly</h1><p>
+  Free online JPG, PNG & WEBP image compressor and converter.
+  Fast, secure and high-quality image processing directly in your browser.
+</p>
+
+<button class="upload-btn" id="uploadBtn">Upload Image</button>
+
+<input type="file" id="fileInput" accept="image/*" hidden />
+
+<div class="drop-zone" id="dropZone">
+  <h2>Drag & Drop Your Image Here</h2>
+  <p>Supports JPG, PNG and WEBP formats</p>
+</div>
+
+  </section>  <section class="tools" id="tools">
+    <h2 class="section-title">Popular Tools</h2><div class="tools-grid">
+  <div class="tool-card">
+    <h3>Compress Image</h3>
+    <p>Reduce image size without losing quality in seconds.</p>
+  </div>
+
+  <div class="tool-card">
+    <h3>JPG to PNG</h3>
+    <p>Convert JPG images to high-quality transparent PNG files.</p>
+  </div>
+
+  <div class="tool-card">
+    <h3>PNG to WEBP</h3>
+    <p>Convert PNG images into lightweight WEBP format instantly.</p>
+  </div>
+
+  <div class="tool-card">
+    <h3>WEBP to JPG</h3>
+    <p>Transform WEBP images into compatible JPG format easily.</p>
+  </div>
+</div>
+
+  </section>  <section class="features" id="features">
+    <h2 class="section-title">Why Choose SwiftImage?</h2><div class="features-grid">
+  <div class="feature">
+    <h4>⚡ Ultra Fast</h4>
+    <p>Convert and compress images in seconds with blazing-fast performance.</p>
+  </div>
+
+  <div class="feature">
+    <h4>🔒 Secure Processing</h4>
+    <p>Your images stay private and secure during processing.</p>
+  </div>
+
+  <div class="feature">
+    <h4>🌐 Browser Based</h4>
+    <p>No software installation required. Everything works directly online.</p>
+  </div>
+
+  <div class="feature">
+    <h4>📱 Mobile Friendly</h4>
+    <p>Fully responsive design optimized for all devices.</p>
+  </div>
+</div>
+
+  </section>  <footer>
+    © 2026 SwiftImage — Free Image Compressor & Converter
+  </footer>  <script>
+    const dropZone = document.getElementById('dropZone');
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+
+      const files = e.dataTransfer.files;
+
+      if (files.length > 0) {
+        alert(`Uploaded: ${files[0].name}`);
+      }
+    });
+
+    const uploadBtn = document.getElementById('uploadBtn');
+    const fileInput = document.getElementById('fileInput');
+
+    uploadBtn.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+
+      if (file) {
+        alert(`Uploaded: ${file.name}`);
+      }
+    });
+  </script></body>
+    </html>
