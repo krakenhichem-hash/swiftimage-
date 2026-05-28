@@ -842,6 +842,7 @@ function setLang(lang) {
   document.getElementById('t-footer').textContent = t.footer;
   ['t-ad','t-ad2','t-ad3'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = t.ad; });
   updateCompressLabel(document.getElementById('quality-compress').value);
+  try { sessionStorage.setItem('swiftimage_lang', lang); } catch(e) {}
 }
 
 // ===== TOOL SWITCH =====
@@ -989,8 +990,9 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
-// Init
-setLang('ar');
+// Init - restore saved language
+const savedLang = sessionStorage.getItem('swiftimage_lang') || 'ar';
+setLang(savedLang);
 </script>
 </body>
 </html>
