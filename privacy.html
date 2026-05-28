@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="SwiftImage Privacy Policy - سياسة الخصوصية">
+<title>SwiftImage | Privacy Policy - سياسة الخصوصية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #111118; --card: #16161f;
+    --border: #ffffff0f; --accent: #6ee7b7; --accent2: #818cf8;
+    --text: #f1f5f9; --muted: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Tajawal', sans-serif; min-height: 100vh; }
+  body.ltr { direction: ltr; font-family: 'Syne', sans-serif; }
+
+  .bg-grid {
+    position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(110,231,183,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(110,231,183,0.03) 1px, transparent 1px);
+    background-size: 60px 60px; pointer-events: none; z-index: 0;
+  }
+
+  header {
+    padding: 16px 0; border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.85);
+  }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 860px; margin: 0 auto; padding: 0 20px; }
+  .logo { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+  .back-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: 100px; cursor: pointer; font-family: inherit; font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: all 0.3s; }
+  .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .lang-bar { display: flex; gap: 8px; padding: 16px 20px; max-width: 860px; margin: 0 auto; flex-wrap: wrap; }
+  .lang-pill { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 5px 12px; border-radius: 100px; cursor: pointer; font-size: 0.8rem; font-weight: 700; transition: all 0.2s; }
+  .lang-pill:hover, .lang-pill.active { border-color: var(--accent); color: var(--accent); background: rgba(110,231,183,0.08); }
+
+  .wrapper { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; position: relative; z-index: 1; }
+
+  .page-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; margin-bottom: 8px; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .page-date { color: var(--muted); font-size: 0.85rem; margin-bottom: 40px; }
+
+  .section { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin-bottom: 20px; }
+  .section h2 { font-size: 1.15rem; font-weight: 800; color: var(--accent); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  .section p { color: #94a3b8; line-height: 1.8; font-size: 0.95rem; margin-bottom: 10px; }
+  .section p:last-child { margin-bottom: 0; }
+  .section ul { color: #94a3b8; line-height: 1.8; font-size: 0.95rem; padding-right: 20px; }
+  body.ltr .section ul { padding-right: 0; padding-left: 20px; }
+  .section ul li { margin-bottom: 6px; }
+
+  .highlight { background: rgba(110,231,183,0.08); border: 1px solid rgba(110,231,183,0.2); border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; color: var(--accent); font-weight: 700; font-size: 0.95rem; line-height: 1.7; }
+
+  footer { border-top: 1px solid var(--border); padding: 24px 20px; text-align: center; color: var(--muted); font-size: 0.82rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">SwiftImage</a>
+    <a href="index.html" class="back-btn" id="back-btn">← الرئيسية</a>
+  </div>
+</header>
+
+<div class="lang-bar" id="lang-bar"></div>
+
+<div class="wrapper">
+  <h1 class="page-title" id="page-title">سياسة الخصوصية</h1>
+  <p class="page-date" id="page-date">آخر تحديث: مايو 2025</p>
+
+  <div class="highlight" id="highlight-text">
+    🔒 SwiftImage لا تجمع أي بيانات شخصية. جميع عمليات تحويل وضغط الصور تتم داخل متصفحك فقط، ولا يتم رفع أي ملف إلى خوادمنا.
+  </div>
+
+  <div class="section">
+    <h2>📋 <span id="s1-title">المعلومات التي نجمعها</span></h2>
+    <p id="s1-body">لا نجمع أي معلومات شخصية من المستخدمين. SwiftImage هي أداة تعمل بالكامل في متصفحك (Client-Side)، مما يعني أن صورك وملفاتك لا تغادر جهازك أبداً.</p>
+  </div>
+
+  <div class="section">
+    <h2>🖼️ <span id="s2-title">معالجة الصور</span></h2>
+    <p id="s2-body">جميع عمليات تحويل الصور وضغطها تتم محلياً في متصفحك باستخدام تقنيات HTML5 Canvas API. لا نتلقى، ولا نخزن، ولا نعالج أي صور على خوادمنا.</p>
+  </div>
+
+  <div class="section">
+    <h2>🍪 <span id="s3-title">ملفات تعريف الارتباط (Cookies)</span></h2>
+    <p id="s3-body">قد نستخدم ملفات تعريف الارتباط لأغراض تحليلية فقط (مثل Google Analytics) لفهم كيفية استخدام الموقع وتحسين تجربة المستخدم. لا تحتوي هذه الملفات على معلومات شخصية.</p>
+  </div>
+
+  <div class="section">
+    <h2>📊 <span id="s4-title">الإعلانات</span></h2>
+    <p id="s4-body">قد يعرض موقعنا إعلانات من خلال Google AdSense. قد يستخدم Google ملفات تعريف الارتباط لعرض إعلانات مخصصة بناءً على زياراتك السابقة. يمكنك إلغاء الاشتراك في هذه الخدمة من خلال إعدادات إعلانات Google.</p>
+  </div>
+
+  <div class="section">
+    <h2>🔗 <span id="s5-title">روابط الطرف الثالث</span></h2>
+    <p id="s5-body">قد يحتوي موقعنا على روابط لمواقع خارجية. نحن لسنا مسؤولين عن ممارسات الخصوصية الخاصة بهذه المواقع ونشجعك على قراءة سياسات الخصوصية الخاصة بها.</p>
+  </div>
+
+  <div class="section">
+    <h2>👶 <span id="s6-title">خصوصية الأطفال</span></h2>
+    <p id="s6-body">خدماتنا ليست موجهة للأطفال دون سن 13 عاماً. لا نجمع عن قصد أي معلومات شخصية من الأطفال.</p>
+  </div>
+
+  <div class="section">
+    <h2>✏️ <span id="s7-title">تغييرات على سياسة الخصوصية</span></h2>
+    <p id="s7-body">قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سيتم نشر أي تغييرات على هذه الصفحة مع تحديث تاريخ "آخر تحديث".</p>
+  </div>
+
+  <div class="section">
+    <h2>📬 <span id="s8-title">التواصل معنا</span></h2>
+    <p id="s8-body">إذا كان لديك أي أسئلة حول سياسة الخصوصية، يمكنك التواصل معنا عبر صفحة <a href="about.html" style="color:var(--accent)">التواصل</a>.</p>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 SwiftImage • <a href="index.html">الرئيسية</a> • <a href="about.html">من نحن</a></p>
+</footer>
+
+<script>
+const langs = {
+  ar: { rtl:true, name:'🇸🇦 العربية', back:'← الرئيسية', title:'سياسة الخصوصية', date:'آخر تحديث: مايو 2025',
+    highlight:'🔒 SwiftImage لا تجمع أي بيانات شخصية. جميع عمليات تحويل وضغط الصور تتم داخل متصفحك فقط.',
+    s1t:'المعلومات التي نجمعها', s1b:'لا نجمع أي معلومات شخصية. SwiftImage تعمل بالكامل في متصفحك، صورك لا تغادر جهازك أبداً.',
+    s2t:'معالجة الصور', s2b:'جميع العمليات تتم محلياً في متصفحك باستخدام HTML5 Canvas API. لا نخزن أي صور على خوادمنا.',
+    s3t:'ملفات تعريف الارتباط', s3b:'قد نستخدم Google Analytics لفهم استخدام الموقع. لا تحتوي على معلومات شخصية.',
+    s4t:'الإعلانات', s4b:'قد نعرض إعلانات Google AdSense. يمكنك إلغاء الاشتراك من إعدادات إعلانات Google.',
+    s5t:'روابط الطرف الثالث', s5b:'لسنا مسؤولين عن ممارسات الخصوصية لمواقع خارجية.',
+    s6t:'خصوصية الأطفال', s6b:'خدماتنا ليست موجهة للأطفال دون 13 عاماً.',
+    s7t:'تغييرات السياسة', s7b:'قد نحدث هذه السياسة. سيتم نشر التغييرات على هذه الصفحة.',
+    s8t:'التواصل معنا', s8b:'لأي أسئلة تواصل معنا عبر صفحة التواصل.' },
+  en: { rtl:false, name:'🇺🇸 English', back:'← Home', title:'Privacy Policy', date:'Last updated: May 2025',
+    highlight:'🔒 SwiftImage does not collect any personal data. All image processing happens inside your browser only.',
+    s1t:'Information We Collect', s1b:'We do not collect any personal information. SwiftImage works entirely in your browser — your images never leave your device.',
+    s2t:'Image Processing', s2b:'All conversion and compression happens locally in your browser using HTML5 Canvas API. We never receive, store, or process your images on our servers.',
+    s3t:'Cookies', s3b:'We may use cookies for analytics purposes (e.g. Google Analytics) to understand site usage. These cookies contain no personal information.',
+    s4t:'Advertising', s4b:'We may display ads via Google AdSense. Google may use cookies to show personalized ads. You can opt out via Google Ad Settings.',
+    s5t:'Third-Party Links', s5b:'Our site may contain links to external websites. We are not responsible for their privacy practices.',
+    s6t:'Children\'s Privacy', s6b:'Our services are not directed to children under 13. We do not knowingly collect personal information from children.',
+    s7t:'Changes to This Policy', s7b:'We may update this privacy policy. Any changes will be posted on this page with an updated date.',
+    s8t:'Contact Us', s8b:'If you have questions about this privacy policy, please contact us via our About page.' },
+  fr: { rtl:false, name:'🇫🇷 Français', back:'← Accueil', title:'Politique de Confidentialité', date:'Dernière mise à jour: Mai 2025',
+    highlight:'🔒 SwiftImage ne collecte aucune donnée personnelle. Tout le traitement des images se fait dans votre navigateur.',
+    s1t:'Informations collectées', s1b:'Nous ne collectons aucune information personnelle. SwiftImage fonctionne entièrement dans votre navigateur.',
+    s2t:'Traitement des images', s2b:'Tout se passe localement dans votre navigateur via HTML5 Canvas API. Nous ne stockons jamais vos images.',
+    s3t:'Cookies', s3b:'Nous pouvons utiliser des cookies analytiques (Google Analytics). Ils ne contiennent aucune information personnelle.',
+    s4t:'Publicité', s4b:'Nous pouvons afficher des annonces Google AdSense. Vous pouvez vous désabonner via les paramètres Google.',
+    s5t:'Liens tiers', s5b:'Nous ne sommes pas responsables des pratiques de confidentialité des sites externes.',
+    s6t:'Confidentialité des enfants', s6b:'Nos services ne sont pas destinés aux enfants de moins de 13 ans.',
+    s7t:'Modifications', s7b:'Nous pouvons mettre à jour cette politique. Les modifications seront publiées sur cette page.',
+    s8t:'Nous contacter', s8b:'Pour toute question, contactez-nous via notre page À propos.' },
+  es: { rtl:false, name:'🇪🇸 Español', back:'← Inicio', title:'Política de Privacidad', date:'Última actualización: Mayo 2025',
+    highlight:'🔒 SwiftImage no recopila ningún dato personal. Todo el procesamiento de imágenes ocurre en tu navegador.',
+    s1t:'Información que recopilamos', s1b:'No recopilamos ninguna información personal. SwiftImage funciona completamente en tu navegador.',
+    s2t:'Procesamiento de imágenes', s2b:'Todo ocurre localmente en tu navegador usando HTML5 Canvas API. Nunca almacenamos tus imágenes.',
+    s3t:'Cookies', s3b:'Podemos usar cookies analíticas (Google Analytics). No contienen información personal.',
+    s4t:'Publicidad', s4b:'Podemos mostrar anuncios de Google AdSense. Puedes cancelar la suscripción en la configuración de anuncios de Google.',
+    s5t:'Enlaces de terceros', s5b:'No somos responsables de las prácticas de privacidad de sitios externos.',
+    s6t:'Privacidad infantil', s6b:'Nuestros servicios no están dirigidos a menores de 13 años.',
+    s7t:'Cambios en la política', s7b:'Podemos actualizar esta política. Los cambios se publicarán en esta página.',
+    s8t:'Contáctanos', s8b:'Para preguntas sobre esta política, contáctanos a través de nuestra página Acerca de.' },
+  de: { rtl:false, name:'🇩🇪 Deutsch', back:'← Startseite', title:'Datenschutzrichtlinie', date:'Zuletzt aktualisiert: Mai 2025',
+    highlight:'🔒 SwiftImage sammelt keine personenbezogenen Daten. Alle Bildverarbeitungen finden in Ihrem Browser statt.',
+    s1t:'Gesammelte Informationen', s1b:'Wir sammeln keine persönlichen Informationen. SwiftImage funktioniert vollständig in Ihrem Browser.',
+    s2t:'Bildverarbeitung', s2b:'Alles geschieht lokal in Ihrem Browser über HTML5 Canvas API. Wir speichern niemals Ihre Bilder.',
+    s3t:'Cookies', s3b:'Wir können Analyse-Cookies (Google Analytics) verwenden. Sie enthalten keine persönlichen Informationen.',
+    s4t:'Werbung', s4b:'Wir können Google AdSense-Anzeigen schalten. Sie können sich in den Google-Anzeigeneinstellungen abmelden.',
+    s5t:'Drittanbieter-Links', s5b:'Wir sind nicht verantwortlich für die Datenschutzpraktiken externer Websites.',
+    s6t:'Datenschutz für Kinder', s6b:'Unsere Dienste richten sich nicht an Kinder unter 13 Jahren.',
+    s7t:'Änderungen', s7b:'Wir können diese Richtlinie aktualisieren. Änderungen werden auf dieser Seite veröffentlicht.',
+    s8t:'Kontakt', s8b:'Bei Fragen kontaktieren Sie uns über unsere Über uns-Seite.' }
+};
+
+const allLangs = Object.keys(langs);
+let cur = 'ar';
+
+function buildLangBar() {
+  const bar = document.getElementById('lang-bar');
+  allLangs.forEach(l => {
+    const pill = document.createElement('span');
+    pill.className = 'lang-pill' + (l === cur ? ' active' : '');
+    pill.textContent = langs[l].name;
+    pill.onclick = () => setLang(l);
+    bar.appendChild(pill);
+  });
+}
+
+function setLang(l) {
+  if (!langs[l]) return;
+  cur = l;
+  const t = langs[l];
+  document.documentElement.lang = l;
+  document.documentElement.dir = t.rtl ? 'rtl' : 'ltr';
+  document.body.classList.toggle('ltr', !t.rtl);
+  document.getElementById('back-btn').textContent = t.back;
+  document.getElementById('page-title').textContent = t.title;
+  document.getElementById('page-date').textContent = t.date;
+  document.getElementById('highlight-text').textContent = t.highlight;
+  document.getElementById('s1-title').textContent = t.s1t;
+  document.getElementById('s1-body').textContent = t.s1b;
+  document.getElementById('s2-title').textContent = t.s2t;
+  document.getElementById('s2-body').textContent = t.s2b;
+  document.getElementById('s3-title').textContent = t.s3t;
+  document.getElementById('s3-body').textContent = t.s3b;
+  document.getElementById('s4-title').textContent = t.s4t;
+  document.getElementById('s4-body').textContent = t.s4b;
+  document.getElementById('s5-title').textContent = t.s5t;
+  document.getElementById('s5-body').textContent = t.s5b;
+  document.getElementById('s6-title').textContent = t.s6t;
+  document.getElementById('s6-body').textContent = t.s6b;
+  document.getElementById('s7-title').textContent = t.s7t;
+  document.getElementById('s7-body').textContent = t.s7b;
+  document.getElementById('s8-title').textContent = t.s8t;
+  document.getElementById('s8-body').textContent = t.s8b;
+  document.querySelectorAll('.lang-pill').forEach((p,i) => p.classList.toggle('active', allLangs[i] === l));
+}
+
+buildLangBar();
+setLang('ar');
+</script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="SwiftImage - About Us | من نحن">
+<title>SwiftImage | About - من نحن</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #111118; --card: #16161f;
+    --border: #ffffff0f; --accent: #6ee7b7; --accent2: #818cf8;
+    --accent3: #f472b6; --text: #f1f5f9; --muted: #64748b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Tajawal', sans-serif; min-height: 100vh; }
+  body.ltr { direction: ltr; font-family: 'Syne', sans-serif; }
+
+  .bg-grid { position: fixed; inset: 0; background-image: linear-gradient(rgba(110,231,183,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(110,231,183,0.03) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+  .bg-glow { position: fixed; width: 500px; height: 500px; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.1; }
+  .glow-1 { background: var(--accent); top: -150px; right: -100px; }
+  .glow-2 { background: var(--accent2); bottom: -150px; left: -100px; }
+
+  header { padding: 16px 0; border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 860px; margin: 0 auto; padding: 0 20px; }
+  .logo { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+  .back-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: 100px; text-decoration: none; font-size: 0.85rem; font-weight: 700; transition: all 0.3s; }
+  .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .lang-bar { display: flex; gap: 8px; padding: 14px 20px; max-width: 860px; margin: 0 auto; flex-wrap: wrap; }
+  .lang-pill { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 5px 12px; border-radius: 100px; cursor: pointer; font-size: 0.8rem; font-weight: 700; transition: all 0.2s; }
+  .lang-pill:hover, .lang-pill.active { border-color: var(--accent); color: var(--accent); background: rgba(110,231,183,0.08); }
+
+  .wrapper { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; position: relative; z-index: 1; }
+
+  .hero-section { text-align: center; margin-bottom: 50px; }
+  .hero-icon { font-size: 4rem; margin-bottom: 20px; display: block; }
+  .page-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px; }
+  .hero-desc { color: var(--muted); font-size: 1.05rem; line-height: 1.8; max-width: 600px; margin: 0 auto; }
+
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 30px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; transition: border-color 0.3s; }
+  .card:hover { border-color: rgba(110,231,183,0.3); }
+  .card-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+  .card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: 0.88rem; line-height: 1.7; }
+
+  .section { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin-bottom: 20px; }
+  .section h2 { font-size: 1.15rem; font-weight: 800; color: var(--accent); margin-bottom: 16px; }
+  .section p { color: #94a3b8; line-height: 1.8; font-size: 0.95rem; margin-bottom: 10px; }
+
+  .contact-section { background: linear-gradient(135deg, rgba(110,231,183,0.08), rgba(129,140,248,0.08)); border: 1px solid rgba(110,231,183,0.2); border-radius: 20px; padding: 36px; text-align: center; margin-bottom: 20px; }
+  .contact-section h2 { font-size: 1.4rem; font-weight: 900; margin-bottom: 12px; }
+  .contact-section p { color: var(--muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.7; }
+  .contact-form { display: flex; flex-direction: column; gap: 14px; max-width: 500px; margin: 0 auto; }
+  .contact-form input, .contact-form textarea {
+    background: var(--surface); border: 1px solid var(--border); color: var(--text);
+    padding: 12px 16px; border-radius: 12px; font-family: inherit; font-size: 0.95rem;
+    transition: border-color 0.3s; resize: vertical;
+  }
+  .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent); }
+  .contact-form textarea { min-height: 120px; }
+  .send-btn { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #0a0a0f; border: none; padding: 14px; border-radius: 12px; font-family: inherit; font-size: 1rem; font-weight: 900; cursor: pointer; transition: all 0.3s; }
+  .send-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(110,231,183,0.25); }
+
+  .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--card); border: 1px solid var(--accent); color: var(--accent); padding: 11px 22px; border-radius: 100px; font-weight: 700; font-size: 0.88rem; z-index: 9999; transition: transform 0.4s ease; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 30px; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; text-align: center; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .stat-label { color: var(--muted); font-size: 0.8rem; margin-top: 4px; }
+
+  footer { border-top: 1px solid var(--border); padding: 24px 20px; text-align: center; color: var(--muted); font-size: 0.82rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media(max-width:600px) { .stats-row { grid-template-columns: 1fr; } .wrapper { padding: 30px 14px 60px; } }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow glow-1"></div>
+<div class="bg-glow glow-2"></div>
+<div class="toast" id="toast"></div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">SwiftImage</a>
+    <a href="index.html" class="back-btn" id="back-btn">← الرئيسية</a>
+  </div>
+</header>
+
+<div class="lang-bar" id="lang-bar"></div>
+
+<div class="wrapper">
+  <div class="hero-section">
+    <span class="hero-icon">⚡</span>
+    <h1 class="page-title" id="page-title">من نحن</h1>
+    <p class="hero-desc" id="hero-desc">SwiftImage هي أداة مجانية لتحويل وضغط الصور، مبنية لخدمة المستخدمين حول العالم بأمان وسرعة.</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">15</div><div class="stat-label" id="stat1">لغة مدعومة</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label" id="stat2">مجاني دائماً</div></div>
+    <div class="stat"><div class="stat-num">0</div><div class="stat-label" id="stat3">بيانات مرفوعة</div></div>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card"><span class="card-icon">🎯</span><h3 id="c1t">مهمتنا</h3><p id="c1d">توفير أدوات تحويل صور احترافية ومجانية تعمل بشكل كامل في المتصفح دون الحاجة لرفع ملفاتك إلى أي خادم.</p></div>
+    <div class="card"><span class="card-icon">🔒</span><h3 id="c2t">الخصوصية أولاً</h3><p id="c2d">صورك لا تغادر جهازك أبداً. كل عمليات التحويل والضغط تتم محلياً في متصفحك باستخدام تقنيات HTML5 الحديثة.</p></div>
+    <div class="card"><span class="card-icon">🌍</span><h3 id="c3t">للجميع</h3><p id="c3d">موقعنا متاح بـ 15 لغة ليخدم المستخدمين في كل أنحاء العالم، من العربية إلى اليابانية.</p></div>
+    <div class="card"><span class="card-icon">⚡</span><h3 id="c4t">سرعة فائقة</h3><p id="c4d">معالجة فورية بدون انتظار. تحويل عشرات الصور في ثوانٍ بدون رفعها أو تنزيل أي تطبيق.</p></div>
+  </div>
+
+  <div class="section">
+    <h2 id="s1t">🛠️ كيف يعمل SwiftImage؟</h2>
+    <p id="s1d">يستخدم SwiftImage تقنية HTML5 Canvas API المدمجة في متصفحك. عند اختيار صورة، يقوم المتصفح بتحميلها في الذاكرة المحلية، ثم يعالجها وتحويلها مباشرة دون أي اتصال بخوادم خارجية. هذا يضمن سرعة فائقة وخصوصية تامة.</p>
+  </div>
+
+  <div class="contact-section">
+    <h2 id="contact-title">📬 تواصل معنا</h2>
+    <p id="contact-desc">هل لديك اقتراح أو مشكلة؟ نحن نسمعك!</p>
+    <div class="contact-form">
+      <input type="text" id="contact-name" placeholder="اسمك" />
+      <input type="email" id="contact-email" placeholder="بريدك الإلكتروني" />
+      <textarea id="contact-msg" placeholder="رسالتك..."></textarea>
+      <button class="send-btn" onclick="sendMsg()" id="send-btn">إرسال ✉️</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 SwiftImage • <a href="index.html">الرئيسية</a> • <a href="privacy.html">سياسة الخصوصية</a></p>
+</footer>
+
+<script>
+const langs = {
+  ar: { rtl:true, name:'🇸🇦 العربية', back:'← الرئيسية', title:'من نحن',
+    desc:'SwiftImage هي أداة مجانية لتحويل وضغط الصور، مبنية لخدمة المستخدمين حول العالم بأمان وسرعة.',
+    stat1:'لغة مدعومة', stat2:'مجاني دائماً', stat3:'بيانات مرفوعة',
+    c1t:'مهمتنا', c1d:'توفير أدوات تحويل صور احترافية ومجانية تعمل في المتصفح دون رفع ملفاتك لأي خادم.',
+    c2t:'الخصوصية أولاً', c2d:'صورك لا تغادر جهازك أبداً. كل العمليات محلية في متصفحك.',
+    c3t:'للجميع', c3d:'موقعنا متاح بـ 15 لغة ليخدم المستخدمين في كل أنحاء العالم.',
+    c4t:'سرعة فائقة', c4d:'تحويل عشرات الصور في ثوانٍ بدون رفعها أو تنزيل أي تطبيق.',
+    s1t:'🛠️ كيف يعمل SwiftImage؟', s1d:'يستخدم HTML5 Canvas API المدمجة في متصفحك. الصورة تُعالَج محلياً دون اتصال بخوادم خارجية.',
+    contactTitle:'📬 تواصل معنا', contactDesc:'هل لديك اقتراح أو مشكلة؟ نحن نسمعك!',
+    namePh:'اسمك', emailPh:'بريدك الإلكتروني', msgPh:'رسالتك...', sendBtn:'إرسال ✉️',
+    toast:'تم الإرسال! شكراً لتواصلك 🙏' },
+  en: { rtl:false, name:'🇺🇸 English', back:'← Home', title:'About Us',
+    desc:'SwiftImage is a free image conversion and compression tool built to serve users worldwide safely and quickly.',
+    stat1:'Languages Supported', stat2:'Always Free', stat3:'Data Uploaded',
+    c1t:'Our Mission', c1d:'Provide free, professional image conversion tools that work entirely in the browser without uploading your files.',
+    c2t:'Privacy First', c2d:'Your images never leave your device. All processing happens locally in your browser.',
+    c3t:'For Everyone', c3d:'Available in 15 languages to serve users worldwide, from Arabic to Japanese.',
+    c4t:'Lightning Fast', c4d:'Convert dozens of images in seconds without uploading or installing any app.',
+    s1t:'🛠️ How does SwiftImage work?', s1d:'SwiftImage uses the HTML5 Canvas API built into your browser. Images are processed locally with no connection to external servers.',
+    contactTitle:'📬 Contact Us', contactDesc:'Have a suggestion or issue? We\'d love to hear from you!',
+    namePh:'Your name', emailPh:'Your email', msgPh:'Your message...', sendBtn:'Send ✉️',
+    toast:'Sent! Thank you for reaching out 🙏' },
+  fr: { rtl:false, name:'🇫🇷 Français', back:'← Accueil', title:'À propos',
+    desc:'SwiftImage est un outil gratuit de conversion et compression d\'images pour les utilisateurs du monde entier.',
+    stat1:'Langues supportées', stat2:'Toujours gratuit', stat3:'Données téléchargées',
+    c1t:'Notre mission', c1d:'Fournir des outils gratuits de conversion d\'images fonctionnant entièrement dans le navigateur.',
+    c2t:'La confidentialité d\'abord', c2d:'Vos images ne quittent jamais votre appareil. Tout est traité localement.',
+    c3t:'Pour tous', c3d:'Disponible en 15 langues pour servir les utilisateurs du monde entier.',
+    c4t:'Ultra rapide', c4d:'Convertissez des dizaines d\'images en quelques secondes.',
+    s1t:'🛠️ Comment fonctionne SwiftImage?', s1d:'SwiftImage utilise l\'API HTML5 Canvas. Les images sont traitées localement sans connexion à des serveurs externes.',
+    contactTitle:'📬 Contactez-nous', contactDesc:'Vous avez une suggestion? Nous sommes à l\'écoute!',
+    namePh:'Votre nom', emailPh:'Votre email', msgPh:'Votre message...', sendBtn:'Envoyer ✉️',
+    toast:'Envoyé! Merci de nous avoir contactés 🙏' },
+  es: { rtl:false, name:'🇪🇸 Español', back:'← Inicio', title:'Sobre Nosotros',
+    desc:'SwiftImage es una herramienta gratuita de conversión y compresión de imágenes para usuarios de todo el mundo.',
+    stat1:'Idiomas soportados', stat2:'Siempre gratis', stat3:'Datos subidos',
+    c1t:'Nuestra misión', c1d:'Proporcionar herramientas gratuitas de conversión que funcionen en el navegador sin subir archivos.',
+    c2t:'Privacidad primero', c2d:'Tus imágenes nunca abandonan tu dispositivo. Todo se procesa localmente.',
+    c3t:'Para todos', c3d:'Disponible en 15 idiomas para servir a usuarios de todo el mundo.',
+    c4t:'Ultra rápido', c4d:'Convierte docenas de imágenes en segundos sin subir ni instalar nada.',
+    s1t:'🛠️ ¿Cómo funciona SwiftImage?', s1d:'Usa la API HTML5 Canvas de tu navegador. Las imágenes se procesan localmente sin conexión a servidores externos.',
+    contactTitle:'📬 Contáctanos', contactDesc:'¿Tienes una sugerencia? ¡Nos encantaría escucharte!',
+    namePh:'Tu nombre', emailPh:'Tu email', msgPh:'Tu mensaje...', sendBtn:'Enviar ✉️',
+    toast:'¡Enviado! Gracias por contactarnos 🙏' },
+  de: { rtl:false, name:'🇩🇪 Deutsch', back:'← Startseite', title:'Über uns',
+    desc:'SwiftImage ist ein kostenloses Bildkonvertierungs- und Komprimierungstool für Benutzer weltweit.',
+    stat1:'Unterstützte Sprachen', stat2:'Immer kostenlos', stat3:'Hochgeladene Daten',
+    c1t:'Unsere Mission', c1d:'Kostenlose professionelle Bildkonvertierungstools bereitstellen, die vollständig im Browser funktionieren.',
+    c2t:'Datenschutz zuerst', c2d:'Ihre Bilder verlassen nie Ihr Gerät. Alles wird lokal verarbeitet.',
+    c3t:'Für alle', c3d:'In 15 Sprachen verfügbar, um Benutzer weltweit zu bedienen.',
+    c4t:'Blitzschnell', c4d:'Konvertieren Sie Dutzende Bilder in Sekunden ohne Upload.',
+    s1t:'🛠️ Wie funktioniert SwiftImage?', s1d:'Verwendet die HTML5 Canvas API Ihres Browsers. Bilder werden lokal verarbeitet ohne externe Server.',
+    contactTitle:'📬 Kontakt', contactDesc:'Haben Sie einen Vorschlag? Wir freuen uns von Ihnen zu hören!',
+    namePh:'Ihr Name', emailPh:'Ihre E-Mail', msgPh:'Ihre Nachricht...', sendBtn:'Senden ✉️',
+    toast:'Gesendet! Danke für Ihre Nachricht 🙏' }
+};
+
+const allLangs = Object.keys(langs);
+let cur = 'ar';
+
+function buildLangBar() {
+  const bar = document.getElementById('lang-bar');
+  allLangs.forEach(l => {
+    const pill = document.createElement('span');
+    pill.className = 'lang-pill' + (l === cur ? ' active' : '');
+    pill.textContent = langs[l].name;
+    pill.onclick = () => setLang(l);
+    bar.appendChild(pill);
+  });
+}
+
+function setLang(l) {
+  if (!langs[l]) return;
+  cur = l;
+  const t = langs[l];
+  document.documentElement.lang = l;
+  document.documentElement.dir = t.rtl ? 'rtl' : 'ltr';
+  document.body.classList.toggle('ltr', !t.rtl);
+  document.getElementById('back-btn').textContent = t.back;
+  document.getElementById('page-title').textContent = t.title;
+  document.getElementById('hero-desc').textContent = t.desc;
+  document.getElementById('stat1').textContent = t.stat1;
+  document.getElementById('stat2').textContent = t.stat2;
+  document.getElementById('stat3').textContent = t.stat3;
+  document.getElementById('c1t').textContent = t.c1t;
+  document.getElementById('c1d').textContent = t.c1d;
+  document.getElementById('c2t').textContent = t.c2t;
+  document.getElementById('c2d').textContent = t.c2d;
+  document.getElementById('c3t').textContent = t.c3t;
+  document.getElementById('c3d').textContent = t.c3d;
+  document.getElementById('c4t').textContent = t.c4t;
+  document.getElementById('c4d').textContent = t.c4d;
+  document.getElementById('s1t').textContent = t.s1t;
+  document.getElementById('s1d').textContent = t.s1d;
+  document.getElementById('contact-title').textContent = t.contactTitle;
+  document.getElementById('contact-desc').textContent = t.contactDesc;
+  document.getElementById('contact-name').placeholder = t.namePh;
+  document.getElementById('contact-email').placeholder = t.emailPh;
+  document.getElementById('contact-msg').placeholder = t.msgPh;
+  document.getElementById('send-btn').textContent = t.sendBtn;
+  document.querySelectorAll('.lang-pill').forEach((p,i) => p.classList.toggle('active', allLangs[i] === l));
+}
+
+function sendMsg() {
+  const name = document.getElementById('contact-name').value.trim();
+  const email = document.getElementById('contact-email').value.trim();
+  const msg = document.getElementById('contact-msg').value.trim();
+  if (!name || !email || !msg) return;
+  const toast = document.getElementById('toast');
+  toast.textContent = langs[cur].toast;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+  document.getElementById('contact-name').value = '';
+  document.getElementById('contact-email').value = '';
+  document.getElementById('contact-msg').value = '';
+}
+
+buildLangBar();
+setLang('ar');
+</script>
+</body>
+</html>
