@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Convert WebP to JPG online free. Fast WebP to JPEG converter in your browser. No upload, no registration needed.">
+<meta name="keywords" content="webp to jpg, convert webp to jpg, webp to jpeg online, free webp converter, webp to jpg download">
+<title>WebP to JPG Converter - Free Online | SwiftImage</title>
+<link rel="canonical" href="https://swiftimage-one.vercel.app/webp-to-jpg.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--surface:#111118;--card:#16161f;--border:#ffffff0f;--accent:#6ee7b7;--accent2:#818cf8;--text:#f1f5f9;--muted:#64748b;--success:#34d399;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;}
+.bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(110,231,183,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(110,231,183,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+.bg-glow{position:fixed;width:500px;height:500px;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;opacity:0.1;}
+.glow-1{background:var(--accent);top:-150px;right:-100px;}.glow-2{background:var(--accent2);bottom:-150px;left:-100px;}
+header{padding:16px 0;border-bottom:1px solid var(--border);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.85);}
+.header-inner{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:0 20px;}
+.logo{font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;}
+.nav-links{display:flex;gap:16px;}.nav-link{color:var(--muted);text-decoration:none;font-size:0.85rem;font-weight:700;transition:color 0.2s;}.nav-link:hover,.nav-link.active{color:var(--accent);}
+.wrapper{max-width:1000px;margin:0 auto;padding:0 20px;position:relative;z-index:1;}
+.hero{text-align:center;padding:60px 0 40px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(110,231,183,0.1);border:1px solid rgba(110,231,183,0.2);color:var(--accent);padding:6px 16px;border-radius:100px;font-size:0.82rem;font-weight:700;margin-bottom:20px;}
+.hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;line-height:1.2;margin-bottom:14px;}
+.hero h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero p{color:var(--muted);font-size:1rem;max-width:550px;margin:0 auto 30px;line-height:1.7;}
+.ad-slot{background:var(--surface);border:1px dashed var(--border);border-radius:12px;padding:16px;text-align:center;color:var(--muted);font-size:0.78rem;margin:16px 0;min-height:90px;display:flex;align-items:center;justify-content:center;}
+.tool-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:36px;margin-bottom:20px;}
+.dropzone{border:2px dashed var(--border);border-radius:16px;padding:55px 20px;text-align:center;cursor:pointer;transition:all 0.3s;position:relative;}
+.dropzone:hover,.dropzone.drag-over{border-color:var(--accent);background:rgba(110,231,183,0.04);}
+.dropzone-icon{font-size:3rem;margin-bottom:14px;display:block;}
+.dropzone h2{font-size:1.1rem;font-weight:700;margin-bottom:8px;}
+.dropzone p{color:var(--muted);font-size:0.88rem;}
+.dropzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.quality-row{display:flex;gap:16px;margin-top:20px;align-items:flex-end;}
+.qgroup{flex:1;}.qgroup label{display:block;font-size:0.82rem;color:var(--muted);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;}
+input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer;}
+.qval{font-size:0.85rem;color:var(--accent);font-weight:700;text-align:center;margin-top:6px;}
+.convert-btn{width:100%;margin-top:20px;padding:15px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0a0a0f;border:none;border-radius:12px;font-family:inherit;font-size:1rem;font-weight:800;cursor:pointer;transition:all 0.3s;}
+.convert-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(110,231,183,0.25);}
+.convert-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:20px;}
+.preview-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;position:relative;}
+.preview-item img{width:100%;height:100px;object-fit:cover;display:block;}
+.preview-info{padding:8px;}.preview-name{font-size:0.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.preview-size{font-size:0.78rem;font-weight:700;color:var(--accent);}
+.preview-remove{position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.7);border:none;color:white;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:0.7rem;display:flex;align-items:center;justify-content:center;}
+.preview-remove:hover{background:#ef4444;}
+.progress-bar{height:3px;background:var(--border);border-radius:100px;margin-top:14px;overflow:hidden;display:none;}
+.progress-bar.show{display:block;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px;transition:width 0.3s;width:0%;}
+.processing{text-align:center;padding:14px;color:var(--accent);font-weight:700;display:none;}
+.processing.show{display:block;}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(110,231,183,0.2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;margin-left:8px;vertical-align:middle;}
+.results-section{margin-top:24px;display:none;}.results-section.show{display:block;}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.results-title{font-size:1rem;font-weight:700;color:var(--accent);}
+.dl-all-btn{background:rgba(110,231,183,0.1);border:1px solid rgba(110,231,183,0.3);color:var(--accent);padding:7px 14px;border-radius:100px;cursor:pointer;font-family:inherit;font-size:0.82rem;font-weight:700;}
+.result-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.result-thumb{width:44px;height:44px;object-fit:cover;border-radius:8px;flex-shrink:0;}
+.result-meta{flex:1;min-width:0;}.result-name{font-size:0.88rem;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.result-sizes{font-size:0.78rem;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.size-saved{color:var(--success);font-weight:700;}
+.dl-btn{background:var(--accent);color:#0a0a0f;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:0.82rem;font-weight:800;white-space:nowrap;flex-shrink:0;}
+.seo-section{margin:40px 0;}.seo-section h2{font-size:1.4rem;font-weight:800;margin-bottom:16px;color:var(--accent);}
+.seo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:30px;}
+.seo-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;}
+.seo-card h3{font-size:0.95rem;font-weight:700;margin-bottom:8px;}.seo-card p{color:var(--muted);font-size:0.85rem;line-height:1.6;}
+.seo-icon{font-size:1.6rem;margin-bottom:10px;display:block;}
+.faq-section{margin:30px 0 50px;}.faq-section h2{font-size:1.4rem;font-weight:800;margin-bottom:20px;}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px;}
+.faq-item h3{font-size:0.95rem;font-weight:700;margin-bottom:8px;color:var(--accent);}
+.faq-item p{color:var(--muted);font-size:0.88rem;line-height:1.7;}
+.related{margin:30px 0;}.related h2{font-size:1.2rem;font-weight:800;margin-bottom:16px;}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
+.related-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;text-decoration:none;color:var(--text);transition:border-color 0.3s;display:block;}
+.related-card:hover{border-color:var(--accent);}.related-card .icon{font-size:1.5rem;margin-bottom:8px;display:block;}
+.related-card h3{font-size:0.9rem;font-weight:700;margin-bottom:4px;}.related-card p{color:var(--muted);font-size:0.8rem;}
+footer{border-top:1px solid var(--border);padding:24px 0;text-align:center;color:var(--muted);font-size:0.82rem;}
+footer a{color:var(--accent);text-decoration:none;margin:0 8px;}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card);border:1px solid var(--accent);color:var(--accent);padding:11px 22px;border-radius:100px;font-weight:700;font-size:0.88rem;z-index:9999;transition:transform 0.4s;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+@keyframes spin{to{transform:rotate(360deg);}}
+@media(max-width:600px){.tool-card{padding:20px 14px;}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div><div class="bg-glow glow-1"></div><div class="bg-glow glow-2"></div>
+<div class="toast" id="toast"></div>
+<header><div class="header-inner">
+  <a href="index.html" class="logo">SwiftImage</a>
+  <nav class="nav-links">
+    <a href="jpg-to-png.html" class="nav-link">JPG→PNG</a>
+    <a href="png-to-webp.html" class="nav-link">PNG→WebP</a>
+    <a href="webp-to-jpg.html" class="nav-link active">WebP→JPG</a>
+    <a href="compress-image.html" class="nav-link">Compress</a>
+  </nav>
+</div></header>
+<main><div class="wrapper">
+  <div class="hero">
+    <div class="hero-badge">✦ Free • No Upload • Instant</div>
+    <h1>Convert <span>WebP to JPG</span><br>Online Free</h1>
+    <p>Convert WebP images to JPG/JPEG format instantly. Compatible with all devices and apps. No registration, no server upload.</p>
+  </div>
+  <div class="ad-slot"><span>Advertisement</span></div>
+  <div class="tool-card">
+    <div class="dropzone" id="dropzone">
+      <input type="file" accept="image/webp" multiple id="file-input" onchange="handleFiles(this.files)">
+      <span class="dropzone-icon">🖼️</span>
+      <h2>Drop WebP images here or click to select</h2>
+      <p>Supports WebP • Multiple files supported</p>
+    </div>
+    <div class="preview-grid" id="preview-grid"></div>
+    <div class="quality-row">
+      <div class="qgroup">
+        <label>JPG Quality</label>
+        <input type="range" min="10" max="100" value="90" id="quality" oninput="document.getElementById('qval').textContent=this.value+'%'">
+        <div class="qval" id="qval">90%</div>
+      </div>
+    </div>
+    <div class="progress-bar" id="prog"><div class="progress-fill" id="prog-fill"></div></div>
+    <div class="processing" id="proc">Converting to JPG... <span class="spinner"></span></div>
+    <button class="convert-btn" id="convert-btn" onclick="convertAll()" disabled>⚡ Convert WebP to JPG</button>
+    <div class="results-section" id="results">
+      <div class="results-header">
+        <span class="results-title">✅ Conversion Complete!</span>
+        <button class="dl-all-btn" onclick="downloadAll()">Download All</button>
+      </div>
+      <div id="results-list"></div>
+    </div>
+  </div>
+  <div class="ad-slot"><span>Advertisement</span></div>
+  <div class="seo-section">
+    <h2>Why Convert WebP to JPG?</h2>
+    <div class="seo-grid">
+      <div class="seo-card"><span class="seo-icon">📱</span><h3>Universal Compatibility</h3><p>JPG is supported by every device, app, and platform — unlike WebP which some older software doesn't support.</p></div>
+      <div class="seo-card"><span class="seo-icon">🖨️</span><h3>Easy to Print</h3><p>Printing services and photo editors universally support JPG. Convert WebP to JPG before printing.</p></div>
+      <div class="seo-card"><span class="seo-icon">📤</span><h3>Easy to Share</h3><p>JPG files are easier to share via email, WhatsApp, and other platforms that may not support WebP.</p></div>
+      <div class="seo-card"><span class="seo-icon">🔒</span><h3>100% Private</h3><p>All conversion happens locally in your browser. Your images never leave your device.</p></div>
+    </div>
+  </div>
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><h3>Is WebP to JPG conversion free?</h3><p>Yes, completely free with no registration or file size limits.</p></div>
+    <div class="faq-item"><h3>Why can't I open WebP files on my device?</h3><p>Some older apps and devices don't support WebP. Converting to JPG ensures universal compatibility.</p></div>
+    <div class="faq-item"><h3>Will quality be lost when converting WebP to JPG?</h3><p>Minimal quality loss occurs. You can control the output quality using the quality slider.</p></div>
+    <div class="faq-item"><h3>Can I convert multiple WebP files at once?</h3><p>Yes! Select multiple WebP files and convert them all to JPG in one click.</p></div>
+  </div>
+  <div class="related">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a href="jpg-to-png.html" class="related-card"><span class="icon">🔄</span><h3>JPG to PNG</h3><p>Convert JPG to PNG format</p></a>
+      <a href="png-to-webp.html" class="related-card"><span class="icon">🔄</span><h3>PNG to WebP</h3><p>Convert PNG to WebP format</p></a>
+      <a href="compress-image.html" class="related-card"><span class="icon">🗜️</span><h3>Compress Image</h3><p>Reduce image file size</p></a>
+      <a href="index.html" class="related-card"><span class="icon">🏠</span><h3>All Tools</h3><p>View all image tools</p></a>
+    </div>
+  </div>
+</div></main>
+<footer><div class="wrapper"><p>© 2025 SwiftImage • <a href="index.html">Home</a><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a></p></div></footer>
+<script>
+let files=[],results=[];
+const dz=document.getElementById('dropzone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');handleFiles(e.dataTransfer.files);});
+function handleFiles(f){Array.from(f).forEach(file=>{if(file.type==='image/webp')files.push(file);});renderPreviews();document.getElementById('convert-btn').disabled=!files.length;}
+function renderPreviews(){const grid=document.getElementById('preview-grid');grid.innerHTML='';files.forEach((file,i)=>{const url=URL.createObjectURL(file);const item=document.createElement('div');item.className='preview-item';item.innerHTML=`<img src="${url}"><button class="preview-remove" onclick="removeFile(${i})">✕</button><div class="preview-info"><div class="preview-name">${file.name}</div><div class="preview-size">${fmt(file.size)}</div></div>`;grid.appendChild(item);});}
+function removeFile(i){files.splice(i,1);renderPreviews();document.getElementById('convert-btn').disabled=!files.length;}
+async function convertAll(){if(!files.length)return;const btn=document.getElementById('convert-btn'),proc=document.getElementById('proc'),prog=document.getElementById('prog'),fill=document.getElementById('prog-fill'),list=document.getElementById('results-list'),section=document.getElementById('results');btn.disabled=true;proc.classList.add('show');prog.classList.add('show');fill.style.width='0%';list.innerHTML='';results=[];for(let i=0;i<files.length;i++){const r=await convertFile(files[i]);results.push(r);fill.style.width=((i+1)/files.length*100)+'%';list.appendChild(makeResultItem(r));}proc.classList.remove('show');section.classList.add('show');btn.disabled=false;showToast('Done! ✓');}
+function convertFile(file){return new Promise(resolve=>{const img=new Image();const url=URL.createObjectURL(file);img.onload=()=>{const MAX=3000;let w=img.naturalWidth,h=img.naturalHeight;if(w>MAX||h>MAX){const r=Math.min(MAX/w,MAX/h);w=Math.round(w*r);h=Math.round(h*r);}const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);URL.revokeObjectURL(url);const q=parseInt(document.getElementById('quality').value)/100;const name=file.name.replace(/\.[^.]+$/,'')+'.jpg';canvas.toBlob(blob=>{resolve({blob,name,originalSize:file.size,newSize:blob.size,dataUrl:canvas.toDataURL('image/jpeg',q)});},'image/jpeg',q);};img.src=url;});}
+function makeResultItem(r){const saved=Math.round((1-r.newSize/r.originalSize)*100);const savedHtml=saved>0?`<span class="size-saved">-${saved}% saved</span>`:'';const div=document.createElement('div');div.className='result-item';div.innerHTML=`<img class="result-thumb" src="${r.dataUrl}"><div class="result-meta"><div class="result-name">${r.name}</div><div class="result-sizes"><span>Original: ${fmt(r.originalSize)}</span><span>→</span><span>${fmt(r.newSize)}</span>${savedHtml}</div></div><button class="dl-btn">Download</button>`;div.querySelector('.dl-btn').addEventListener('click',()=>dlFile(r));return div;}
+function dlFile(r){const a=document.createElement('a');a.href=URL.createObjectURL(r.blob);a.download=r.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+function downloadAll(){results.forEach((r,i)=>setTimeout(()=>dlFile(r),i*300));}
+function fmt(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(2)+' MB';}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+</script>
+</body></html>
